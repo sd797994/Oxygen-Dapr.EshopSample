@@ -1,0 +1,45 @@
+using DomainBase;
+using IApplicationService;
+using InfrastructureBase;
+using InfrastructureBase.Http;
+using InfrastructureBase.Object;
+using Oxygen.Common.Implements;
+using System;
+using System.Threading.Tasks;
+
+namespace Infrastructure.Http
+{
+    public class AopHandlerProvider
+    {
+        public static void ContextHandler(OxygenHttpContextWapper oxygenHttpContext)
+        {
+            HttpContextExt.SetCurrent(oxygenHttpContext);//注入http上下文给本地业务上下文对象
+        }
+        public static async Task BeforeSendHandler(object param)
+        {
+            await new PermissionAuthenticationHandler().AuthenticationCheck(HttpContextExt.Current.RoutePath);//授权校验
+            //方法前拦截器，入参校验
+            if (param != null)
+                CustomModelValidator.Valid(param);
+            await Task.CompletedTask;
+        }
+        public static async Task AfterMethodInvkeHandler(object result)
+        {
+            await Task.CompletedTask;
+        }
+
+        public static async Task<object> ExceptionHandler(Exception exception)
+        {
+            //异常处理
+            if (exception is ApplicationServiceException || exception is DomainException || exception is InfrastructureException)
+            {
+                return await Task.FromResult(ApiResult.Err(exception.Message));
+            }
+            else
+            {
+                Console.WriteLine("系统异常：" + exception.Message);
+                return await Task.FromResult(ApiResult.Err());
+            }
+        }
+    }
+}

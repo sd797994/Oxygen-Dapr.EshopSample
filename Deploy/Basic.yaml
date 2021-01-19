@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: infrastructure
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+              name: web
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "Mytestpwd#123"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: infrastructure
+spec:
+  type: NodePort
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+      nodePort: 30432
+      name: tcp-postgres
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: infrastructure
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6379
+              name: web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: infrastructure
+spec:
+  selector:
+    app: redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+      name: tcp-redis
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore
+  namespace: dapreshop
+spec:
+  type: state.redis
+  metadata:
+  - name: actorStateStore
+    value: "true"
+  - name: redisHost
+    value: redis.infrastructure.svc.cluster.local:6379
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: pubsub
+  namespace: dapreshop
+spec:
+  type: pubsub.redis
+  metadata:
+  - name: redisHost
+    value: redis.infrastructure.svc.cluster.local:6379
