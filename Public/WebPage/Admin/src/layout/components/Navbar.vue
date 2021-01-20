@@ -25,7 +25,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <el-dialog title="编辑个人信息" :visible.sync="dialogFormVisible">
+    <el-dialog title="编辑个人信息" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <el-form ref="dataForm" :model="user" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item label="姓名" prop="name">
           <el-input v-model="user.userName" />

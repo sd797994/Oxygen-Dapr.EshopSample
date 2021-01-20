@@ -43,7 +43,17 @@ namespace Infrastructure.EfDataAccess
             context.Set<PersistenceObject>().Attach(po).State = EntityState.Detached;
             return po.CopyTo<PersistenceObject, DomainModel>();
         }
-
+        public virtual async IAsyncEnumerable<DomainModel> GetManyAsync(Expression<Func<DomainModel, bool>> condition)
+        {
+            var poResult = await context.Set<PersistenceObject>().Where(condition.ReplaceParameter<DomainModel, PersistenceObject>()).ToListAsync();
+            if (poResult.Any())
+            {
+                foreach (var po in poResult)
+                {
+                    yield return po.CopyTo<PersistenceObject, DomainModel>();
+                }
+            }
+        }
         public virtual async IAsyncEnumerable<DomainModel> GetManyAsync(Guid[] key)
         {
             var keys = key.ToList();

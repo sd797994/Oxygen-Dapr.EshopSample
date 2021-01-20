@@ -1,6 +1,7 @@
 ﻿using DomainBase;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace Domain
     {
         public string RoleName { get; set; }
         public bool SuperAdmin { get; set; }
+
+        [NotMapped]
         public List<Guid> Permissions { get; set; }
 
         public void SetRole(string roleName, bool superAdmin, List<Guid>? permissions = null)

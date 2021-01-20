@@ -17,5 +17,8 @@ namespace IApplicationService.RoleService
 
         [RemoteFunc(funcDescription: "更新角色")]
         Task<ApiResult> RoleUpdate(RoleUpdateDto input);
+
+        [RemoteFunc(funcDescription: "删除角色")]
+        Task<ApiResult> RoleDelete(RoleDeleteDto input); 
     }
 }

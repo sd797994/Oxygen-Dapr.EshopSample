@@ -27,7 +27,7 @@ namespace DomainBase
         /// <returns></returns>
         void Delete(T t);
         /// <summary>
-        /// 
+        /// 根据条件删除对象
         /// </summary>
         /// <param name="t"></param>
         void Delete(Expression<Func<T, bool>> condition);
@@ -49,5 +49,11 @@ namespace DomainBase
         /// <param name="key"></param>
         /// <returns></returns>
         IAsyncEnumerable<T> GetManyAsync(Guid[] key);
+        /// <summary>
+        /// 根据条件获取对象
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        IAsyncEnumerable<T> GetManyAsync(Expression<Func<T, bool>> condition);
     }
 }

@@ -9,7 +9,6 @@ namespace Domain.Repository
 {
     public interface IRoleRepository : IRepository<Role>
     {
-        new Task Add(Domain.Role t);
-        new Task Update(Domain.Role t);
+        Task<bool> RoleRelationUser(Guid roleId);
     }
 }

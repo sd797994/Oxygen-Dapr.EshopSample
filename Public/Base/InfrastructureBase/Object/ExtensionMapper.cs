@@ -51,9 +51,9 @@ namespace InfrastructureBase.Object
                 if (sourceItem == null || !sourceItem.CanRead || sourceItem.PropertyType.IsNotPublic)
                     continue;
 
-                //标注NotMapped特性的属性忽略转换
-                if (sourceItem.GetCustomAttribute<NotMappedAttribute>() != null)
-                    continue;
+                ////标注NotMapped特性的属性忽略转换
+                //if (sourceItem.GetCustomAttribute<NotMappedAttribute>() != null)
+                //    continue;
 
                 var sourceProperty = Property(parameter, sourceItem);
 
@@ -186,9 +186,9 @@ namespace InfrastructureBase.Object
                 if (sourceItem == null || !sourceItem.CanRead || sourceItem.PropertyType.IsNotPublic)
                     continue;
 
-                //标注NotMapped特性的属性忽略转换
-                if (sourceItem.GetCustomAttribute<NotMappedAttribute>() != null)
-                    continue;
+                ////标注NotMapped特性的属性忽略转换
+                //if (sourceItem.GetCustomAttribute<NotMappedAttribute>() != null)
+                //    continue;
 
                 var sourceProperty = Property(sourceParameter, sourceItem);
                 var targetProperty = Property(targetParameter, targetItem);

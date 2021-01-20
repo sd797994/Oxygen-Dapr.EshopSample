@@ -30,3 +30,11 @@ export function RoleUpdate(data) {
     data
   })
 }
+
+export function RoleDelete(data) {
+  return request({
+    url: '/accountservice/method/roleusecase/RoleDelete',
+    method: 'post',
+    data
+  })
+}

@@ -7,11 +7,13 @@ using Infrastructure.EfDataAccess;
 using Infrastructure.PersistenceObject;
 using InfrastructureBase.AuthBase;
 using InfrastructureBase.Data;
+using InfrastructureBase.Http;
 using Microsoft.EntityFrameworkCore;
 using Oxygen.Client.ServerProxyFactory.Interface;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -68,6 +70,40 @@ namespace ApplicationService
                 })
             }).ToList();
             return ApiResult.Ok(result);
+        }
+        /// <summary>
+        /// 一个简易的模拟动态路由
+        /// </summary>
+        /// <returns></returns>
+        [AuthenticationFilter(false)]
+        public async Task<ApiResult> GetUserRouter()
+        {
+            var result = new List<ExpandoObject>();
+            if (!HttpContextExt.Current.User.IgnorePermission)
+            {
+                if (!HttpContextExt.Current.User.Permissions.Any(x => x.Contains("account")))
+                {
+                    dynamic item = new ExpandoObject();
+                    item.path = "account";
+                    item.hidden = true;
+                    result.Add(item);
+                }
+                if (!HttpContextExt.Current.User.Permissions.Any(x => x.Contains("permission")))
+                {
+                    dynamic item = new ExpandoObject();
+                    item.path = "permission";
+                    item.hidden = true;
+                    result.Add(item);
+                }
+                if (!HttpContextExt.Current.User.Permissions.Any(x => x.Contains("role")))
+                {
+                    dynamic item = new ExpandoObject();
+                    item.path = "role";
+                    item.hidden = true;
+                    result.Add(item);
+                }
+            }
+            return await ApiResult.Ok(result, "操作成功").Async();
         }
     }
 }

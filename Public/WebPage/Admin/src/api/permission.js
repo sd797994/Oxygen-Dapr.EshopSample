@@ -29,3 +29,10 @@ export function GetAllPermissions() {
     method: 'post'
   })
 }
+
+export function GetPermissionRouter() {
+  return request({
+    url: '/accountservice/method/permissionquery/GetUserRouter',
+    method: 'post'
+  })
+}

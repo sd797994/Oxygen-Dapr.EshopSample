@@ -18,5 +18,8 @@ namespace IApplicationService.PermissionService
 
         [RemoteFunc(funcDescription: "获取所有权限")]
         Task<ApiResult> GetAllPermissions();
+
+        [RemoteFunc(funcDescription: "获取用户路由")]
+        Task<ApiResult> GetUserRouter();
     }
 }

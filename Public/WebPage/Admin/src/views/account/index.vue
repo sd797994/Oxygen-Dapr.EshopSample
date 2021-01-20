@@ -61,7 +61,7 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="temp.id === null ? '新增用户' : '编辑用户'" :visible.sync="dialogFormVisible">
+    <el-dialog :title="temp.id === null ? '新增用户' : '编辑用户'" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item label="登录名" prop="name">
           <el-input v-model="temp.loginName" />

@@ -4,6 +4,7 @@ using Domain.Specification;
 using IApplicationService;
 using IApplicationService.AccountService.Dtos.Input;
 using Infrastructure.EfDataAccess;
+using InfrastructureBase;
 using InfrastructureBase.AuthBase;
 using Oxygen.Client.ServerProxyFactory.Interface;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace ApplicationService
             using var tran = await unitofWork.BeginTransactionAsync();
             var role = new Role();
             role.SetRole(input.RoleName, input.SuperAdmin, input.Permissions);
-            await rolerepository.Add(role);
+            rolerepository.Add(role);
             if (await new PermissionValidityCheckSpecification(permissionRepository).IsSatisfiedBy(role))
                 await unitofWork.CommitAsync(tran);
             return ApiResult.Ok();
@@ -42,9 +43,24 @@ namespace ApplicationService
         {
             using var tran = await unitofWork.BeginTransactionAsync();
             var role = await rolerepository.GetAsync(input.RoleId);
+            if (role == null)
+                throw new ApplicationServiceException("所选角色不存在!");
             role.SetRole(input.RoleName, input.SuperAdmin, input.Permissions);
-            await rolerepository.Update(role);
+            rolerepository.Update(role);
             if (await new PermissionValidityCheckSpecification(permissionRepository).IsSatisfiedBy(role))
+                await unitofWork.CommitAsync(tran);
+            return ApiResult.Ok();
+        }
+
+        [AuthenticationFilter]
+        public async Task<ApiResult> RoleDelete(RoleDeleteDto input)
+        {
+            using var tran = await unitofWork.BeginTransactionAsync();
+            var role = await rolerepository.GetAsync(input.RoleId);
+            if (role == null)
+                throw new ApplicationServiceException("所选角色不存在!");
+            rolerepository.Delete(role);
+            if (await new RoleDeleteCheckSpecification(rolerepository).IsSatisfiedBy(role))
                 await unitofWork.CommitAsync(tran);
             return ApiResult.Ok();
         }

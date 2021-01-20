@@ -38,7 +38,7 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="temp.id === null ? '新增角色' : '编辑角色'" :visible.sync="dialogFormVisible">
+    <el-dialog :title="temp.id === null ? '新增角色' : '编辑角色'" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
         <el-form-item label="角色名" prop="name">
           <el-input v-model="temp.roleName" />
@@ -70,7 +70,7 @@
   </div>
 </template>
 <script>
-import { Getrolelist, RoleCreate, RoleUpdate } from '@/api/role'
+import { Getrolelist, RoleCreate, RoleUpdate, RoleDelete } from '@/api/role'
 import { GetAllPermissions } from '@/api/permission'
 import Pagination from '@/components/Pagination'
 
@@ -172,6 +172,15 @@ export default {
         this.handleFilter()
         this.dialogFormVisible = false
       })
+    },
+    handleDelete(row, index) {
+      RoleDelete({ roleId: row.roleId }).then((data) => {
+        this.$message({
+          message: data.message,
+          type: 'success'
+        })
+        this.list.splice(index, 1)
+      }, (msg) => { })
     },
     cleantmp() {
       this.temp = {

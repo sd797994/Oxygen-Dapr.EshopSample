@@ -44,22 +44,28 @@ spec:
           hostPath:
             path: /run/desktop/mnt/host/c/Users/Administrator/vsdbg/vs2017u5
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: dapreshop
   name: accountservice
-  annotations: 
+  annotations:
     kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    nginx.ingress.kubernetes.io/cors-allow-headers: 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authentication,AuthIgnore'
 spec:
   rules:
   - host: api.dapreshop.com
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: accountservice-dapr
-          servicePort: 80
+          service:
+            name: accountservice-dapr
+            port:
+              number: 80
 ---
 apiVersion: apps/v1
 kind: Deployment

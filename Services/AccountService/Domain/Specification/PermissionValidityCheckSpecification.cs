@@ -21,11 +21,11 @@ namespace Domain.Specification
             {
                 var validPermissions = new List<Guid>();
                 var permissionId = entity.Permissions.ToArray();
-                await foreach (var permission in permissionRepository.GetManyAsync(permissionId))
+                await foreach (var permission in permissionRepository.GetManyAsync(x => x.FatherId != Guid.Empty && permissionId.Contains(x.Id)))
                 {
                     validPermissions.Add(permission.Id);
                 }
-                if (entity.Permissions.Except(validPermissions).Any())
+                if (!validPermissions.Any())
                     throw new DomainException("部分所选权限无效!");
             }
             return true;

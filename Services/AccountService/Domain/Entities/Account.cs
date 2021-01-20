@@ -37,6 +37,7 @@ namespace Domain
         /// <summary>
         /// 用户权限
         /// </summary>
+        [NotMapped]
         public List<Guid> Roles { get; set; }
 
         /// <summary>

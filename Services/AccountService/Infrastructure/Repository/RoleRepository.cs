@@ -14,26 +14,36 @@ namespace Infrastructure.Repository
     {
         private readonly EfDbContext context;
         public RoleRepository(EfDbContext context) : base(context) { this.context = context; }
-        public new async Task Add(Domain.Role t)
+        public override void Add(Domain.Role t)
         {
             var role = t.CopyTo<Domain.Role, Role>();
             context.Role.Add(role);
-            if (role.Permissions.Any())
-            {
-                role.Permissions = await context.Permission.Where(x => role.Permissions.Contains(x.Id) && x.FatherId != Guid.Empty).Select(x => x.Id).ToListAsync();
-                context.RolePermission.AddRange(role.Permissions.Select(x => new RolePermission() { RoleId = role.Id, PermissionId = x }));
-            }
+            handleRolePermission(role);
         }
-        public new async Task Update(Domain.Role t)
+        public override void Update(Domain.Role t)
         {
             var role = t.CopyTo<Domain.Role, Role>();
             context.Role.Update(role);
-            if (role.Permissions.Any())
+            handleRolePermission(role);
+        }
+        public override void Delete(Domain.Role t)
+        {
+            var role = t.CopyTo<Domain.Role, Role>();
+            context.Role.Remove(role);
+            context.RolePermission.RemoveRange(context.RolePermission.Where(x => x.RoleId == role.Id));
+        }
+        void handleRolePermission(Role role)
+        {
+            context.RolePermission.RemoveRange(context.RolePermission.Where(x => x.RoleId == role.Id));
+            if (role.Permissions != null && role.Permissions.Any())
             {
-                var oldPermissions = await context.RolePermission.Where(x => x.RoleId == role.Id).ToListAsync();
-                context.RolePermission.RemoveRange(oldPermissions);
-                context.RolePermission.AddRange(role.Permissions.Select(x => new RolePermission() { RoleId = role.Id, PermissionId = x }));
+                context.RolePermission.AddRange(context.Permission.Where(x => x.FatherId != Guid.Empty && role.Permissions.Contains(x.Id)).Select(x => new RolePermission() { RoleId = role.Id, PermissionId = x.Id }));
             }
+        }
+
+        public async Task<bool> RoleRelationUser(Guid roleId)
+        {
+            return await context.UserRole.AnyAsync(x => x.RoleId == roleId);
         }
     }
 }

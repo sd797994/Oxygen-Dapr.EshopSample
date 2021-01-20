@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { GetPermissionRouter } from '@/api/permission'
 
 Vue.use(Router)
 
@@ -36,7 +37,6 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -57,7 +57,7 @@ export const constantRoutes = [
     path: '/rbac',
     component: Layout,
     name: 'RBAC',
-    meta: { title: 'RBAC', icon: 'el-icon-s-help' },
+    meta: { title: '用户角色权限', icon: 'el-icon-s-help' },
     hidden: false,
     children: [
       {
@@ -65,27 +65,25 @@ export const constantRoutes = [
         name: 'Permission',
         component: () => import('@/views/permission/index'),
         meta: { title: '权限管理', icon: 'table' },
-        hidden: false,
-        api: []
+        hidden: false
       },
       {
         path: 'role',
         name: 'Role',
         component: () => import('@/views/role/index'),
         meta: { title: '角色管理', icon: 'tree' },
-        hidden: false,
-        api: []
+        hidden: false
       },
       {
         path: 'account',
         name: 'Account',
         component: () => import('@/views/account/index'),
         meta: { title: '用户管理', icon: 'user' },
-        hidden: false,
-        api: ['accountquery/GetAccountList']
+        hidden: false
       }
     ]
-  }
+  },
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
@@ -96,14 +94,39 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 function getrouter() {
-  // 获取用户授权
-  constantRoutes.push({ path: '*', redirect: '/404', hidden: true })
+  // 查看用户授权
   return constantRoutes
 }
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
 }
-
+export function setpermissionbyuser(data, userpermission) {
+  if (data.length > 1) {
+    data.forEach(v => {
+      userpermission.forEach(permission => {
+        if (permission.path === v.path) {
+          v.hidden = permission.hidden
+        }
+      })
+      if (Object.prototype.hasOwnProperty.call(v, 'children') && v.children.length) {
+        setpermissionbyuser(v.children, userpermission)
+      }
+    })
+  } else {
+    userpermission.forEach(permission => {
+      if (permission.path === data.path) {
+        data.hidden = permission.hidden
+      }
+      if (Object.prototype.hasOwnProperty.call(data, 'children') && data.children.length) {
+        setpermissionbyuser(data.children, userpermission)
+      }
+    })
+  }
+}
+export function resetRouterByUser() {
+  GetPermissionRouter().then(response => {
+    setpermissionbyuser(getrouter(), response.data)
+  }, msg => {})
+}
 export default router
