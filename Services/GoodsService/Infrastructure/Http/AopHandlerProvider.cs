@@ -34,12 +34,12 @@ namespace Infrastructure.Http
             //异常处理
             if (exception is ApplicationServiceException || exception is DomainException || exception is InfrastructureException)
             {
-                return await Task.FromResult(ApiResult.Err(exception.Message));
+                return await ApiResult.Err(exception.Message).Async();
             }
             else
             {
                 Console.WriteLine("系统异常：" + exception.Message);
-                return await Task.FromResult(ApiResult.Err());
+                return await ApiResult.Err().Async();
             }
         }
     }

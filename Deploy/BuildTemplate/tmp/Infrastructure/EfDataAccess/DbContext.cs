@@ -13,7 +13,7 @@ namespace Infrastructure.EfDataAccess
 
         }
         //Dbset<Po>
-
+        public DbSet<PersistenceObject.LimitedTimeActivitie> LimitedTimeActivitie { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //启用Guid主键类型扩展

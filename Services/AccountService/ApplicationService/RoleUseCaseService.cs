@@ -36,7 +36,7 @@ namespace ApplicationService
             rolerepository.Add(role);
             if (await new PermissionValidityCheckSpecification(permissionRepository).IsSatisfiedBy(role))
                 await unitofWork.CommitAsync(tran);
-            return ApiResult.Ok();
+            return ApiResult.Ok("角色创建成功");
         }
         [AuthenticationFilter]
         public async Task<ApiResult> RoleUpdate(RoleUpdateDto input)
@@ -49,7 +49,7 @@ namespace ApplicationService
             rolerepository.Update(role);
             if (await new PermissionValidityCheckSpecification(permissionRepository).IsSatisfiedBy(role))
                 await unitofWork.CommitAsync(tran);
-            return ApiResult.Ok();
+            return ApiResult.Ok("角色更新成功");
         }
 
         [AuthenticationFilter]
@@ -62,7 +62,7 @@ namespace ApplicationService
             rolerepository.Delete(role);
             if (await new RoleDeleteCheckSpecification(rolerepository).IsSatisfiedBy(role))
                 await unitofWork.CommitAsync(tran);
-            return ApiResult.Ok();
+            return ApiResult.Ok("角色删除成功");
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Infrastructure.Http
         }
         public static async Task BeforeSendHandler(object param)
         {
-            await new PermissionAuthenticationHandler().AuthenticationCheck(HttpContextExt.Current.RoutePath);//授权校验
+            await new LimitedTimeActivitieAuthenticationHandler().AuthenticationCheck(HttpContextExt.Current.RoutePath);//授权校验
             //方法前拦截器，入参校验
             if (param != null)
                 CustomModelValidator.Valid(param);
@@ -33,12 +33,12 @@ namespace Infrastructure.Http
             //异常处理
             if (exception is ApplicationServiceException || exception is DomainException || exception is InfrastructureException)
             {
-                return await Task.FromResult(ApiResult.Err(exception.Message));
+                return await ApiResult.Err(exception.Message).Async();
             }
             else
             {
                 Console.WriteLine("系统异常：" + exception.Message);
-                return await Task.FromResult(ApiResult.Err());
+                return await ApiResult.Err().Async();
             }
         }
     }

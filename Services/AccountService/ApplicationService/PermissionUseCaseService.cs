@@ -32,7 +32,7 @@ namespace ApplicationService
             var result = input.CopyTo<CreatePermissionDto, CreatePermissionTmpDto>();
             new PermissionMultiCreateService(repository, result).Create();
             await unitofWork.CommitAsync();
-            return await ApiResult.Ok().Async();
+            return await ApiResult.Ok("权限批量导入成功").Async();
         }
     }
 }

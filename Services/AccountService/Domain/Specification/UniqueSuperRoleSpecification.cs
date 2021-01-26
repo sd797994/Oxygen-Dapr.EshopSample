@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Specification
 {
-    public class UniqueSuperRoleSpecification : ISpecificationn<Role>
+    public class UniqueSuperRoleSpecification : ISpecification<Role>
     {
         private readonly IRoleRepository roleRepository;
 

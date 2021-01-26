@@ -80,5 +80,10 @@ namespace Infrastructure.EfDataAccess
             else
                 return await context.Set<PersistenceObject>().AnyAsync();
         }
+
+        public virtual async Task<bool> AnyAsync(Expression<Func<DomainModel, bool>> condition)
+        {
+            return await context.Set<PersistenceObject>().Where(condition.ReplaceParameter<DomainModel, PersistenceObject>()).AnyAsync();
+        }
     }
 }

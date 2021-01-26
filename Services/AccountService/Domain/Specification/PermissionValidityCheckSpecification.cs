@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Specification
 {
-    public class PermissionValidityCheckSpecification : ISpecificationn<Role>
+    public class PermissionValidityCheckSpecification : ISpecification<Role>
     {
         private readonly IPermissionRepository permissionRepository;
         public PermissionValidityCheckSpecification(IPermissionRepository permissionRepository)

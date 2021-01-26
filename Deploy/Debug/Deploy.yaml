@@ -44,6 +44,52 @@ spec:
           hostPath:
             path: /run/desktop/mnt/host/c/Users/Administrator/vsdbg/vs2017u5
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goodsservice
+  namespace: dapreshop
+  labels:
+    app: goodsservice
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goodsservice
+  minReadySeconds: 5 
+  strategy: 
+    type: RollingUpdate 
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1
+  template: 
+    metadata:
+      labels: 
+        app: goodsservice
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "goodsservice"
+        dapr.io/app-port: "80"
+    spec:
+      containers:
+        - name: web
+          image: goodsservice:debug
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /app
+              name: v1
+            - mountPath: /remote_debugger:rw
+              name: v2
+      volumes:
+        - name: v1
+          hostPath:
+            path: /run/desktop/mnt/host/e/dotnet_project/Oxygen-Dapr.EshopSample/Services/GoodsService/Host/bin/Debug/net5.0
+        - name: v2
+          hostPath:
+            path: /run/desktop/mnt/host/c/Users/Administrator/vsdbg/vs2017u5
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -112,3 +158,85 @@ spec:
         - name: v2
           hostPath:
             path: /run/desktop/mnt/host/c/Users/Administrator/vsdbg/vs2017u5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imageservice
+  namespace: dapreshop
+  labels:
+    app: imageservice
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: imageservice
+  minReadySeconds: 5 
+  strategy: 
+    type: RollingUpdate 
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1
+  template: 
+    metadata:
+      labels: 
+        app: imageservice
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "imageservice"
+        dapr.io/app-port: "80"
+    spec:
+      containers:
+        - name: web
+          image: imageservice:debug
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /app
+              name: v1
+            - mountPath: /remote_debugger:rw
+              name: v2
+      volumes:
+        - name: v1
+          hostPath:
+            path: /run/desktop/mnt/host/e/dotnet_project/Oxygen-Dapr.EshopSample/Services/ImageService/bin/Debug/net5.0
+        - name: v2
+          hostPath:
+            path: /run/desktop/mnt/host/c/Users/Administrator/vsdbg/vs2017u5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: imageservice
+  namespace: dapreshop
+spec:
+  selector:
+    app: imageservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: dapreshop
+  name: imageservice
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    nginx.ingress.kubernetes.io/cors-allow-headers: 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authentication,AuthIgnore'
+spec:
+  rules:
+  - host: image.dapreshop.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: imageservice
+            port:
+              number: 80

@@ -46,13 +46,13 @@ namespace ApplicationService
             role.SetRole("超级管理员", true);
             roleRepository.Add(role);
             var account = new Account();
-            account.CreateAccount("superadmin", "超级管理员", "x1234567", Common.GetMD5SaltCode);
+            account.CreateAccount("eshopadmin", "商城管理员", "x1234567", Common.GetMD5SaltCode);
             account.SetRoles(new List<Guid>() { role.Id });
             accountRepository.Add(account);
             if (await new UniqueSuperRoleSpecification(roleRepository).IsSatisfiedBy(role))
                 await unitofWork.CommitAsync(tran);
             await stateManager.SetState(new RoleBaseInitCheckCache(true));
-            return ApiResult.Ok(new DefLoginAccountResponse { LoginName = "superadmin", Password = "x1234567" }, $"权限初始化成功,已创建超管角色和默认登录账号");
+            return ApiResult.Ok(new DefLoginAccountResponse { LoginName = "eshopadmin", Password = "x1234567" }, $"权限初始化成功,已创建超管角色和默认登录账号");
         }
         public async Task<ApiResult> AccountRegister(CreateAccountDto input)
         {
@@ -62,7 +62,7 @@ namespace ApplicationService
             accountRepository.Add(account);
             if (await new UniqueAccountIdSpecification(accountRepository).IsSatisfiedBy(account))
                 await unitofWork.CommitAsync(tran);
-            return ApiResult.Ok();
+            return ApiResult.Ok("用户注册成功");
         }
         [AuthenticationFilter]
         public async Task<ApiResult> AccountCreate(CreateAccountDto input)
@@ -71,11 +71,11 @@ namespace ApplicationService
             var account = new Account();
             account.CreateAccount(input.LoginName, input.NickName, input.Password, Common.GetMD5SaltCode);
             account.SetRoles(input.Roles);
-            account.User.CreateOrUpdateUser(input.User?.UserName, input.User?.Address, input.User?.Tel, input.User?.Gender == null ? UserGender.Unknown : (UserGender)input.User?.Gender, input.User?.BirthDay);
+            account.User.CreateOrUpdateUser(input.User?.UserName, "", input.User?.Address, input.User?.Tel, input.User?.Gender == null ? UserGender.Unknown : (UserGender)input.User?.Gender, input.User?.BirthDay);
             accountRepository.Add(account);
             if (await new UniqueAccountIdSpecification(accountRepository).IsSatisfiedBy(account) && await new RoleValidityCheckSpecification(roleRepository).IsSatisfiedBy(account))
                 await unitofWork.CommitAsync(tran);
-            return ApiResult.Ok();
+            return ApiResult.Ok("用户创建成功");
         }
         [AuthenticationFilter]
         public async Task<ApiResult> AccountUpdate(UpdateAccountDto input)
@@ -86,12 +86,12 @@ namespace ApplicationService
                 throw new ApplicationServiceException("所选用户不存在!");
             account.UpdateNicknameOrPassword(input.NickName, input.Password);
             account.SetRoles(input.Roles);
-            account.User.CreateOrUpdateUser(input.User?.UserName, input.User?.Address, input.User?.Tel, input.User?.Gender == null ? UserGender.Unknown : (UserGender)input.User?.Gender, input.User?.BirthDay);
+            account.User.CreateOrUpdateUser(input.User?.UserName, "", input.User?.Address, input.User?.Tel, input.User?.Gender == null ? UserGender.Unknown : (UserGender)input.User?.Gender, input.User?.BirthDay);
             accountRepository.Update(account);
             if (await new RoleValidityCheckSpecification(roleRepository).IsSatisfiedBy(account))
                 await unitofWork.CommitAsync(tran);
             await BuildLoginCache(account);
-            return ApiResult.Ok();
+            return ApiResult.Ok("用户信息更新成功");
         }
         [AuthenticationFilter]
         public async Task<ApiResult> AccountDelete(AccountDeleteDto input)
@@ -102,7 +102,8 @@ namespace ApplicationService
             accountRepository.Delete(account);
             if (await new AccountDeleteCheckSpecification(HttpContextExt.Current.User.Id).IsSatisfiedBy(account))
                 await unitofWork.CommitAsync();
-            return ApiResult.Ok();
+            await stateManager.DelState(new AccountLoginCache(account.Id));
+            return ApiResult.Ok("用户信息删除成功");
         }
         public async Task<ApiResult> AccountLogin(AccountLoginDto input)
         {
@@ -122,7 +123,7 @@ namespace ApplicationService
             if (HttpContextExt.Current.User == null)
                 throw new ApplicationServiceException("登录用户不存在!");
             await stateManager.DelState(new AccountLoginAccessToken(HttpContextExt.Current.User.Id.ToString()));
-            return ApiResult.Ok();
+            return ApiResult.Ok("用户登出成功");
         }
 
         [AuthenticationFilter]
@@ -131,11 +132,11 @@ namespace ApplicationService
             var account = await accountRepository.GetAsync(HttpContextExt.Current.User.Id);
             if (account == null)
                 throw new ApplicationServiceException("登录用户不存在!");
-            account.User.CreateOrUpdateUser(input.UserName, input.Address, input.Tel, (UserGender)input.Gender, input.BirthDay);
+            account.User.CreateOrUpdateUser(input.UserName, input.UserImage, input.Address, input.Tel, (UserGender)input.Gender, input.BirthDay);
             accountRepository.Update(account);
             await unitofWork.CommitAsync();
             await BuildLoginCache(account);
-            return ApiResult.Ok();
+            return ApiResult.Ok("用户信息完善成功");
         }
         [AuthenticationFilter]
         public async Task<ApiResult> LockOrUnLockAccount(LockOrUnLockAccountDto input)
@@ -147,11 +148,11 @@ namespace ApplicationService
             accountRepository.Update(account);
             await unitofWork.CommitAsync();
             await BuildLoginCache(account);
-            return ApiResult.Ok();
+            return ApiResult.Ok("用户锁定/解锁成功");
         }
         private async Task BuildLoginCache(Account account)
         {
-            await stateManager.SetState(new AccountLoginCache(account.Id, new CurrentUser(account.Id, account.LoginName, account.NickName, Convert.ToInt32(account.State), account.User.UserName, Convert.ToInt32(account.User.Gender), account.User.BirthDay, account.User.Address, account.User.Tel, await accountRepository.GetAccountPermissions(account.Id))));
+            await stateManager.SetState(new AccountLoginCache(account.Id, new CurrentUser(account.Id, account.LoginName, account.User.UserImage, account.NickName, Convert.ToInt32(account.State), account.User.UserName, Convert.ToInt32(account.User.Gender), account.User.BirthDay, account.User.Address, account.User.Tel, await accountRepository.GetAccountPermissions(account.Id))));
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Specification
 {
-    public class AccountDeleteCheckSpecification : ISpecificationn<Account>
+    public class AccountDeleteCheckSpecification : ISpecification<Account>
     {
         private readonly Guid CurrentId;
         public AccountDeleteCheckSpecification(Guid currentId)

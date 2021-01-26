@@ -12,8 +12,9 @@ namespace Infrastructure.EfDataAccess
         {
 
         }
-        //Dbset<Po>
-
+        public DbSet<PersistenceObject.GoodsCategory> GoodsCategory { get; set; }
+        public DbSet<PersistenceObject.Goods> Goods { get; set; }
+        public DbSet<PersistenceObject.LimitedTimeActivitie> LimitedTimeActivitie { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //启用Guid主键类型扩展

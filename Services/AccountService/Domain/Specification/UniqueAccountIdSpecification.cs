@@ -10,7 +10,7 @@ namespace Domain.Specification
     /// <summary>
     /// 用户ID唯一规约
     /// </summary>
-    public class UniqueAccountIdSpecification : ISpecificationn<Account>
+    public class UniqueAccountIdSpecification : ISpecification<Account>
     {
         private readonly IAccountRepository accountRepository;
 

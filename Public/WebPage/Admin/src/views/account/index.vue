@@ -44,7 +44,7 @@
           <span>{{ getbirth(row.birthDay) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
@@ -52,9 +52,15 @@
           <el-button size="mini" type="success" @click="handleModifyStatus(row)">
             {{ row.state === 0 ? '锁定' : '解锁' }}
           </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(row,$index)">
-            删除
-          </el-button>
+          <el-popconfirm
+            title="确定删除吗？"
+            style="margin-left:10px"
+            @onConfirm="handleDelete(row,$index)"
+          >
+            <el-button slot="reference" size="mini" type="danger">
+              删除
+            </el-button>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>

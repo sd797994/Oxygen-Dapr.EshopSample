@@ -57,7 +57,7 @@
               <el-input v-model="row.path" />
             </template>
           </el-table-column>
-          <el-table-column label="Actions" align="center" width="100" class-name="small-padding fixed-width">
+          <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width">
             <template slot-scope="{row,$index}">
               <el-button size="mini" type="danger" @click="handleDelete(row,$index)">
                 删除

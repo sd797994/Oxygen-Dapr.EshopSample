@@ -8,10 +8,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0" />
-    <PackageReference Include="Oxygen-Dapr" Version="0.0.4" />
+    <PackageReference Include="Oxygen-Dapr" Version="0.0.5" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Remote\IApplicationService\IApplicationService.csproj" />
     <ProjectReference Include="..\DomainBase\DomainBase.csproj" />
   </ItemGroup>
 </Project>

@@ -9,10 +9,11 @@ namespace InfrastructureBase.AuthBase
     public class CurrentUser
     {
         public CurrentUser() { }
-        public CurrentUser(Guid id, string loginName, string nickName, int state, string userName, int? gender, DateTime? birthDay, string address, string tel, List<string> permissions)
+        public CurrentUser(Guid id, string loginName,string userImage, string nickName, int state, string userName, int? gender, DateTime? birthDay, string address, string tel, List<string> permissions)
         {
             Id = id;
             LoginName = loginName;
+            UserImage = userImage;
             NickName = nickName;
             State = state;
             UserName = userName;
@@ -27,6 +28,7 @@ namespace InfrastructureBase.AuthBase
         }
         public Guid Id { get; set; }
         public string LoginName { get; set; }
+        public string UserImage { get; set; }
         public string NickName { get; set; }
         public int State { get; set; }
         public string UserName { get; set; }

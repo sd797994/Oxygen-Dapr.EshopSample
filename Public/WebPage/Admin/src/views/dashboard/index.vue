@@ -6,7 +6,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { resetRouterByUser } from '@/router'
 export default {
   name: 'Dashboard',
   computed: {
@@ -14,9 +13,6 @@ export default {
       'name',
       'gender'
     ])
-  },
-  created() {
-    resetRouterByUser()
   }
 }
 </script>

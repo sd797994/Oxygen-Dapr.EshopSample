@@ -16,6 +16,10 @@ namespace Domain
         /// </summary>
         public string UserName { get; set; }
         /// <summary>
+        /// 用户头像
+        /// </summary>
+        public string UserImage { get; set; }
+        /// <summary>
         /// 用户性别
         /// </summary>
         public UserGender Gender { get; set; }
@@ -37,10 +41,12 @@ namespace Domain
         /// <param name="userName"></param>
         /// <param name="gender"></param>
         /// <param name="birthDay"></param>
-        public void CreateOrUpdateUser(string userName, string address, string tel, UserGender gender, DateTime? birthDay)
+        public void CreateOrUpdateUser(string userName, string userImage, string address, string tel, UserGender gender, DateTime? birthDay)
         {
             if (!string.IsNullOrEmpty(userName))
                 UserName = userName;
+            if (!string.IsNullOrEmpty(userImage))
+                UserImage = userImage;
             Gender = gender;
             if (!string.IsNullOrEmpty(address))
                 Address = address;

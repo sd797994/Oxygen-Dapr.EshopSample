@@ -6,10 +6,11 @@ Copy-Item ApplicationService tmp/ -Recurse
 Copy-Item Domain tmp/ -Recurse
 Copy-Item Host tmp/ -Recurse
 Copy-Item Infrastructure tmp/ -Recurse
+Copy-Item Admin-Vue tmp/ -Recurse
 $newname='%placeholder%Service'.Replace('%placeholder%',$Svc)
 Rename-Item -Path tmp/%placeholder%Service -NewName $newname
-Get-ChildItem -Path tmp -Recurse -Include *.cs,*.csproj,*.json | Rename-Item -NewName { $_.Name -replace '%placeholder%',$Svc }
-get-childitem -path tmp -recurse -force -Include *.cs,*.csproj,*.json | foreach-object -process {
+Get-ChildItem -Path tmp -Recurse -Include *.cs,*.csproj,*.json,*.vue,*.js | Rename-Item -NewName { $_.Name -replace '%placeholder%',$Svc }
+get-childitem -path tmp -recurse -force -Include *.cs,*.csproj,*.json,*.vue,*.js | foreach-object -process {
 $content=Get-Content $_.fullname
 Set-Content $_.fullname -Value $content.Replace('%placeholder%',$Svc)
 }

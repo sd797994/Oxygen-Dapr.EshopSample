@@ -7,6 +7,7 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
+    userImage: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     userName: '',
     gender: '',
     state: '',
@@ -35,6 +36,7 @@ const mutations = {
   SET_USER: (state, user) => {
     state.name = user.nickName
     state.userName = user.userName
+    state.userImage = user.userImage ?? state.userImage
     state.gender = user.gender
     state.state = user.state
     state.birthDay = user.birthDay
@@ -107,6 +109,11 @@ const actions = {
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
+        removeToken() // must remove  token  first
+        resetRouter()
+        commit('RESET_STATE')
+        resolve()
+      }, msg => {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')

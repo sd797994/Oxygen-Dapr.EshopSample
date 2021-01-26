@@ -5,6 +5,7 @@ using Infrastructure.EfDataAccess;
 using Infrastructure.PersistenceObject;
 using InfrastructureBase.AuthBase;
 using InfrastructureBase.Data;
+using InfrastructureBase.Object;
 using Microsoft.EntityFrameworkCore;
 using Oxygen.Client.ServerProxyFactory.Interface;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace ApplicationService
         [AuthenticationFilter]
         public async Task<ApiResult> GetAllRoles()
         {
-            return await ApiResult.Ok(await dbContext.Role.Select(x => new { RoleId = x.Id, RoleName = x.RoleName }).ToListAsync()).Async();
+            return await ApiResult.Ok(dbContext.Role.Select(x => new { RoleId = x.Id, RoleName = x.RoleName }).ToListAsync()).Async();
         }
     }
 }

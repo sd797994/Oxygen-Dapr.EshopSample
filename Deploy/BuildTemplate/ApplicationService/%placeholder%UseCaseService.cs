@@ -1,6 +1,18 @@
-﻿using Domain.Repository;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using IApplicationService;
+using IApplicationService.Base.AppQuery;
 using Infrastructure.EfDataAccess;
+using InfrastructureBase.AuthBase;
 using Oxygen.Client.ServerProxyFactory.Interface;
+using InfrastructureBase.Data;
+using Microsoft.EntityFrameworkCore;
+using Infrastructure.PersistenceObject;
+using IApplicationService.%placeholder%Service.Dtos.Output;
+using IApplicationService.%placeholder%Service.Dtos.Input;
+using Domain.Repository;
+using InfrastructureBase;
 
 namespace ApplicationService
 {
@@ -16,6 +28,39 @@ namespace ApplicationService
             this.unitofWork = unitofWork;
             this.eventBus = eventBus;
             this.stateManager = stateManager;
+        }
+		
+        [AuthenticationFilter]
+        public async Task<ApiResult> Create%placeholder%(%placeholder%CreateDto input)
+        {
+            var entity = new %placeholder%();
+            entity.CreateOrUpdate();
+            repository.Add(entity);
+            await unitofWork.CommitAsync();
+            return ApiResult.Ok();
+        }
+		
+        [AuthenticationFilter]
+        public async Task<ApiResult> Update%placeholder%(%placeholder%UpdateDto input)
+        {
+            var entity = await repository.GetAsync(input.Id);
+            if (entity == null)
+                throw new ApplicationServiceException();
+            entity.CreateOrUpdate();
+            repository.Update(entity);
+            await unitofWork.CommitAsync();
+            return ApiResult.Ok();
+        }
+		
+        [AuthenticationFilter]
+        public async Task<ApiResult> Delete%placeholder%(%placeholder%DeleteDto input)
+        {
+            var entity = await repository.GetAsync(input.Id);
+            if (entity == null)
+                throw new ApplicationServiceException();
+            repository.Delete(entity);
+            await unitofWork.CommitAsync();
+            return ApiResult.Ok();
         }
     }
 }

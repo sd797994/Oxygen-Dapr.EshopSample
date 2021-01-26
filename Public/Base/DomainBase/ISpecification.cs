@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DomainBase
 {
-    public interface ISpecificationn<TEntity>
+    public interface ISpecification<TEntity>
     {
         Task<bool> IsSatisfiedBy(TEntity entity);
     }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Specification
 {
-    public class RoleDeleteCheckSpecification : ISpecificationn<Role>
+    public class RoleDeleteCheckSpecification : ISpecification<Role>
     {
         private readonly IRoleRepository rolerepository;
         public RoleDeleteCheckSpecification(IRoleRepository rolerepository)

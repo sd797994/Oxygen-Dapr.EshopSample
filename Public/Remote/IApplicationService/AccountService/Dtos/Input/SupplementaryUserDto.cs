@@ -15,6 +15,12 @@ namespace IApplicationService.AccountService.Dtos.Input
         [Required(ErrorMessage = "请填写真实姓名")]
         [RegularExpression("(?=.*[\u4e00-\u9fa5]).{2,4}", ErrorMessage = "真实姓名必须是2-4个汉字")]
         public string UserName { get; set; }
+
+        /// <summary>
+        /// 用户头像
+        /// </summary>
+        public string UserImage { get; set; }
+        
         /// <summary>
         /// 用户性别
         /// </summary>

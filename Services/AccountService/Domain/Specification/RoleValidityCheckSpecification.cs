@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Specification
 {
-    public class RoleValidityCheckSpecification : ISpecificationn<Account>
+    public class RoleValidityCheckSpecification : ISpecification<Account>
     {
         private readonly IRoleRepository roleRepository;
 

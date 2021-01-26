@@ -8,6 +8,7 @@ using Infrastructure.PersistenceObject;
 using InfrastructureBase.AuthBase;
 using InfrastructureBase.Data;
 using InfrastructureBase.Http;
+using InfrastructureBase.Object;
 using Microsoft.EntityFrameworkCore;
 using Oxygen.Client.ServerProxyFactory.Interface;
 using System;
@@ -55,7 +56,7 @@ namespace ApplicationService
             return ApiResult.Ok(new PageQueryResonseBase<GetPermissionListResponse>(Data, Total));
         }
 
-        [AuthenticationFilter]
+        [AuthenticationFilter(false)]
         public async Task<ApiResult> GetAllPermissions()
         {
             var permissions = await dbContext.Permission.ToListAsync();
@@ -81,27 +82,42 @@ namespace ApplicationService
             var result = new List<ExpandoObject>();
             if (!HttpContextExt.Current.User.IgnorePermission)
             {
-                if (!HttpContextExt.Current.User.Permissions.Any(x => x.Contains("account")))
+                void CheckPermission(string name,int father)
+                {
+                    if (!HttpContextExt.Current.User.Permissions.Any(x => x.Contains($"{name}query")) && !HttpContextExt.Current.User.Permissions.Any(x => x.Contains($"{name}usecase")))
+                    {
+                        father++;
+                        dynamic item = new ExpandoObject();
+                        item.path = $"{name}";
+                        item.hidden = true;
+                        result.Add(item);
+                    }
+                }
+                int fatheraccount = 0;
+                CheckPermission("account", fatheraccount);
+                CheckPermission("permission", fatheraccount);
+                CheckPermission("role", fatheraccount);
+                if (fatheraccount >= 3)
                 {
                     dynamic item = new ExpandoObject();
-                    item.path = "account";
+                    item.path = "/rbac";
                     item.hidden = true;
                     result.Add(item);
                 }
-                if (!HttpContextExt.Current.User.Permissions.Any(x => x.Contains("permission")))
-                {
-                    dynamic item = new ExpandoObject();
-                    item.path = "permission";
-                    item.hidden = true;
-                    result.Add(item);
-                }
-                if (!HttpContextExt.Current.User.Permissions.Any(x => x.Contains("role")))
-                {
-                    dynamic item = new ExpandoObject();
-                    item.path = "role";
-                    item.hidden = true;
-                    result.Add(item);
-                }
+                //if (!HttpContextExt.Current.User.Permissions.Any(x => x.Contains("goods")))
+                //{
+                //    dynamic item = new ExpandoObject();
+                //    item.path = "goods";
+                //    item.hidden = true;
+                //    result.Add(item);
+                //}
+                //if (!HttpContextExt.Current.User.Permissions.Any(x => x.Contains("role")))
+                //{
+                //    dynamic item = new ExpandoObject();
+                //    item.path = "role";
+                //    item.hidden = true;
+                //    result.Add(item);
+                //}
             }
             return await ApiResult.Ok(result, "²Ù×÷³É¹¦").Async();
         }

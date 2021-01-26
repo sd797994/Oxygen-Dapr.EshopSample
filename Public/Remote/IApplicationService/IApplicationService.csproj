@@ -14,12 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Oxygen-Dapr" Version="0.0.4" />
+    <PackageReference Include="Oxygen-Dapr" Version="0.0.5" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="GoodsService\Dtos\Input\" />
-    <Folder Include="GoodsService\Dtos\Output\" />
   </ItemGroup>
 </Project>

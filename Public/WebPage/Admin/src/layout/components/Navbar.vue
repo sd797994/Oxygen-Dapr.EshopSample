@@ -7,7 +7,7 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/user.png" class="user-avatar">
+          <img :src="user.userImage" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -29,6 +29,16 @@
       <el-form ref="dataForm" :model="user" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
         <el-form-item label="姓名" prop="name">
           <el-input v-model="user.userName" />
+        </el-form-item>
+        <el-form-item label="头像" prop="name">
+          <img :src="user.userImage" style="width:120px">
+          <el-upload
+            action="#"
+            :http-request="onChange"
+            accept="image/jpeg"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
         </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-select v-model="user.gender" placeholder="请选择性别">
@@ -61,6 +71,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import { UploadImage } from '@/api/imageutil'
 export default {
   components: {
     Breadcrumb,
@@ -96,6 +107,18 @@ export default {
     async updateuser() {
       await this.$store.dispatch('user/updateuser')
       this.dialogFormVisible = false
+    },
+    onChange(data) {
+      var _this = this
+      var reader = new FileReader()
+      reader.onload = function(e) {
+        var result = e.target.result
+        UploadImage({ base64Body: result }).then(response => {
+          _this.user.userImage = 'http://image.dapreshop.com:30882/' + response.data
+        }, msg => {
+        })
+      }
+      reader.readAsDataURL(data.file)
     }
   }
 }

@@ -18,7 +18,6 @@ namespace JobService
 {
     public class Program
     {
-
         private static IConfiguration _configuration { get; set; }
         static async Task Main(string[] args)
         {

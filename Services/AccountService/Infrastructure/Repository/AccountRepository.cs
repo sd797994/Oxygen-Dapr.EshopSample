@@ -61,6 +61,7 @@ namespace Infrastructure.Repository
             if (account != null)
             {
                 account.User = await context.User.AsNoTracking().FirstOrDefaultAsync(x => x.AccountId == account.Id) ?? new User();
+                account.Roles = await context.UserRole.AsNoTracking().Where(x => x.AccountId == account.Id).Select(x => x.RoleId).ToListAsync() ?? new List<Guid>();
             }
             return account;
         }

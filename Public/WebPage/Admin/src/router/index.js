@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import { GetPermissionRouter } from '@/api/permission'
 
 Vue.use(Router)
 
@@ -83,6 +82,82 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/goods',
+    component: Layout,
+    name: 'Goods',
+    meta: { title: '商品管理', icon: 'el-icon-present' }, //
+    hidden: false,
+    children: [
+      {
+        path: 'goodscategory',
+        name: 'Goodscategory',
+        component: () => import('@/views/goods/category'),
+        meta: { title: '商品类别管理', icon: 'el-icon-files' },
+        hidden: false
+      },
+      {
+        path: 'goods',
+        name: 'Goods',
+        component: () => import('@/views/goods/index'),
+        meta: { title: '商品管理', icon: 'el-icon-present' },
+        hidden: false
+      },
+      {
+        path: 'activiti',
+        name: 'Activiti',
+        component: () => import('@/views/goods/activiti'),
+        meta: { title: '限时活动', icon: 'el-icon-alarm-clock' },
+        hidden: false
+      }
+    ]
+  },
+  {
+    path: '/order',
+    component: Layout,
+    name: 'Order',
+    meta: { title: '交易管理', icon: 'el-icon-box' },
+    hidden: false,
+    children: [
+      {
+        path: 'order',
+        name: 'Order',
+        component: () => import('@/views/permission/index'),
+        meta: { title: '订单管理', icon: 'el-icon-s-order' },
+        hidden: false
+      },
+      {
+        path: 'distribution',
+        name: 'Distribution',
+        component: () => import('@/views/permission/index'),
+        meta: { title: '物流配送', icon: 'el-icon-truck' },
+        hidden: false
+      }
+    ]
+  },
+  {
+    path: '/statistics',
+    component: Layout,
+    name: 'Statistics',
+    meta: { title: '统计', icon: 'el-icon-s-data' },
+    hidden: false,
+    children: [
+      {
+        path: 'total',
+        name: 'TotalStatistics',
+        component: () => import('@/views/permission/index'),
+        meta: { title: '综合统计', icon: 'el-icon-odometer' },
+        hidden: false
+      },
+      {
+        path: 'trade',
+        name: 'TradeStatistics',
+        component: () => import('@/views/permission/index'),
+        meta: { title: '交易数据', icon: 'el-icon-shopping-cart-full' },
+        hidden: false
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
@@ -93,8 +168,7 @@ const createRouter = () => new Router({
 })
 
 const router = createRouter()
-function getrouter() {
-  // 查看用户授权
+export function getrouter() {
   return constantRoutes
 }
 export function resetRouter() {
@@ -123,10 +197,5 @@ export function setpermissionbyuser(data, userpermission) {
       }
     })
   }
-}
-export function resetRouterByUser() {
-  GetPermissionRouter().then(response => {
-    setpermissionbyuser(getrouter(), response.data)
-  }, msg => {})
 }
 export default router
