@@ -29,7 +29,7 @@ namespace ApplicationService
         }
         public async Task<ApiResult> UpdateGoodsStock(DeductionStockDto input)
         {
-            return await ApiResult.Ok("商品库存更新成功!").RunActorAsync(async () =>
+            return await ApiResult.Ok("商品库存更新成功!").RunAsync(async () =>
             {
                 if (ActorData == null)
                     ActorData = (await repository.GetAsync(input.GoodsId)).CopyTo<Goods, GoodsActor>();
@@ -45,6 +45,13 @@ namespace ApplicationService
                 ActorData = (await repository.GetAsync(input.GoodsId)).CopyTo<Goods, GoodsActor>();
             ActorData.DeductionStock(input.DeductionStock);
             return ApiResult.Ok("商品库存减扣成功");
+        }
+        public async Task<ApiResult> UnDeductionGoodsStock(DeductionStockDto input)
+        {
+            if (ActorData == null)
+                ActorData = (await repository.GetAsync(input.GoodsId)).CopyTo<Goods, GoodsActor>();
+            ActorData.UnDeductionStock(input.DeductionStock);
+            return ApiResult.Ok("商品库存回滚成功");
         }
 
         public override async Task SaveData(GoodsActor model, ILifetimeScope scope)

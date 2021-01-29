@@ -13,15 +13,20 @@ namespace InfrastructureBase.Object
 
     public static class ApiResultExtension
     {
-        public static async Task<ApiResult> RunActorAsync(this ApiResult apiResult, Func<Task> actorInvoke)
+        public static async Task<ApiResult> RunAsync(this ApiResult apiResult, Func<Task> invokeAsync, Func<Task> cacheAsync = null)
         {
             try
             {
-                await actorInvoke();
+                await invokeAsync();
                 return apiResult;
             }
             catch (Exception e)
             {
+                try
+                {
+                    await cacheAsync();
+                }
+                finally { }
                 if (e is ApplicationServiceException || e is DomainException || e is InfrastructureException)
                 {
                     return ApiResult.Err(e.Message);
@@ -35,7 +40,11 @@ namespace InfrastructureBase.Object
         }
         public static async Task<ApiResult> Async<T>(this ApiResult<T> apiResult)
         {
-            apiResult.Data = await apiResult.TaskData;
+            try
+            {
+                apiResult.Data = await apiResult.TaskData;
+            }
+            catch(Exception e) { return ApiResult.Err(); }
             return apiResult;
         }
         public static T GetData<T>(this ApiResult apiResult)

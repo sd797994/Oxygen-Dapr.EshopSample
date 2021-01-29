@@ -30,6 +30,10 @@ namespace ApplicationService.Dtos
             else
                 Stock -= stock;
         }
+        public void UnDeductionStock(int stock)
+        {
+            Stock += stock;
+        }
         public override bool AutoSave { get; set; }
         //实时同步
         public override int ReminderSeconds => 0;

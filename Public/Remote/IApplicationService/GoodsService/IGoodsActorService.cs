@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.GoodsService
 {
-    [RemoteService("goodsservice", "goodsactor", "商品服务")]
+    [RemoteService("goodsservice", "goodsactor")]
     public interface IGoodsActorService : IActorService
     {
-        [RemoteFunc(FuncType.Actor, funcDescription: "更新商品库存")]
+        [RemoteFunc(FuncType.Actor)]
         Task<ApiResult> UpdateGoodsStock(DeductionStockDto input);
-
-        [RemoteFunc(FuncType.Actor, funcDescription: "修改商品库存")]
+        [RemoteFunc(FuncType.Actor)]
+        Task<ApiResult> UnDeductionGoodsStock(DeductionStockDto input);
+        [RemoteFunc(FuncType.Actor)]
         Task<ApiResult> DeductionGoodsStock(DeductionStockDto input);
     }
 }

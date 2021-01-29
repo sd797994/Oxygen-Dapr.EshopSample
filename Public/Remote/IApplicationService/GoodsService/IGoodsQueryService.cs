@@ -11,8 +11,10 @@ namespace IApplicationService.GoodsService
     [RemoteService("goodsservice", "goodsquery","商品服务")]
     public interface IGoodsQueryService
     {
-        [RemoteFunc(funcDescription:"获取商品列表")]
+        [RemoteFunc(funcDescription: "获取商品列表")]
         Task<ApiResult> GetGoodsList(PageQueryInputBase input);
+        [RemoteFunc(funcDescription: "获取商品列表")]
+        Task<ApiResult> GetGoodsListByIds(GetGoodsListByIdsDto input);
 
         [RemoteFunc(funcDescription: "搜索商品列表")]
         Task<ApiResult> GetGoodslistByGoodsName(GetGoodslistByGoodsNameDto input);

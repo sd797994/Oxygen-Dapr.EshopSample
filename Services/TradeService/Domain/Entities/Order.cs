@@ -1,7 +1,9 @@
 using Domain.Enums;
+using Domain.ValueObject;
 using DomainBase;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace Domain.Entities
@@ -16,6 +18,7 @@ namespace Domain.Entities
         //订单总价
         public decimal TotalPrice { get; set; }
         //订单详情
+        [NotMapped]
         public List<OrderItem> OrderItems { get; set; }
         //订单状态
         public OrderState OrderState { get; set; }
@@ -23,7 +26,7 @@ namespace Domain.Entities
         public DateTime CreateTime { get; set; }
 
         //创建订单
-        public void CreateOrder(List<OrderItem> orderItems)
+        public void CreateOrder(List<OrderGoodsSnapshot> goods)
         {
             if (!orderItems.Any())
                 throw new DomainException("订单详情不能为空!");

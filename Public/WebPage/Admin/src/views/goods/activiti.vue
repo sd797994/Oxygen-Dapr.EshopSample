@@ -86,7 +86,7 @@
   </div>
 </template>
 <script>
-import { CreateLimitedTimeActivitie, DeleteLimitedTimeActivitie, UpdateLimitedTimeActivitie, GetLimitedTimeActivitieList, UpOrDownShelfActivitie } from '@/api/LimitedTimeActivitie'
+import { CreateLimitedTimeActivitie, DeleteLimitedTimeActivitie, UpdateLimitedTimeActivitie, GetLimitedTimeActivitieList, UpOrDownShelfActivitie } from '@/api/limitedtimeactivitie'
 import { SearchGoods } from '@/api/goods'
 import Pagination from '@/components/Pagination'
 
@@ -100,7 +100,6 @@ export default {
       loading: false,
       total: 0,
       countDownTimer: null,
-      activitieStateInfo: [0],
       temp: {
         id: null,
         activitieName: null,

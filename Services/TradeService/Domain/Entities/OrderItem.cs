@@ -1,4 +1,5 @@
-﻿using DomainBase;
+﻿using Domain.ValueObject;
+using DomainBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,16 @@ namespace Domain.Entities
     {
         //订单编号
         public Guid OrderId { get; set; }
+        public Guid GoodsId { get; set; }
         //商品快照
+        public OrderGoodsSnapshot GoodsSnapshot { get; set; }
         //商品价格
         public decimal TotalPrice { get; set; }
         //商品数量
         public int Count { get; set; }
+        public void Create(OrderGoodsSnapshot GoodsSnapshot)
+        {
+            TotalPrice = Count * GoodsSnapshot.Price;
+        }
     }
 }
