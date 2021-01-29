@@ -44,10 +44,13 @@
           <span>{{ GetPrice(row.price) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="330" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
+          </el-button>
+          <el-button type="primary" size="mini" @click="OpenChangeStock(row)">
+            编辑库存
           </el-button>
           <el-button size="mini" type="success" @click="handleModifyStatus(row)">
             {{ row.shelfState === false ? '上架' : '下架' }}
@@ -92,7 +95,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="商品库存" prop="stock">
+        <el-form-item v-show="temp.id === null" label="商品库存" prop="stock">
           <el-input-number v-model="temp.stock" />
         </el-form-item>
         <el-form-item label="商品价格" prop="price">
@@ -111,7 +114,7 @@
   </div>
 </template>
 <script>
-import { CreateGoods, DeleteGoods, UpdateGoods, GetGoodsList, GetAllCategoryList, UpOrDownShelfGoods } from '@/api/goods'
+import { CreateGoods, DeleteGoods, UpdateGoods, GetGoodsList, GetAllCategoryList, UpOrDownShelfGoods, UpdateGoodsStock } from '@/api/goods'
 import { UploadImage } from '@/api/imageutil'
 import Pagination from '@/components/Pagination'
 
@@ -146,6 +149,26 @@ export default {
     this.GetAllCategoryList()
   },
   methods: {
+    OpenChangeStock(row) {
+      this.$prompt('请输入库存', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputValue: row.stock
+      }).then(({ value }) => {
+        UpdateGoodsStock({ goodsId: row.id, deductionStock: value }).then(response => {
+          this.$message({
+            type: 'success',
+            message: response.message
+          })
+          row.stock = value
+        }, msg => { })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        })
+      })
+    },
     GetAllCategoryList() {
       GetAllCategoryList().then(response => {
         this.categorys = response.data
@@ -165,9 +188,7 @@ export default {
       GetGoodsList(this.listQuery).then(response => {
         this.list = response.data.pageData
         this.total = response.data.pageTotal
-        setTimeout(() => {
-          this.loading = false
-        }, 1.5 * 1000)
+        this.loading = false
       }, msg => { this.loading = false })
     },
     handleCreate() {

@@ -60,7 +60,8 @@ namespace InfrastructureBase
                                 if (authenFilter != null)
                                 {
                                     var remotesrvfuncAttr = interfaceType.GetRuntimeMethod(method.Name, method.GetParameters().Select(x => x.ParameterType).ToArray()).GetCustomAttribute<RemoteFuncAttribute>();
-                                    result.Add(new AuthenticationInfo(remotesrvAttr?.ServerDescription, remotesrvfuncAttr?.FuncDescription, authenFilter.CheckPermission, $"/{remotesrvAttr?.ServerName ?? interfaceType.Name}/{method.Name}".ToLower()));
+                                    if (remotesrvfuncAttr.FuncType == FuncType.Invoke)
+                                        result.Add(new AuthenticationInfo(remotesrvAttr?.ServerDescription, remotesrvfuncAttr?.FuncDescription, authenFilter.CheckPermission, $"/{remotesrvAttr?.ServerName ?? interfaceType.Name}/{method.Name}".ToLower()));
                                 }
                             }
                         }

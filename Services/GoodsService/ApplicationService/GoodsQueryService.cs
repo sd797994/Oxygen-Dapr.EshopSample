@@ -10,10 +10,12 @@ using System.Linq;
 using IApplicationService.GoodsService.Dtos.Input;
 using InfrastructureBase.Object;
 using InfrastructureBase.AuthBase;
+using IApplicationService.GoodsService;
+
 
 namespace ApplicationService
 {
-    public class GoodsQueryService : IApplicationService.GoodsService.GoodsQueryService
+    public class GoodsQueryService : IGoodsQueryService
     {
         private readonly EfDbContext efDbContext;
         private readonly IStateManager stateManager;

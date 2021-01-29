@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Infrastructure.PersistenceObject
 {
-    public class User : Domain.User
+    public class User : Domain.Entities.User
     {
         public Guid AccountId { get; set; }
     }

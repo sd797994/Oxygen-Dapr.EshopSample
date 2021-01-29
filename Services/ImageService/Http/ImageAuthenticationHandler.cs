@@ -19,7 +19,7 @@ namespace Infrastructure.Http
         {
             if (AuthenticationMethods.Any(x => x.Path.Equals(routePath)))
             {
-                var AccountInfo = await HttpContextExt.Current.RequestService.Resolve<IServiceProxyFactory>().CreateProxy<IApplicationService.AccountService.AccountQueryService>().GetAccountInfo();
+                var AccountInfo = await HttpContextExt.Current.RequestService.Resolve<IServiceProxyFactory>().CreateProxy<IApplicationService.AccountService.IAccountQueryService>().GetAccountInfo();
                 if (AccountInfo.Code != 0)
                     throw new InfrastructureException(AccountInfo.Message);
                 HttpContextExt.SetUser(AccountInfo.GetData<CurrentUser>());

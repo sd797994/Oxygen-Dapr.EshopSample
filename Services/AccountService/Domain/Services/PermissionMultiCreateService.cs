@@ -1,4 +1,5 @@
 ﻿using Domain.Dtos;
+using Domain.Entities;
 using Domain.Repository;
 using DomainBase;
 using System;

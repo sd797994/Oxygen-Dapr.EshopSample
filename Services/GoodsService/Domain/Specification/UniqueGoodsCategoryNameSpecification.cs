@@ -1,4 +1,5 @@
-﻿using Domain.Repository;
+﻿using Domain.Entities;
+using Domain.Repository;
 using DomainBase;
 using System;
 using System.Collections.Generic;

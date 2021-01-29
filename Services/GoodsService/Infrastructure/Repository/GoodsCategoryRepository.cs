@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repository
 {
-    public class GoodsCategoryRepository : RepositoryBase<EfDbContext, Domain.GoodsCategory, GoodsCategory>, Domain.Repository.IGoodsCategoryRepository
+    public class GoodsCategoryRepository : RepositoryBase<EfDbContext, Domain.Entities.GoodsCategory, GoodsCategory>, Domain.Repository.IGoodsCategoryRepository
     {
         private readonly EfDbContext context;
         public GoodsCategoryRepository(EfDbContext context) : base(context) { this.context = context; }

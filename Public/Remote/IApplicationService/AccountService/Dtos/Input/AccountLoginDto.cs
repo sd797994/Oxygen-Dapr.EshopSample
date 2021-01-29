@@ -16,5 +16,6 @@ namespace IApplicationService.AccountService.Dtos
         [Required(ErrorMessage = "请填写密码")]
         [RegularExpression("(?=.*[0-9])(?=.*[a-zA-Z]).{8,20}", ErrorMessage = "密码长度在8-20位且必须包含数字+字母")]
         public string Password { get; set; }
+        public bool LoginAdmin { get; set; }
     }
 }

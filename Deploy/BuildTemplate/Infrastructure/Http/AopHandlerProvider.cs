@@ -15,12 +15,13 @@ namespace Infrastructure.Http
         {
             HttpContextExt.SetCurrent(oxygenHttpContext);//注入http上下文给本地业务上下文对象
         }
-        public static async Task BeforeSendHandler(object param)
+        public static async Task BeforeSendHandler(object param, OxygenHttpContextWapper oxygenHttpContext)
         {
-            await new %placeholder%AuthenticationHandler().AuthenticationCheck(HttpContextExt.Current.RoutePath);//授权校验
+            await new OrderAuthenticationHandler().AuthenticationCheck(HttpContextExt.Current.RoutePath);//授权校验
             //方法前拦截器，入参校验
             if (param != null)
                 CustomModelValidator.Valid(param);
+            oxygenHttpContext.Headers.Add("AuthIgnore", "true");
             await Task.CompletedTask;
         }
         public static async Task AfterMethodInvkeHandler(object result)

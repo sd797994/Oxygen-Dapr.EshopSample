@@ -39,20 +39,17 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="temp.categoryId === null ? '新增xxx' : '编辑xxx'" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+    <el-dialog :title="temp.id === null ? '新增xxx' : '编辑xxx'" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <el-form ref="dataForm" :model="temp" label-position="left" label-width="90px" style="width: 400px; margin-left:50px;">
         <el-form-item label="xxx" prop="name">
-          <el-input v-model="temp.categoryName" />
-        </el-form-item>
-        <el-form-item label="排序" prop="name">
-          <el-input-number v-model="temp.sort" />
+          <el-input v-model="temp.name" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="temp.categoryId === null ?createData():updateData()">
+        <el-button type="primary" @click="temp.id === null ?createData():updateData()">
           确认
         </el-button>
       </div>
@@ -90,9 +87,7 @@ export default {
       Get%placeholder%List(this.listQuery).then(response => {
         this.list = response.data.pageData
         this.total = response.data.pageTotal
-        setTimeout(() => {
-          this.loading = false
-        }, 1.5 * 1000)
+        this.loading = false
       }, msg => { this.loading = false })
     },
     handleCreate() {

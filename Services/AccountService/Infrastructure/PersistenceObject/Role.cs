@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.PersistenceObject
 {
-    public class Role : Domain.Role
+    public class Role : Domain.Entities.Role
     {
 
     }

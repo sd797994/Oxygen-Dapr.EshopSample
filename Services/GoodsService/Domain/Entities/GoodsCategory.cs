@@ -1,6 +1,6 @@
 using DomainBase;
 
-namespace Domain
+namespace Domain.Entities
 {
     /// <summary>
     /// ÁìÓòÊµÌå

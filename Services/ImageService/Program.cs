@@ -39,7 +39,7 @@ namespace ImageService
                     builder.RegisterOxygenModule();
                     //◊¢»Î“µŒÒ“¿¿µ
                     builder.RegisterModule(new ServiceModule());
-                    builder.RegisterType<ImageAppService.ImageAppService>().As<IApplicationService.Base.ImageAppService>().InstancePerLifetimeScope();
+                    builder.RegisterType<ImageAppService.ImageAppService>().As<IApplicationService.Base.IImageAppService>().InstancePerLifetimeScope();
                 })
                 .ConfigureServices((context, services) =>
                 {

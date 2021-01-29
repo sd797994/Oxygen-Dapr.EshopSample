@@ -1,6 +1,7 @@
-﻿using DomainBase;
+﻿using System;
+using DomainBase;
 
-namespace Domain
+namespace Domain.Entities
 {
     /// <summary>
     /// 领域实体

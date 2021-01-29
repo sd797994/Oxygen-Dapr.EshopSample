@@ -220,11 +220,7 @@ export default {
       fetchList(this.listQuery).then(response => {
         this.list = response.data.pageData
         this.total = response.data.pageTotal
-
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
+        this.listLoading = false
       }, msg => {})
     },
     handleFilter() {

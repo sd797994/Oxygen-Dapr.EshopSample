@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Infrastructure.PersistenceObject
 {
-    public class LimitedTimeActivitie : Domain.LimitedTimeActivitie
+    public class LimitedTimeActivitie : Domain.Entities.LimitedTimeActivitie
     {
 
     }

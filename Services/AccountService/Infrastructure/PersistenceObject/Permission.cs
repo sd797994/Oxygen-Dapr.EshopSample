@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.PersistenceObject
 {
-    public class Permission : Domain.Permission
+    public class Permission : Domain.Entities.Permission
     {
 
     }

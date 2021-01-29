@@ -1,6 +1,7 @@
 using IApplicationService;
 using IApplicationService.AccountService.Dtos.Output;
 using IApplicationService.Base.AppQuery;
+using IApplicationService.RoleService;
 using Infrastructure.EfDataAccess;
 using Infrastructure.PersistenceObject;
 using InfrastructureBase.AuthBase;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationService
 {
-    public class RoleQueryService : IApplicationService.RoleService.RoleQueryService
+    public class RoleQueryService : IRoleQueryService
     {
         private readonly EfDbContext dbContext;
         private readonly IStateManager stateManager;

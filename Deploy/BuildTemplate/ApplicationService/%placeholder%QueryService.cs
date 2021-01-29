@@ -1,8 +1,9 @@
-﻿using Domain;
+﻿using Domain.Entities;
 using Domain.Repository;
 using IApplicationService;
-using IApplicationService.%placeholder%Service.Dtos.Output;
-using IApplicationService.%placeholder%Service.Dtos.Input;
+using IApplicationService.%ctxplaceholder%Service;
+using IApplicationService.%ctxplaceholder%Service.Dtos.Output;
+using IApplicationService.%ctxplaceholder%Service.Dtos.Input;
 using Infrastructure.EfDataAccess;
 using InfrastructureBase.AuthBase;
 using InfrastructureBase.Object;
@@ -14,7 +15,7 @@ using InfrastructureBase.Data;
 
 namespace ApplicationService
 {
-    public class %placeholder%QueryService : IApplicationService.%placeholder%Service.%placeholder%QueryService
+    public class %placeholder%QueryService : I%placeholder%QueryService
     {
         private readonly EfDbContext dbContext;
         private readonly IStateManager stateManager;

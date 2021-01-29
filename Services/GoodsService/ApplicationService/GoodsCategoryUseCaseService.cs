@@ -1,7 +1,9 @@
 using Domain;
+using Domain.Entities;
 using Domain.Repository;
 using Domain.Specification;
 using IApplicationService;
+using IApplicationService.GoodsCategoryService;
 using IApplicationService.GoodsService.Dtos.Input;
 using Infrastructure.EfDataAccess;
 using InfrastructureBase;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationService
 {
-    public class GoodsCategoryUseCaseService : IApplicationService.GoodsCategoryService.GoodsCategoryUseCaseService
+    public class GoodsCategoryUseCaseService : IGoodsCategoryUseCaseService
     {
         private readonly IGoodsCategoryRepository repository;
         private readonly IGoodsRepository goodsRepository;

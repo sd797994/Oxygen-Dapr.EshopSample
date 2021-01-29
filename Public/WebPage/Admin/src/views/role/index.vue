@@ -130,9 +130,7 @@ export default {
       Getrolelist(this.listQuery).then(response => {
         this.list = response.data.pageData
         this.total = response.data.pageTotal
-        setTimeout(() => {
-          this.loading = false
-        }, 1.5 * 1000)
+        this.loading = false
         if (this.list != null && this.list.length > 0) {
           this.showadd = false
         }

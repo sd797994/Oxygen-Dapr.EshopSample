@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repository
 {
-    public class LimitedTimeActivitieRepository : RepositoryBase<EfDbContext, Domain.LimitedTimeActivitie, LimitedTimeActivitie>, Domain.Repository.ILimitedTimeActivitieRepository
+    public class LimitedTimeActivitieRepository : RepositoryBase<EfDbContext, Domain.Entities.LimitedTimeActivitie, LimitedTimeActivitie>, Domain.Repository.ILimitedTimeActivitieRepository
     {
         private readonly EfDbContext context;
         public LimitedTimeActivitieRepository(EfDbContext context) : base(context) { this.context = context; }

@@ -2,6 +2,7 @@ using Domain.Repository;
 using Domain.Specification;
 using IApplicationService;
 using IApplicationService.GoodsService.Dtos.Input;
+using IApplicationService.LimitedTimeActivitieService;
 using IApplicationService.LimitedTimeActivitieService.Dtos.Input;
 using Infrastructure.EfDataAccess;
 using Infrastructure.PersistenceObject;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationService
 {
-    public class LimitedTimeActivitieUseCaseService : IApplicationService.LimitedTimeActivitieService.LimitedTimeActivitieUseCaseService
+    public class LimitedTimeActivitieUseCaseService : ILimitedTimeActivitieUseCaseService
     {
         private readonly ILimitedTimeActivitieRepository repository;
         private readonly IGoodsRepository goodsRepository;

@@ -1,8 +1,10 @@
 using Domain;
+using Domain.Entities;
 using Domain.Repository;
 using Domain.Specification;
 using IApplicationService;
 using IApplicationService.AccountService.Dtos.Input;
+using IApplicationService.RoleService;
 using Infrastructure.EfDataAccess;
 using InfrastructureBase;
 using InfrastructureBase.AuthBase;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationService
 {
-    public class RoleUseCaseService : IApplicationService.RoleService.RoleUseCaseService
+    public class RoleUseCaseService : IRoleUseCaseService
     {
         private readonly IRoleRepository rolerepository;
         private readonly IPermissionRepository permissionRepository;

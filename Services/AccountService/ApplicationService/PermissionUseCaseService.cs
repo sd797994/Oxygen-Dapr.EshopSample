@@ -10,10 +10,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using InfrastructureBase.Object;
 using InfrastructureBase.AuthBase;
+using IApplicationService.PermissionService;
 
 namespace ApplicationService
 {
-    public class PermissionUseCaseService : IApplicationService.PermissionService.PermissionUseCaseService
+    public class PermissionUseCaseService : IPermissionUseCaseService
     {
         private readonly IPermissionRepository repository;
         private readonly IUnitofWork unitofWork;

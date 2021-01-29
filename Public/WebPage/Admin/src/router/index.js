@@ -83,7 +83,7 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/goods',
+    path: '/goodsmanager',
     component: Layout,
     name: 'Goods',
     meta: { title: '商品管理', icon: 'el-icon-present' }, //

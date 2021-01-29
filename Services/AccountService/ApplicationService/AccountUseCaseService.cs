@@ -3,6 +3,7 @@ using Domain.Enums;
 using Domain.Events;
 using Domain.Specification;
 using IApplicationService;
+using IApplicationService.AccountService;
 using IApplicationService.AccountService.Dtos;
 using IApplicationService.AccountService.Dtos.Input;
 using IApplicationService.AppEvent;
@@ -21,10 +22,11 @@ using System.Threading.Tasks;
 using Domain.Repository;
 using ApplicationService.Dtos;
 using IApplicationService.AccountService.Dtos.Output;
+using Domain.Entities;
 
 namespace ApplicationService
 {
-    public class AccountUseCaseService : IApplicationService.AccountService.AccountUseCaseService
+    public class AccountUseCaseService : IAccountUseCaseService
     {
         private readonly IAccountRepository accountRepository;
         private readonly IRoleRepository roleRepository;
@@ -110,10 +112,10 @@ namespace ApplicationService
             var account = await accountRepository.FindAccountByAccounId(input.LoginName);
             if (account == null)
                 throw new ApplicationServiceException("登录账号不存在!");
-            account.CheckAccountCanLogin(Common.GetMD5SaltCode(input.Password, account.Id));
+            account.CheckAccountCanLogin(Common.GetMD5SaltCode(input.Password, account.Id), input.LoginAdmin);
             await BuildLoginCache(account);
-            var loginToken = Guid.NewGuid().ToString();
-            await stateManager.SetState(new AccountLoginAccessToken(loginToken, account.Id));
+            var loginToken = Common.GetMD5SaltCode(Guid.NewGuid().ToString(), input.LoginAdmin);
+            await stateManager.SetState(new AccountLoginAccessToken(loginToken, new AccessTokenItem(account.Id, input.LoginAdmin)));
             await eventBus.SendEvent(EventTopicDictionary.Account.LoginSucc, new LoginAccountSuccessEvent(loginToken));
             return ApiResult.Ok(new AccountLoginResponse(loginToken));
         }

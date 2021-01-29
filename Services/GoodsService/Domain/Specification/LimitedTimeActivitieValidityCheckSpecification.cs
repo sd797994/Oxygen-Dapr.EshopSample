@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Repository;
+using Domain.Entities;
 
 namespace Domain.Specification
 {

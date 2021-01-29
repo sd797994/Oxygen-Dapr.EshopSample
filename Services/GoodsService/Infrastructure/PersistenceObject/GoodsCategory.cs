@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Infrastructure.PersistenceObject
 {
-    public class GoodsCategory : Domain.GoodsCategory
+    public class GoodsCategory : Domain.Entities.GoodsCategory
     {
 
     }

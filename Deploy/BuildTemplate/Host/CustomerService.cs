@@ -28,7 +28,7 @@ namespace Host
                 while (true)
                 {
                     Thread.Sleep(20000);//等待sidercar启动
-                    var sender = await eventBus.SendEvent(EventTopicDictionary.Common.InitAuthApiList, new InitPermessionApiEvent<List<AuthenticationInfo>>(AuthenticationManager.AuthenticationMethods));//将当前服务的需鉴权接口发送给用户服务
+                    var sender = await eventBus.SendEvent(EventTopicDictionary.Common.InitAuthApiList, new InitPermissionApiEvent<List<AuthenticationInfo>>(AuthenticationManager.AuthenticationMethods));//将当前服务的需鉴权接口发送给用户服务
                     if (sender != default(DefaultResponse))
                         break;
                     else

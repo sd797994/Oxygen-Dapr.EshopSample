@@ -94,7 +94,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: dapreshop
-  name: accountservice
+  name: apigateway
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/enable-cors: "true"
@@ -109,7 +109,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: accountservice-dapr
+            name: apigateway
             port:
               number: 80
 ---

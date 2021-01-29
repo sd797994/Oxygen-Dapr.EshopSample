@@ -1,5 +1,6 @@
 using IApplicationService;
 using IApplicationService.Base.AppQuery;
+using IApplicationService.GoodsCategoryService;
 using Infrastructure.EfDataAccess;
 using Infrastructure.PersistenceObject;
 using InfrastructureBase.AuthBase;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationService
 {
-    public class GoodsCategoryQueryService : IApplicationService.GoodsCategoryService.GoodsCategoryQueryService
+    public class GoodsCategoryQueryService : IGoodsCategoryQueryService
     {
         private readonly EfDbContext dbContext;
         private readonly IStateManager stateManager;

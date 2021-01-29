@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ImageService.ImageAppService
 {
-    public class ImageAppService : IApplicationService.Base.ImageAppService
+    public class ImageAppService : IImageAppService
     {
         [AuthenticationFilter(false)]
         public async Task<ApiResult> UploadByBase64(UploadImageDto input)

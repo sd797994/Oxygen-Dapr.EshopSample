@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repository
 {
-    public class AccountRepository : RepositoryBase<EfDbContext, Domain.Account, Account>, Domain.Repository.IAccountRepository
+    public class AccountRepository : RepositoryBase<EfDbContext, Domain.Entities.Account, Account>, Domain.Repository.IAccountRepository
     {
         private readonly EfDbContext context;
         public AccountRepository(EfDbContext context) : base(context) { this.context = context; }
 
-        public override void Add(Domain.Account t)
+        public override void Add(Domain.Entities.Account t)
         {
-            var account = t.CopyTo<Domain.Account, Account>();
+            var account = t.CopyTo<Domain.Entities.Account, Account>();
             context.Account.Add(account);
-            var user = t.User.CopyTo<Domain.User, User>();
+            var user = t.User.CopyTo<Domain.Entities.User, User>();
             user.AccountId = account.Id;
             if (account.Roles.Any())
                 context.UserRole.AddRange(account.Roles.Select(x => new UserRole() { AccountId = account.Id, RoleId = x }));
@@ -30,15 +30,11 @@ namespace Infrastructure.Repository
             return await context.User.AnyAsync(x => x.AccountId == accountId);
         }
 
-        public async Task<Domain.Account> FindAccountByAccounId(string loginName)
+        public async Task<Domain.Entities.Account> FindAccountByAccounId(string loginName)
         {
-            var result = await context.Account.AsNoTracking().FirstOrDefaultAsync(x => x.LoginName == loginName);
-            if (result != null)
-            {
-                result.User = await context.User.AsNoTracking().FirstOrDefaultAsync(x => x.AccountId == result.Id);
-                return result;
-            }
-            return null;
+            var account = await context.Account.AsNoTracking().FirstOrDefaultAsync(x => x.LoginName == loginName);
+            await FillAccountInfo(account);
+            return account;
         }
 
         public async Task<List<string>> GetAccountPermissions(Guid accountId)
@@ -55,21 +51,17 @@ namespace Infrastructure.Repository
                            ).AsNoTracking().ToListAsync();
         }
 
-        public override async Task<Domain.Account> GetAsync(object key)
+        public override async Task<Domain.Entities.Account> GetAsync(object key)
         {
             var account = await base.GetAsync(key);
-            if (account != null)
-            {
-                account.User = await context.User.AsNoTracking().FirstOrDefaultAsync(x => x.AccountId == account.Id) ?? new User();
-                account.Roles = await context.UserRole.AsNoTracking().Where(x => x.AccountId == account.Id).Select(x => x.RoleId).ToListAsync() ?? new List<Guid>();
-            }
+            await FillAccountInfo(account);
             return account;
         }
-        public override void Update(Domain.Account t)
+        public override void Update(Domain.Entities.Account t)
         {
-            var account = t.CopyTo<Domain.Account, Account>();
+            var account = t.CopyTo<Domain.Entities.Account, Account>();
             context.Set<Account>().Attach(account).State = EntityState.Modified;
-            var user = t.User.CopyTo<Domain.User, User>();
+            var user = t.User.CopyTo<Domain.Entities.User, User>();
             user.AccountId = account.Id;
             if (context.User.Any(x => x.AccountId == account.Id))
                 context.User.Update(user);
@@ -79,6 +71,14 @@ namespace Infrastructure.Repository
             {
                 context.UserRole.RemoveRange(context.UserRole.Where(x => x.AccountId == account.Id));
                 context.UserRole.AddRange(account.Roles.Select(x => new UserRole() { AccountId = account.Id, RoleId = x }));
+            }
+        }
+        async Task FillAccountInfo(Domain.Entities.Account account)
+        {
+            if (account != null)
+            {
+                account.User = await context.User.AsNoTracking().FirstOrDefaultAsync(x => x.AccountId == account.Id) ?? new User();
+                account.Roles = await context.UserRole.AsNoTracking().Where(x => x.AccountId == account.Id).Select(x => x.RoleId).ToListAsync() ?? new List<Guid>();
             }
         }
     }

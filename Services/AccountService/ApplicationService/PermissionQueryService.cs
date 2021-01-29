@@ -3,6 +3,7 @@ using IApplicationService;
 using IApplicationService.AccountService.Dtos.Input;
 using IApplicationService.AccountService.Dtos.Output;
 using IApplicationService.Base.AppQuery;
+using IApplicationService.PermissionService;
 using Infrastructure.EfDataAccess;
 using Infrastructure.PersistenceObject;
 using InfrastructureBase.AuthBase;
@@ -20,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationService
 {
-    public class PermissionQueryService : IApplicationService.PermissionService.PermissionQueryService
+    public class PermissionQueryService : IPermissionQueryService
     {
         private readonly EfDbContext dbContext;
         private readonly IStateManager stateManager;
@@ -101,6 +102,17 @@ namespace ApplicationService
                 {
                     dynamic item = new ExpandoObject();
                     item.path = "/rbac";
+                    item.hidden = true;
+                    result.Add(item);
+                }
+                int fathergoods = 0;
+                CheckPermission("goodscategory", fathergoods);
+                CheckPermission("goods", fathergoods);
+                CheckPermission("activiti", fathergoods);
+                if (fathergoods >= 3)
+                {
+                    dynamic item = new ExpandoObject();
+                    item.path = "/goodsmanager";
                     item.hidden = true;
                     result.Add(item);
                 }

@@ -25,6 +25,7 @@ namespace IApplicationService
         public string Message { get; set; }
         public object Data { get; set; }
         internal object resultType { get; set; }
+
         public static ApiResult Ok(string message = null, int code = 0)
         {
             return new ApiResult(message ?? "操作成功", code);

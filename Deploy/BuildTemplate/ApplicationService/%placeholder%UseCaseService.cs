@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using IApplicationService;
+using IApplicationService.%ctxplaceholder%Service;
 using IApplicationService.Base.AppQuery;
 using Infrastructure.EfDataAccess;
 using InfrastructureBase.AuthBase;
@@ -9,14 +10,15 @@ using Oxygen.Client.ServerProxyFactory.Interface;
 using InfrastructureBase.Data;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.PersistenceObject;
-using IApplicationService.%placeholder%Service.Dtos.Output;
-using IApplicationService.%placeholder%Service.Dtos.Input;
+using IApplicationService.%ctxplaceholder%Service.Dtos.Output;
+using IApplicationService.%ctxplaceholder%Service.Dtos.Input;
 using Domain.Repository;
 using InfrastructureBase;
+using Domain.Entities;
 
 namespace ApplicationService
 {
-    public class %placeholder%UseCaseService : IApplicationService.%placeholder%Service.%placeholder%UseCaseService
+    public class %placeholder%UseCaseService : I%placeholder%UseCaseService
     {
         private readonly I%placeholder%Repository repository;
         private readonly IUnitofWork unitofWork;

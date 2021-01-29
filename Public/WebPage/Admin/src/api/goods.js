@@ -2,48 +2,55 @@ import request from '@/utils/request'
 
 export function GetGoodsList(data) {
   return request({
-    url: '/goodsservice/method/goodsquery/GetGoodsList',
+    url: '/goodsservice/goodsquery/GetGoodsList',
     method: 'post',
     data
   })
 }
 export function CreateGoods(data) {
   return request({
-    url: '/goodsservice/method/goodsusecase/CreateGoods',
+    url: '/goodsservice/goodsusecase/CreateGoods',
     method: 'post',
     data
   })
 }
 export function DeleteGoods(data) {
   return request({
-    url: '/goodsservice/method/goodsusecase/DeleteGoods',
+    url: '/goodsservice/goodsusecase/DeleteGoods',
     method: 'post',
     data
   })
 }
 export function UpdateGoods(data) {
   return request({
-    url: '/goodsservice/method/goodsusecase/UpdateGoods',
+    url: '/goodsservice/goodsusecase/UpdateGoods',
     method: 'post',
     data
   })
 }
 export function GetAllCategoryList() {
   return request({
-    url: '/goodsservice/method/categoryquery/GetAllCategoryList',
+    url: '/goodsservice/categoryquery/GetAllCategoryList',
     method: 'post'
   })
 }
 export function UpOrDownShelfGoods(data) {
   return request({
-    url: '/goodsservice/method/goodsusecase/UpOrDownShelfGoods',
+    url: '/goodsservice/goodsusecase/UpOrDownShelfGoods',
     method: 'post',
     data
   })
 }
 export function SearchGoods(data) {
   return request({
-    url: '/goodsservice/method/goodsquery/GetGoodslistByGoodsName',
+    url: '/goodsservice/goodsquery/GetGoodslistByGoodsName',
+    method: 'post',
+    data
+  })
+}
+export function UpdateGoodsStock(data) {
+  return request({
+    url: '/goodsservice/goodsusecase/UpdateGoodsStock',
     method: 'post',
     data
   })

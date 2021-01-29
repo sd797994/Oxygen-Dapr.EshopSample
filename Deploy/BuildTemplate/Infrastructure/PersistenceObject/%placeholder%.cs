@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Infrastructure.PersistenceObject
 {
-    public class %placeholder% : Domain.%placeholder%
+    public class %placeholder% : Domain.Entities.%placeholder%
     {
 
     }

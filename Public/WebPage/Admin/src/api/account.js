@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchList(data) {
   return request({
-    url: '/accountservice/method/accountquery/GetAccountList',
+    url: '/accountservice/accountquery/GetAccountList',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function fetchList(data) {
 
 export function lockaccount(data) {
   return request({
-    url: '/accountservice/method/accountusecase/LockOrUnLockAccount',
+    url: '/accountservice/accountusecase/LockOrUnLockAccount',
     method: 'post',
     data
   })
@@ -18,7 +18,7 @@ export function lockaccount(data) {
 
 export function accountCreate(data) {
   return request({
-    url: '/accountservice/method/accountusecase/AccountCreate',
+    url: '/accountservice/accountusecase/AccountCreate',
     method: 'post',
     data
   })
@@ -26,7 +26,7 @@ export function accountCreate(data) {
 
 export function accountDelete(data) {
   return request({
-    url: '/accountservice/method/accountusecase/AccountDelete',
+    url: '/accountservice/accountusecase/AccountDelete',
     method: 'post',
     data
   })
@@ -34,7 +34,7 @@ export function accountDelete(data) {
 
 export function accountUpdate(data) {
   return request({
-    url: '/accountservice/method/accountusecase/accountUpdate',
+    url: '/accountservice/accountusecase/accountUpdate',
     method: 'post',
     data
   })

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Infrastructure.PersistenceObject
 {
-    public class Account : Domain.Account
+    public class Account : Domain.Entities.Account
     {
 
     }

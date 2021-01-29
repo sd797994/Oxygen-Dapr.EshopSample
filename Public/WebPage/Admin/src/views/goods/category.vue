@@ -97,9 +97,7 @@ export default {
       GetCategoryList(this.listQuery).then(response => {
         this.list = response.data.pageData
         this.total = response.data.pageTotal
-        setTimeout(() => {
-          this.loading = false
-        }, 1.5 * 1000)
+        this.loading = false
       }, msg => { this.loading = false })
     },
     handleCreate() {

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain
+namespace Domain.Entities
 {
     /// <summary>
     /// 用户领域

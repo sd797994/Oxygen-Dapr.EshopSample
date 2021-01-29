@@ -9,7 +9,7 @@ namespace ApplicationService.Dtos
 {
     public class AccountLoginAccessToken : StateStore
     {
-        public AccountLoginAccessToken(string key, object data)
+        public AccountLoginAccessToken(string key, AccessTokenItem data)
         {
             Key = $"DarpEshopUserAccountAccessToken_{key}";
             this.Data = data;
@@ -20,5 +20,12 @@ namespace ApplicationService.Dtos
         }
         public override string Key { get; set; }
         public override object Data { get; set; }
+    }
+    public class AccessTokenItem
+    {
+        public AccessTokenItem() { }
+        public AccessTokenItem(Guid id, bool loginAdmin) { Id = id; LoginAdmin = loginAdmin; }
+        public Guid Id { get; set; }
+        public bool LoginAdmin { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Domain;
 using Domain.Enums;
 using Domain.Repository;
 using IApplicationService;
+using IApplicationService.AccountService;
 using IApplicationService.AccountService.Dtos.Input;
 using IApplicationService.AccountService.Dtos.Output;
 using IApplicationService.Base.AppQuery;
@@ -22,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationService
 {
-    public class AccountQueryService : IApplicationService.AccountService.AccountQueryService
+    public class AccountQueryService : IAccountQueryService
     {
         private readonly IStateManager stateManager;
         private readonly EfDbContext efDbContext;
@@ -35,14 +36,16 @@ namespace ApplicationService
         public async Task<ApiResult> GetAccountInfo()
         {
             var token = HttpContextExt.Current.Headers.FirstOrDefault(x => x.Key == "Authentication").Value;
-            var userid = await stateManager.GetState<Guid>(new AccountLoginAccessToken(token));
-            if (userid == Guid.Empty)
+            var usertoken = await stateManager.GetState<AccessTokenItem>(new AccountLoginAccessToken(token));
+            if (usertoken.Id == Guid.Empty)
                 throw new ApplicationServiceException("授权登录Token已过期,请重新登录!");
-            var userinfo = await stateManager.GetState<CurrentUser>(new AccountLoginCache(userid));
+            var userinfo = await stateManager.GetState<CurrentUser>(new AccountLoginCache(usertoken.Id));
             if (userinfo == null)
                 throw new ApplicationServiceException("登录用户信息已过期,请重新登录!");
             else if (userinfo.State == Convert.ToInt32(AccountState.Locking))
                 throw new ApplicationServiceException("登录用户已被锁定,请重新登录!");
+            if (!usertoken.LoginAdmin)
+                userinfo.Permissions = null;
             return ApiResult.Ok(userinfo);
         }
         public async Task<ApiResult> CheckRoleBasedAccessControler()

@@ -1,7 +1,7 @@
 using DomainBase;
 using System;
 
-namespace Domain
+namespace Domain.Entities
 {
     /// <summary>
     /// ¡Ï”Ú µÃÂ

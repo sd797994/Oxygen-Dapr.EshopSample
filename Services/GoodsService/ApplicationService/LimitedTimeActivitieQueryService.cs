@@ -12,10 +12,11 @@ using IApplicationService.Base.AppQuery;
 using System.Linq;
 using InfrastructureBase.Data;
 using System;
+using IApplicationService.LimitedTimeActivitieService;
 
 namespace ApplicationService
 {
-    public class LimitedTimeActivitieQueryService : IApplicationService.LimitedTimeActivitieService.LimitedTimeActivitieQueryService
+    public class LimitedTimeActivitieQueryService : ILimitedTimeActivitieQueryService
     {
         private readonly EfDbContext dbContext;
         private readonly IStateManager stateManager;

@@ -3,6 +3,7 @@ using InfrastructureBase;
 using InfrastructureBase.AuthBase;
 using InfrastructureBase.Http;
 using InfrastructureBase.Object;
+using Oxygen.Client.ServerProxyFactory.Interface;
 using System.Linq;
 using System.Threading.Tasks;
 

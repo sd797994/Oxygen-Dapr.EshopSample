@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 
-namespace Domain
+namespace Domain.Entities
 {
     /// <summary>
     /// 账号领域实体
@@ -66,7 +66,7 @@ namespace Domain
                 if (string.IsNullOrEmpty(Password))
                     Password = password;
                 else if (Password == password)
-                    throw new DomainException("新旧密码不能相同");
+                    throw new DomainException("新旧密码不能相同!");
                 else
                     Password = password;
             }
@@ -87,7 +87,7 @@ namespace Domain
         public void SetRoles(List<Guid> roleids)
         {
             if (roleids == null || !roleids.Any())
-                throw new DomainException("请至少选择一个角色");
+                throw new DomainException("请至少选择一个角色!");
             Roles = roleids;
         }
         /// <summary>
@@ -95,12 +95,16 @@ namespace Domain
         /// </summary>
         /// <param name="password"></param>
         /// <returns></returns>
-        public void CheckAccountCanLogin(string password)
+        public void CheckAccountCanLogin(string password, bool loginAdmin)
         {
             if (Password != password)
-                throw new DomainException("用户密码错误");
+                throw new DomainException("用户密码错误!");
             if (State == AccountState.Locking)
-                throw new DomainException("用户被锁定");
+                throw new DomainException("用户被锁定!");
+            if(loginAdmin && !Roles.Any())
+            {
+                throw new DomainException("当前用户无法登录管理端!");
+            }
         }
     }
 }

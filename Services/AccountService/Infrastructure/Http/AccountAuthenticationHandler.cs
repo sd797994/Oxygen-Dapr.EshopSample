@@ -20,7 +20,7 @@ namespace Infrastructure.Http
             var authMethod = AuthenticationMethods.FirstOrDefault(x => x.Path.Equals(routePath));
             if (authMethod != null)
             {
-                var accountInfo = await HttpContextExt.Current.RequestService.Resolve<AccountQueryService>().GetAccountInfo();
+                var accountInfo = await HttpContextExt.Current.RequestService.Resolve<IAccountQueryService>().GetAccountInfo();
                 HttpContextExt.SetUser(accountInfo.GetData<CurrentUser>());
                 if (!HttpContextExt.Current.User.IgnorePermission && authMethod.CheckPermission && !HttpContextExt.Current.GetAuthIgnore() && !HttpContextExt.Current.User.Permissions.Contains(routePath))
                 {

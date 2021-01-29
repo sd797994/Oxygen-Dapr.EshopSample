@@ -77,6 +77,53 @@ spec:
       targetPort: 6379
       name: tcp-redis
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apigateway
+  namespace: dapreshop
+spec:
+  selector:
+    matchLabels:
+      app: apigateway
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: apigateway
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "apigateway"
+        dapr.io/app-port: "80"
+    spec:
+      containers:
+        - name: apigateway
+          image: nginx:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: web
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d
+              name: v1
+      volumes:
+        - name: v1
+          hostPath:
+            path: /run/desktop/mnt/host/e/dotnet_project/Oxygen-Dapr.EshopSample/Deploy/GateWayConf
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apigateway
+  namespace: dapreshop
+spec:
+  selector:
+    app: apigateway
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
