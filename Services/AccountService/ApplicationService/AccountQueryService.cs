@@ -37,7 +37,7 @@ namespace ApplicationService
         {
             var token = HttpContextExt.Current.Headers.FirstOrDefault(x => x.Key == "Authentication").Value;
             var usertoken = await stateManager.GetState<AccessTokenItem>(new AccountLoginAccessToken(token));
-            if (usertoken.Id == Guid.Empty)
+            if (usertoken == null)
                 throw new ApplicationServiceException("授权登录Token已过期,请重新登录!");
             var userinfo = await stateManager.GetState<CurrentUser>(new AccountLoginCache(usertoken.Id));
             if (userinfo == null)
@@ -59,7 +59,7 @@ namespace ApplicationService
         [AuthenticationFilter]
         public async Task<ApiResult> GetAccountList(PageQueryInputBase input)
         {
-            var query = from account in efDbContext.Account
+            var query = (from account in efDbContext.Account
                         join user in efDbContext.User on account.Id equals user.AccountId
                         select new GetAccountListResponse
                         {
@@ -72,7 +72,7 @@ namespace ApplicationService
                             Address = user.Address,
                             Tel = user.Tel,
                             UserName = user.UserName
-                        };
+                        }).OrderBy(x => x.LoginName);
             var (Data, Total) = await QueryServiceHelper.PageQuery(query, input.Page, input.Limit);
             var accoundIds = Data.Select(x => x.Id).ToList();
             var roles = await (from role in efDbContext.Role

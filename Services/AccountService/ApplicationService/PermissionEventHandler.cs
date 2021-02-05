@@ -1,6 +1,7 @@
 using Domain.Repository;
 using IApplicationService.AccountService.Dtos.Input;
 using IApplicationService.AppEvent;
+using Infrastructure;
 using Infrastructure.EfDataAccess;
 using InfrastructureBase.AuthBase;
 using Oxygen.Client.ServerProxyFactory.Interface;
@@ -30,7 +31,7 @@ namespace ApplicationService
         {
             if (input.data.ServiceApis != null)
             {
-                input.data.ServiceApis.ForEach(x => PermissionQueryService.PermissionApis.Add(x));
+                await PermissionListCacheHelper.GroupAndSave(stateManager, input.data.ServiceApis);
             }
             return await Task.FromResult(DefaultEventHandlerResponse.Default());
         }

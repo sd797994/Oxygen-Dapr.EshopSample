@@ -4,6 +4,7 @@ using IApplicationService.AccountService.Dtos.Input;
 using IApplicationService.AccountService.Dtos.Output;
 using IApplicationService.Base.AppQuery;
 using IApplicationService.PermissionService;
+using Infrastructure;
 using Infrastructure.EfDataAccess;
 using Infrastructure.PersistenceObject;
 using InfrastructureBase.AuthBase;
@@ -25,7 +26,6 @@ namespace ApplicationService
     {
         private readonly EfDbContext dbContext;
         private readonly IStateManager stateManager;
-        public static ConcurrentBag<AuthenticationInfo> PermissionApis { get; set; } = new ConcurrentBag<AuthenticationInfo>();
         public PermissionQueryService(EfDbContext dbContext, IStateManager stateManager)
         {
             this.dbContext = dbContext;
@@ -35,15 +35,14 @@ namespace ApplicationService
         [AuthenticationFilter]
         public async Task<ApiResult> GetInitPermissionApilist()
         {
-            var result = PermissionApis.ToArray().ToList().Where(x => x.CheckPermission).GroupBy(x => x.Path).Select(y => new AuthenticationInfo(y.FirstOrDefault().SrvName, y.FirstOrDefault().FuncName, y.FirstOrDefault().CheckPermission, y.Key));
-            return await ApiResult.Ok(result).Async();
+            return await ApiResult.Ok(stateManager.GetState<List<AuthenticationInfo>>(new PermissionListCacheStore())).Async();
         }
 
         [AuthenticationFilter]
         public async Task<ApiResult> GetPermissionList(PageQueryInputBase input)
         {
             var rootId = Guid.Empty;
-            var query = from permission in dbContext.Permission
+            var query = (from permission in dbContext.Permission
                         where permission.FatherId != rootId
                         join father in dbContext.Permission on permission.FatherId equals father.Id
                         select new GetPermissionListResponse()
@@ -52,7 +51,7 @@ namespace ApplicationService
                             ServerName = father.PermissionName,
                             PermissionName = permission.PermissionName,
                             Path = permission.Path
-                        };
+                        }).OrderBy(x => x.ServerName);
             var (Data, Total) = await QueryServiceHelper.PageQuery(query, input.Page, input.Limit);
             return ApiResult.Ok(new PageQueryResonseBase<GetPermissionListResponse>(Data, Total));
         }
@@ -116,20 +115,15 @@ namespace ApplicationService
                     item.hidden = true;
                     result.Add(item);
                 }
-                //if (!HttpContextExt.Current.User.Permissions.Any(x => x.Contains("goods")))
-                //{
-                //    dynamic item = new ExpandoObject();
-                //    item.path = "goods";
-                //    item.hidden = true;
-                //    result.Add(item);
-                //}
-                //if (!HttpContextExt.Current.User.Permissions.Any(x => x.Contains("role")))
-                //{
-                //    dynamic item = new ExpandoObject();
-                //    item.path = "role";
-                //    item.hidden = true;
-                //    result.Add(item);
-                //}
+                int fathertrade = 0;
+                CheckPermission("order", fathertrade);
+                if (fathergoods >= 3)
+                {
+                    dynamic item = new ExpandoObject();
+                    item.path = "/goodsmanager";
+                    item.hidden = true;
+                    result.Add(item);
+                }
             }
             return await ApiResult.Ok(result, "²Ù×÷³É¹¦").Async();
         }

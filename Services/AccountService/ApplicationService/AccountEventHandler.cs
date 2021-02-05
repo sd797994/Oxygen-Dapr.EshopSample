@@ -1,5 +1,6 @@
 ﻿using ApplicationService.Dtos;
 using IApplicationService.AccountService.Dtos;
+using IApplicationService.AccountService.Dtos.Event;
 using IApplicationService.AccountService.Dtos.Input;
 using IApplicationService.AppEvent;
 using Oxygen.Client.ServerProxyFactory.Interface;
@@ -20,7 +21,7 @@ namespace ApplicationService
             this.stateManager = stateManager;
         }
         [EventHandlerFunc(EventTopicDictionary.Account.LoginExpire)]
-        public async Task<DefaultEventHandlerResponse> LoginCacheExpire(EventHandleRequest<LoginCacheExpireDto> input)
+        public async Task<DefaultEventHandlerResponse> LoginCacheExpire(EventHandleRequest<LoginSuccessDto> input)
         {
             await stateManager.DelState(new AccountLoginAccessToken(input.data.Token));
             return await Task.FromResult(DefaultEventHandlerResponse.Default());

@@ -23,6 +23,8 @@ namespace Infrastructure.EfDataAccess
             modelBuilder.HasPostgresExtension("uuid-ossp");
             modelBuilder.Entity<PersistenceObject.OrderItem>().Property(x => x.GoodsSnapshot).HasConversion(x => JsonSerializer.Serialize(x, null), x => JsonSerializer.Deserialize<OrderGoodsSnapshot>(x, null));
             modelBuilder.Entity<OrderGoodsSnapshot>(builder => builder.HasNoKey());
+            modelBuilder.Entity<PersistenceObject.Order>().Property(x => x.ConsigneeInfo).HasConversion(x => JsonSerializer.Serialize(x, null), x => JsonSerializer.Deserialize<OrderConsigneeInfo>(x, null));
+            modelBuilder.Entity<OrderConsigneeInfo>(builder => builder.HasNoKey());
             base.OnModelCreating(modelBuilder);
         }
     }

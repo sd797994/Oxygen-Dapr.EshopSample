@@ -9,6 +9,11 @@ namespace IApplicationService.TradeService.Dtos.Input
 {
     public class OrderCreateDto
     {
-		
+        public List<OrderCreateItemDto> Items { get; set; }
+        public class OrderCreateItemDto
+        {
+            public Guid GoodsId { get; set; }
+            public int Count { get; set; }
+        }
     }
 }

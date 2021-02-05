@@ -52,7 +52,7 @@ namespace Host
                     //×¢²áÈ«¾ÖÀ¹½ØÆ÷
                     LocalMethodAopProvider.RegisterPipelineHandler(AopHandlerProvider.ContextHandler, AopHandlerProvider.BeforeSendHandler, AopHandlerProvider.AfterMethodInvkeHandler, AopHandlerProvider.ExceptionHandler);
                     //×¢²á¼øÈ¨À¹½ØÆ÷
-                    OrderAuthenticationHandler.RegisterAllFilter();
+                    TradeAuthenticationHandler.RegisterAllFilter();
                     services.AddLogging(configure =>
                     {
                         configure.AddConfiguration(_configuration.GetSection("Logging"));

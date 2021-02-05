@@ -14,7 +14,6 @@ namespace Domain.Entities
         //物流编号
         //记录时间
         //记录事件
-
         //创建交易流水
     }
 }

@@ -13,6 +13,6 @@ namespace IApplicationService.GoodsService.Dtos.Input
         {
             this.Ids = ids.ToList();
         }
-        List<Guid> Ids { get; set; }
+        public List<Guid> Ids { get; set; }
     }
 }

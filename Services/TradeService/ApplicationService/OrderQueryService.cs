@@ -29,7 +29,7 @@ namespace ApplicationService
         public async Task<ApiResult> GetOrderList(PageQueryInputBase input)
         {
             var query = from Order in dbContext.Order select new GetOrderListResponse() { };
-            var (Data, Total) = await QueryServiceHelper.PageQuery(query, input.Page, input.Limit);
+            var (Data, Total) = await QueryServiceHelper.PageQuery(query.OrderByDescending(x=>x), input.Page, input.Limit);
             return ApiResult.Ok(new PageQueryResonseBase<GetOrderListResponse>(Data, Total));
         }
 		

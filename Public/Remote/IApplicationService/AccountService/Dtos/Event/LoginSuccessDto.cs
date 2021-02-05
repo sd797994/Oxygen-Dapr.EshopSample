@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationService.Dtos
+namespace IApplicationService.AccountService.Dtos.Event
 {
-    public class LoginCacheExpireDto
+
+    public class LoginSuccessDto
     {
         public string Token { get; set; }
     }

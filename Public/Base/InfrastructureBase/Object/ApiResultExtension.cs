@@ -24,7 +24,8 @@ namespace InfrastructureBase.Object
             {
                 try
                 {
-                    await cacheAsync();
+                    if (cacheAsync != null)
+                        await cacheAsync();
                 }
                 finally { }
                 if (e is ApplicationServiceException || e is DomainException || e is InfrastructureException)
@@ -53,8 +54,12 @@ namespace InfrastructureBase.Object
                 return default;
             if (apiResult.Data == null)
                 return default;
-            var json = JsonSerializer.Serialize(apiResult.Data);
-            return JsonSerializer.Deserialize<T>(json);
+            if(apiResult.Code!=0 && !string.IsNullOrEmpty(apiResult.Message))
+            {
+                throw new ApplicationServiceException(apiResult.Message);
+            }
+            var json = JsonSerializer.Serialize(apiResult.Data, JsonSerializerDefaultOption.Default);
+            return JsonSerializer.Deserialize<T>(json, JsonSerializerDefaultOption.Default);
         }
     }
 }

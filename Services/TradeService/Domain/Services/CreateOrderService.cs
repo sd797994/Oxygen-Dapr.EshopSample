@@ -25,21 +25,29 @@ namespace Domain.Services
             this.deductionGoodsStock = deductionGoodsStock;
             this.undeductionGoodsStock = undeductionGoodsStock;
         }
-        public async Task CreateOrder(Order order)
+        public async Task<Order> CreateOrder(Guid userId, string consigneeName, string consigneeAddress, string consigneeTel, IEnumerable<OrderItem> orderItems)
         {
+            var order = new Order();
+            if (orderItems == null || !orderItems.Any())
+                throw new DomainException("订单明细不能为空!");
             //rpc获取商品基本信息
-            var goodslist = await getGoodsList(order.OrderItems.Select(x => x.GoodsId));
-            //创建订单实体
-            order.CreateOrder(goodslist);
-            order.OrderItems.ForEach(async item =>
+            var goodslist = await getGoodsList(orderItems.Select(x => x.GoodsId));
+            //填充订单明细
+            foreach (var item in orderItems)
             {
+                var goods = goodslist.FirstOrDefault(x => x.GoodsId == item.GoodsId);
+                if (goods == null)
+                    throw new DomainException($"订单创建失败,商品不存在或已下架!");
                 var deductstock = new CreateOrderDeductionGoodsStockDto(item.GoodsId, item.Count);
-                var goods = goodslist.FirstOrDefault(y => y.GoodsId == item.GoodsId);
                 if (!await deductionGoodsStock(deductstock))
-                    throw new DomainException($"订单创建失败,商品{goods.GoodsName}库存不足");
+                    throw new DomainException($"订单创建失败,商品{goods.GoodsName}库存不足!");
                 else
                     succGoodsIds.Add(deductstock);
-            });
+                item.Create(order.Id, goods);
+            }
+            //创建订单实体
+            order.CreateOrder(userId, consigneeName, consigneeAddress, consigneeTel, orderItems);
+            return order;
         }
         public async Task UnCreateOrder()
         {

@@ -1,3 +1,4 @@
+using Domain.Dtos;
 using Domain.Enums;
 using Domain.ValueObject;
 using DomainBase;
@@ -19,20 +20,34 @@ namespace Domain.Entities
         public decimal TotalPrice { get; set; }
         //订单详情
         [NotMapped]
-        public List<OrderItem> OrderItems { get; set; }
+        public IEnumerable<OrderItem> OrderItems { get; set; }
         //订单状态
         public OrderState OrderState { get; set; }
+        //下单人
+        public Guid UserId { get; set; }
         //下单时间
         public DateTime CreateTime { get; set; }
-
+        
+        public OrderConsigneeInfo ConsigneeInfo { get; set; }
         //创建订单
-        public void CreateOrder(List<OrderGoodsSnapshot> goods)
+        public void CreateOrder(Guid userId, string consigneeName, string consigneeAddress, string consigneeTel, IEnumerable<OrderItem> orderItems)
         {
+            if (string.IsNullOrEmpty(consigneeName) || string.IsNullOrEmpty(consigneeAddress) || string.IsNullOrEmpty(consigneeTel))
+                throw new DomainException("收件人信息缺失,请补全收件人信息再进行下单操作!");
+            ConsigneeInfo = new OrderConsigneeInfo()
+            {
+                Name = consigneeName,
+                Address = consigneeAddress,
+                Tel = consigneeTel
+            };
+
             if (!orderItems.Any())
-                throw new DomainException("订单详情不能为空!");
+                throw new DomainException("订单明细不能为空!");
             OrderNo = CreateOrderNo();
             TotalPrice = orderItems.Sum(x => x.TotalPrice);
             OrderState = OrderState.Create;
+            UserId = userId;
+            OrderItems = orderItems;
             CreateTime = DateTime.Now;
         }
         /// <summary>

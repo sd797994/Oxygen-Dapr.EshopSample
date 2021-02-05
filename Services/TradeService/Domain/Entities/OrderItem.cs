@@ -19,8 +19,10 @@ namespace Domain.Entities
         public decimal TotalPrice { get; set; }
         //商品数量
         public int Count { get; set; }
-        public void Create(OrderGoodsSnapshot GoodsSnapshot)
+        public void Create(Guid orderId, OrderGoodsSnapshot goodsSnapshot)
         {
+            OrderId = orderId;
+            GoodsSnapshot = goodsSnapshot;
             TotalPrice = Count * GoodsSnapshot.Price;
         }
     }

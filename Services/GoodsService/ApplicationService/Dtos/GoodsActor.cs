@@ -25,7 +25,9 @@ namespace ApplicationService.Dtos
         }
         public void DeductionStock(int stock)
         {
-            if (stock < Stock)
+            if (stock < 0)
+                throw new ApplicationServiceException("库存不能为0!");
+            if (Stock < stock)
                 throw new ApplicationServiceException("库存不足!");
             else
                 Stock -= stock;

@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Repository;
 using DomainBase;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,16 @@ namespace Domain.Specification
 {
     public class CheckOrderCanCreateSpecification : ISpecification<Order>
     {
+        private readonly IOrderRepository repository;
+        public CheckOrderCanCreateSpecification(IOrderRepository repository)
+        {
+            this.repository = repository;
+        }
         public async Task<bool> IsSatisfiedBy(Order entity)
         {
-            throw new NotImplementedException();
+            if (await repository.AnyAsync(x => x.OrderNo == entity.OrderNo))
+                throw new DomainException("订单号重复!");
+            return true;
         }
     }
 }

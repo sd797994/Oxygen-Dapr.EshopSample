@@ -11,9 +11,9 @@ namespace Domain.Dtos
         public CreateOrderDeductionGoodsStockDto(Guid goodsId, int count)
         {
             GoodsId = goodsId;
-            Count = count;
+            DeductionStock = count;
         }
         public Guid GoodsId { get; set; }
-        public int Count { get; set; }
+        public int DeductionStock { get; set; }
     }
 }

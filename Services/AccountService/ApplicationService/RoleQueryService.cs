@@ -27,13 +27,13 @@ namespace ApplicationService
         [AuthenticationFilter]
         public async Task<ApiResult> GetRoleList(PageQueryInputBase input)
         {
-            var query = from role in dbContext.Role
-                        select new GetRoleListResponse()
-                        {
-                            RoleId = role.Id,
-                            RoleName = role.RoleName,
-                            SuperAdmin = role.SuperAdmin
-                        };
+            var query = (from role in dbContext.Role
+                         select new GetRoleListResponse()
+                         {
+                             RoleId = role.Id,
+                             RoleName = role.RoleName,
+                             SuperAdmin = role.SuperAdmin
+                         }).OrderBy(x => x.RoleName);
             var (Data, Total) = await QueryServiceHelper.PageQuery(query, input.Page, input.Limit);
             var roleIds = Data.Select(x => x.RoleId);
             var permissions = await (from rolepermission in dbContext.RolePermission

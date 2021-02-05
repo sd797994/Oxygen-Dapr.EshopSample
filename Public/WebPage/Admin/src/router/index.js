@@ -113,9 +113,9 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/order',
+    path: '/trade',
     component: Layout,
-    name: 'Order',
+    name: 'Trade',
     meta: { title: '交易管理', icon: 'el-icon-box' },
     hidden: false,
     children: [

@@ -22,38 +22,59 @@ namespace ApplicationService
     {
         private readonly IGoodsRepository repository;
         private readonly IUnitofWork unitofWork;
+        private readonly Guid Key;
         public GoodsActorService(IGoodsRepository repository, IUnitofWork unitofWork)
         {
+            Key = Guid.NewGuid();
             this.repository = repository;
             this.unitofWork = unitofWork;
         }
         public async Task<ApiResult> UpdateGoodsStock(DeductionStockDto input)
         {
-            return await ApiResult.Ok("商品库存更新成功!").RunAsync(async () =>
+            return await ApiResult.Ok(true, "商品库存更新成功!").RunAsync(async () =>
             {
-                if (ActorData == null)
-                    ActorData = (await repository.GetAsync(input.GoodsId)).CopyTo<Goods, GoodsActor>();
-                if (ActorData == null)
-                    throw new ApplicationServiceException("没有查询到该商品!");
+                await SetActorDataIfNotExists(input.GoodsId);
                 ActorData.ChangeStock(input.DeductionStock);
             });
         }
 
         public async Task<ApiResult> DeductionGoodsStock(DeductionStockDto input)
         {
-            if (ActorData == null)
-                ActorData = (await repository.GetAsync(input.GoodsId)).CopyTo<Goods, GoodsActor>();
-            ActorData.DeductionStock(input.DeductionStock);
-            return ApiResult.Ok("商品库存减扣成功");
+            return await ApiResult.Ok(true, "商品库存减扣成功").RunAsync(async () =>
+            {
+                await SetActorDataIfNotExists(input.GoodsId);
+                ActorData.DeductionStock(input.DeductionStock);
+            });
         }
         public async Task<ApiResult> UnDeductionGoodsStock(DeductionStockDto input)
         {
-            if (ActorData == null)
-                ActorData = (await repository.GetAsync(input.GoodsId)).CopyTo<Goods, GoodsActor>();
-            ActorData.UnDeductionStock(input.DeductionStock);
-            return ApiResult.Ok("商品库存回滚成功");
+            return await ApiResult.Ok(true, "商品库存回滚成功").RunAsync(async () =>
+            {
+                await SetActorDataIfNotExists(input.GoodsId);
+                ActorData.UnDeductionStock(input.DeductionStock);
+            });
         }
-
+        async Task SetActorDataIfNotExists(Guid id)
+        {
+            if (ActorData == null)
+            {
+                Goods goods = default;
+                try
+                {
+                    goods = await repository.GetAsync(id);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine($"商品对象获取失败,失败原因：{e.GetBaseException()?.Message ?? e.Message}");
+                }
+                finally
+                {
+                    if (goods == null)
+                        throw new ApplicationServiceException("没有找到该商品!");
+                }
+                ActorData = goods.CopyTo<Goods, GoodsActor>();
+            }
+        }
         public override async Task SaveData(GoodsActor model, ILifetimeScope scope)
         {
             var goods = await repository.GetAsync(model.Id);

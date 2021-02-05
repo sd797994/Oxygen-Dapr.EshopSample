@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using IApplicationService.Base.AppQuery;
 using System.Linq;
 using InfrastructureBase.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationService
 {

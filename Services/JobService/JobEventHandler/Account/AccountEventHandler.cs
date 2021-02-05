@@ -1,4 +1,5 @@
 ﻿using Hangfire;
+using IApplicationService.AccountService.Dtos.Event;
 using IApplicationService.AppEvent;
 using Oxygen.Client.ServerProxyFactory.Interface;
 using Oxygen.Client.ServerSymbol.Events;
@@ -9,11 +10,6 @@ namespace JobService.JobEventHandler.Account
 {
     public class AccountEventHandler : IEventHandler
     {
-        private readonly IStateManager stateManager;
-        public AccountEventHandler(IStateManager stateManager)
-        {
-            this.stateManager = stateManager;
-        }
         [EventHandlerFunc(EventTopicDictionary.Account.LoginSucc)]
         public async Task<DefaultEventHandlerResponse> LoginCacheExpireJob(EventHandleRequest<LoginSuccessDto> input)
         {

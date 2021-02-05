@@ -43,7 +43,7 @@ namespace ApplicationService
                             EndTime = activitie.EndTime,
                             ShelfState = activitie.ShelfState,
                         };
-            var (Data, Total) = await QueryServiceHelper.PageQuery(query, input.Page, input.Limit);
+            var (Data, Total) = await QueryServiceHelper.PageQuery(query.OrderByDescending(x => x.EndTime), input.Page, input.Limit);
             Data.ForEach(x =>
             {
                 x.ActivitieState = DateTime.Now < x.StartTime ? 0 : x.StartTime < DateTime.Now && x.EndTime > DateTime.Now ? 1 : 2;

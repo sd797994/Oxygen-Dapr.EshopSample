@@ -23,6 +23,9 @@ using Domain.Specification;
 using Domain.ValueObject;
 using Domain.Dtos;
 using IApplicationService.GoodsService.Dtos.Input;
+using InfrastructureBase.Http;
+using IApplicationService.AppEvent;
+using Domain.Events;
 
 namespace ApplicationService
 {
@@ -47,16 +50,15 @@ namespace ApplicationService
         [AuthenticationFilter]
         public async Task<ApiResult> CreateOrder(OrderCreateDto input)
         {
-            //创建订单服务,将远程rpc作为委托传递给订单服务
+            //申明一个创建订单领域服务实例,将远程rpc调用作为匿名函数传递进去
             var createOrderService = new CreateOrderService(GetGoodsListByIds, DeductionGoodsStock, UnDeductionGoodsStock);
             return await ApiResult.Ok("订单创建成功!").RunAsync(async () =>
             {
-                var order = input.CopyTo<OrderCreateDto, Order>();
-                await createOrderService.CreateOrder(order);//通过订单服务创建订单
+                var order = await createOrderService.CreateOrder(HttpContextExt.Current.User.Id, HttpContextExt.Current.User.UserName, HttpContextExt.Current.User.Address, HttpContextExt.Current.User.Tel, input.Items.CopyTo<OrderCreateDto.OrderCreateItemDto, OrderItem>());//通过订单服务创建订单
                 repository.Add(order);
-                if (await new CheckOrderCanCreateSpecification().IsSatisfiedBy(order))
+                if (await new CheckOrderCanCreateSpecification(repository).IsSatisfiedBy(order))
                     await unitofWork.CommitAsync();
-                eventBus.SendEvent();//发送订单创建成功事件
+                await eventBus.SendEvent(EventTopicDictionary.Order.CreateOrderSucc, new CreateOrderSuccessEvent(order, HttpContextExt.Current.User.NickName));//发送订单创建成功事件
             },
             //失败回滚
             createOrderService.UnCreateOrder);
@@ -90,11 +92,15 @@ namespace ApplicationService
         }
         async Task<bool> DeductionGoodsStock(CreateOrderDeductionGoodsStockDto input)
         {
-            return (await goodsActorService.DeductionGoodsStock(input.CopyTo<CreateOrderDeductionGoodsStockDto, DeductionStockDto>())).GetData<bool>();
+            var data = input.CopyTo<CreateOrderDeductionGoodsStockDto, DeductionStockDto>();
+            data.ActorId = input.GoodsId.ToString();
+            return (await goodsActorService.DeductionGoodsStock(data)).GetData<bool>();
         }
         async Task<bool> UnDeductionGoodsStock(CreateOrderDeductionGoodsStockDto input)
         {
-            return (await goodsActorService.UnDeductionGoodsStock(input.CopyTo<CreateOrderDeductionGoodsStockDto, DeductionStockDto>())).GetData<bool>();
+            var data = input.CopyTo<CreateOrderDeductionGoodsStockDto, DeductionStockDto>();
+            data.ActorId = input.GoodsId.ToString();
+            return (await goodsActorService.UnDeductionGoodsStock(data)).GetData<bool>();
         }
     }
 }

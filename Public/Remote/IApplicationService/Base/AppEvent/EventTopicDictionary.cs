@@ -18,5 +18,10 @@ namespace IApplicationService.AppEvent
             public const string Loginout = "AccountLoginOut";
             public const string LoginExpire = "AccountLoginExpire";
         }
+        public struct Order
+        {
+            public const string CreateOrderSucc = "CreateOrderSucc";
+            public const string ExpireCancelOrder = "ExpireCancelOrder";
+        }
     }
 }

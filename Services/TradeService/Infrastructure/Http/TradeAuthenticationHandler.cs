@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Http
 {
-    public class OrderAuthenticationHandler : AuthenticationManager
+    public class TradeAuthenticationHandler : AuthenticationManager
     {
         public static new void RegisterAllFilter()
         {
@@ -17,7 +17,7 @@ namespace Infrastructure.Http
         }
         public override async Task AuthenticationCheck(string routePath)
         {
-            if (AuthenticationMethods.Any(x => x.Equals(routePath)))
+            if (AuthenticationMethods.Any(x => x.Path.Equals(routePath)))
             {
                 var accountInfo = await HttpContextExt.Current.RequestService.Resolve<IServiceProxyFactory>().CreateProxy<IApplicationService.AccountService.IAccountQueryService>().GetAccountInfo();
                 if (accountInfo.Code != 0)
