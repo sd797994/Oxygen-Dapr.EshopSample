@@ -19,5 +19,8 @@ namespace IApplicationService.AccountService
 
         [RemoteFunc(funcDescription: "获取用户信息")]
         Task<ApiResult> GetAccountList(PageQueryInputBase input);
+
+        [RemoteFunc(funcDescription: "根据用户编号获取用户姓名")]
+        Task<ApiResult> GetAccountUserNameByIds(GetAccountUserNameByIdsDto input);
     }
 }

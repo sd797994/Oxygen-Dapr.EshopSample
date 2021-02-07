@@ -25,7 +25,7 @@ namespace Domain.Services
             this.deductionGoodsStock = deductionGoodsStock;
             this.undeductionGoodsStock = undeductionGoodsStock;
         }
-        public async Task<Order> CreateOrder(Guid userId, string consigneeName, string consigneeAddress, string consigneeTel, IEnumerable<OrderItem> orderItems)
+        public async Task<Order> CreateOrder(Guid userId, string consigneeName, string consigneeAddress, string consigneeTel, List<OrderItem> orderItems)
         {
             var order = new Order();
             if (orderItems == null || !orderItems.Any())

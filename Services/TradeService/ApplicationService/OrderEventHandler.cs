@@ -25,7 +25,7 @@ namespace ApplicationService
         [EventHandlerFunc(EventTopicDictionary.Order.ExpireCancelOrder)]
         public async Task<DefaultEventHandlerResponse> LoginCacheExpireJob(EventHandleRequest<CreateOrderSuccDto> input)
         {
-            Console.WriteLine($"{DateTime.Now}由于超时未支付系统取消了订单");
+            var order = await repository.GetAsync(input.data.OrderId);
             return await Task.FromResult(DefaultEventHandlerResponse.Default());
         }
         [EventHandlerFunc(EventTopicDictionary.Order.CreateOrderSucc)]

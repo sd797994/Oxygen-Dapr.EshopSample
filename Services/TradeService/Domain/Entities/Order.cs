@@ -58,10 +58,15 @@ namespace Domain.Entities
         {
             return $"{DateTime.Now.ToString("yyyyMMddHHmmss")}{new Random(Guid.NewGuid().GetHashCode()).Next(1000, 9999)}";
         }
-        //变更订单状态
-        public void ChangeOrderState(OrderState orderState)
+        /// <summary>
+        /// 取消当前订单
+        /// </summary>
+        public void CancelOrder()
         {
-
+            if (OrderState == OrderState.Create)
+                OrderState = OrderState.Cancel;
+            else
+                throw new DomainException("订单取消成功!");
         }
     }
 }

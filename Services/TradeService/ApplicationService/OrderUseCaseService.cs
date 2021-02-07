@@ -54,7 +54,7 @@ namespace ApplicationService
             var createOrderService = new CreateOrderService(GetGoodsListByIds, DeductionGoodsStock, UnDeductionGoodsStock);
             return await ApiResult.Ok("订单创建成功!").RunAsync(async () =>
             {
-                var order = await createOrderService.CreateOrder(HttpContextExt.Current.User.Id, HttpContextExt.Current.User.UserName, HttpContextExt.Current.User.Address, HttpContextExt.Current.User.Tel, input.Items.CopyTo<OrderCreateDto.OrderCreateItemDto, OrderItem>());//通过订单服务创建订单
+                var order = await createOrderService.CreateOrder(HttpContextExt.Current.User.Id, HttpContextExt.Current.User.UserName, HttpContextExt.Current.User.Address, HttpContextExt.Current.User.Tel, input.Items.CopyTo<OrderCreateDto.OrderCreateItemDto, OrderItem>().ToList());//通过订单服务创建订单
                 repository.Add(order);
                 if (await new CheckOrderCanCreateSpecification(repository).IsSatisfiedBy(order))
                     await unitofWork.CommitAsync();
@@ -64,28 +64,30 @@ namespace ApplicationService
             createOrderService.UnCreateOrder);
         }
 
-        [AuthenticationFilter]
-        public async Task<ApiResult> UpdateOrder(OrderUpdateDto input)
-        {
-            var entity = await repository.GetAsync(input.Id);
-            if (entity == null)
-                throw new ApplicationServiceException("");
-            //entity.CreateOrUpdate();
-            repository.Update(entity);
-            await unitofWork.CommitAsync();
-            return ApiResult.Ok();
-        }
+        //[AuthenticationFilter]
+        //public async Task<ApiResult> UpdateOrder(OrderUpdateDto input)
+        //{
+        //    var entity = await repository.GetAsync(input.Id);
+        //    if (entity == null)
+        //        throw new ApplicationServiceException("");
+        //    //entity.CreateOrUpdate();
+        //    repository.Update(entity);
+        //    await unitofWork.CommitAsync();
+        //    return ApiResult.Ok();
+        //}
 
-        [AuthenticationFilter]
-        public async Task<ApiResult> DeleteOrder(OrderDeleteDto input)
-        {
-            var entity = await repository.GetAsync(input.Id);
-            if (entity == null)
-                throw new ApplicationServiceException("");
-            repository.Delete(entity);
-            await unitofWork.CommitAsync();
-            return ApiResult.Ok();
-        }
+        //[AuthenticationFilter]
+        //public async Task<ApiResult> DeleteOrder(OrderDeleteDto input)
+        //{
+        //    var entity = await repository.GetAsync(input.Id);
+        //    if (entity == null)
+        //        throw new ApplicationServiceException("");
+        //    repository.Delete(entity);
+        //    await unitofWork.CommitAsync();
+        //    return ApiResult.Ok();
+        //}
+
+        #region 私有远程服务包装器方法
         async Task<List<OrderGoodsSnapshot>> GetGoodsListByIds(IEnumerable<Guid> input)
         {
             return (await goodsQueryService.GetGoodsListByIds(new GetGoodsListByIdsDto(input))).GetData<List<OrderGoodsSnapshot>>();
@@ -102,5 +104,6 @@ namespace ApplicationService
             data.ActorId = input.GoodsId.ToString();
             return (await goodsActorService.UnDeductionGoodsStock(data)).GetData<bool>();
         }
+        #endregion
     }
 }

@@ -122,7 +122,7 @@ export const constantRoutes = [
       {
         path: 'order',
         name: 'Order',
-        component: () => import('@/views/permission/index'),
+        component: () => import('@/views/order/index'),
         meta: { title: '订单管理', icon: 'el-icon-s-order' },
         hidden: false
       },

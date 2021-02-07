@@ -13,6 +13,7 @@ using InfrastructureBase;
 using InfrastructureBase.AuthBase;
 using InfrastructureBase.Data;
 using InfrastructureBase.Http;
+using InfrastructureBase.Object;
 using Microsoft.EntityFrameworkCore;
 using Oxygen.Client.ServerProxyFactory.Interface;
 using System;
@@ -83,6 +84,13 @@ namespace ApplicationService
                 account.Roles = roles.Where(role => role.AccountId == account.Id).Select(role => new GetAccountListResponse.RoleItem() { RoleId = role.Id, RoleName = role.RoleName, SuperAdmin = role.SuperAdmin });
             });
             return ApiResult.Ok(new PageQueryResonseBase<GetAccountListResponse>(Data, Total));
+        }
+
+        [AuthenticationFilter(false)]
+        public async Task<ApiResult> GetAccountUserNameByIds(GetAccountUserNameByIdsDto input)
+        {
+            var query = efDbContext.User.Where(x => input.Ids.Contains(x.AccountId)).Select(x => new GetAccountUserNameByIdsResponse { AccountId = x.AccountId, Name = x.UserName }).ToListAsync();
+            return await ApiResult.Ok(query).Async();
         }
     }
 }

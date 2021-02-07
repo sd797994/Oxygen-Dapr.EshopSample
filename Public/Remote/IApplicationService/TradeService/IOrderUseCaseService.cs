@@ -14,11 +14,5 @@ namespace IApplicationService.TradeService
     {
         [RemoteFunc(funcDescription: "´´½¨¶©µ¥")]
         Task<ApiResult> CreateOrder(OrderCreateDto input);
-
-        [RemoteFunc(funcDescription: "")]
-        Task<ApiResult> UpdateOrder(OrderUpdateDto input);
-
-        [RemoteFunc(funcDescription: "")]
-        Task<ApiResult> DeleteOrder(OrderDeleteDto input);
     }
 }
