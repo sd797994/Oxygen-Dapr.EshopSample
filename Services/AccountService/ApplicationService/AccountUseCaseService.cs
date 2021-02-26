@@ -23,6 +23,7 @@ using Domain.Repository;
 using ApplicationService.Dtos;
 using IApplicationService.AccountService.Dtos.Output;
 using Domain.Entities;
+using IApplicationService.Base.AccessToken;
 
 namespace ApplicationService
 {

@@ -2,6 +2,7 @@ using IApplicationService.AccountService.Dtos.Input;
 using IApplicationService.AppEvent;
 using Infrastructure.EfDataAccess;
 using InfrastructureBase.AuthBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Oxygen.Client.ServerProxyFactory.Interface;
 using Oxygen.Client.ServerSymbol.Events;

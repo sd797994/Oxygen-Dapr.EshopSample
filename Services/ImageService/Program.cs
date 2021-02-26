@@ -8,7 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Oxygen.IocModule;
+using Oxygen.Mesh.Dapr;
 using Oxygen.ProxyGenerator.Implements;
+using Oxygen.Server.Kestrel.Implements;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,6 +29,16 @@ namespace ImageService
         }
 
         static IHostBuilder CreateDefaultHost(string[] args) => new HostBuilder()
+                .ConfigureWebHostDefaults(webhostbuilder => {
+                    //注册成为oxygen服务节点
+                    webhostbuilder.StartOxygenServer<OxygenActorStartup>((config) => {
+                        config.Port = 80;
+                        config.PubSubCompentName = "pubsub";
+                        config.StateStoreCompentName = "statestore";
+                        config.TracingHeaders = "Authentication";
+                        config.UseStaticFiles = true;
+                    });
+                })
                 .ConfigureAppConfiguration((hostContext, config) =>
                 {
                     config.SetBasePath(Directory.GetCurrentDirectory());
@@ -43,15 +55,6 @@ namespace ImageService
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    //注册成为oxygen服务节点
-                    services.StartOxygenServer(config =>
-                    {
-                        config.Port = 80;
-                        config.PubSubCompentName = "pubsub";
-                        config.StateStoreCompentName = "statestore";
-                        config.TracingHeaders = "Authentication";
-                        config.UseStaticFiles = true;
-                    });
                     //注册全局拦截器
                     LocalMethodAopProvider.RegisterPipelineHandler(AopHandlerProvider.ContextHandler, AopHandlerProvider.BeforeSendHandler, AopHandlerProvider.AfterMethodInvkeHandler, AopHandlerProvider.ExceptionHandler);
                     //注册鉴权拦截器

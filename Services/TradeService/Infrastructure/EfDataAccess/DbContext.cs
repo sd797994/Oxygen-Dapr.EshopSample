@@ -17,6 +17,8 @@ namespace Infrastructure.EfDataAccess
         //Dbset<Po>
         public DbSet<PersistenceObject.Order> Order { get; set; }
         public DbSet<PersistenceObject.OrderItem> OrderItem { get; set; }
+        public DbSet<PersistenceObject.TradeLog> TradeLog { get; set; }
+        public DbSet<PersistenceObject.Logistics> Logistics { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //启用Guid主键类型扩展

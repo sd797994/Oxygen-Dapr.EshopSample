@@ -11,6 +11,7 @@ namespace IApplicationService.AppEvent
         public struct Common
         {
             public const string InitAuthApiList = "InitAuthApiList";
+            public const string EventHandleErrCatch = "EventHandleErrCatch";
         }
         public struct Account
         {
@@ -21,6 +22,7 @@ namespace IApplicationService.AppEvent
         public struct Order
         {
             public const string CreateOrderSucc = "CreateOrderSucc";
+            public const string PayOrderSucc = "PayOrderSucc";
             public const string ExpireCancelOrder = "ExpireCancelOrder";
         }
     }

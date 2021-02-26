@@ -58,34 +58,23 @@ namespace ApplicationService
                 repository.Add(order);
                 if (await new CheckOrderCanCreateSpecification(repository).IsSatisfiedBy(order))
                     await unitofWork.CommitAsync();
-                await eventBus.SendEvent(EventTopicDictionary.Order.CreateOrderSucc, new CreateOrderSuccessEvent(order, HttpContextExt.Current.User.NickName));//发送订单创建成功事件
+                await eventBus.SendEvent(EventTopicDictionary.Order.CreateOrderSucc, new OperateOrderSuccessEvent(order, HttpContextExt.Current.User.UserName));//发送订单创建成功事件
             },
             //失败回滚
             createOrderService.UnCreateOrder);
         }
-
-        //[AuthenticationFilter]
-        //public async Task<ApiResult> UpdateOrder(OrderUpdateDto input)
-        //{
-        //    var entity = await repository.GetAsync(input.Id);
-        //    if (entity == null)
-        //        throw new ApplicationServiceException("");
-        //    //entity.CreateOrUpdate();
-        //    repository.Update(entity);
-        //    await unitofWork.CommitAsync();
-        //    return ApiResult.Ok();
-        //}
-
-        //[AuthenticationFilter]
-        //public async Task<ApiResult> DeleteOrder(OrderDeleteDto input)
-        //{
-        //    var entity = await repository.GetAsync(input.Id);
-        //    if (entity == null)
-        //        throw new ApplicationServiceException("");
-        //    repository.Delete(entity);
-        //    await unitofWork.CommitAsync();
-        //    return ApiResult.Ok();
-        //}
+        [AuthenticationFilter(false)]
+        public async Task<ApiResult> OrderPay(OrderPayDto input)
+        {
+            var order = await repository.GetAsync(input.OrderId);
+            if (order == null)
+                throw new ApplicationServiceException("没有找到该订单!");
+            order.PayOrder(HttpContextExt.Current.User.Id);
+            repository.Update(order);
+            await unitofWork.CommitAsync();
+            await eventBus.SendEvent(EventTopicDictionary.Order.PayOrderSucc, new OperateOrderSuccessEvent(order, HttpContextExt.Current.User.UserName));//发送订单支付成功事件
+            return ApiResult.Ok();
+        }
 
         #region 私有远程服务包装器方法
         async Task<List<OrderGoodsSnapshot>> GetGoodsListByIds(IEnumerable<Guid> input)

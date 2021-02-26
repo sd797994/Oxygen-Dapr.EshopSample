@@ -136,6 +136,8 @@ spec:
     value: "true"
   - name: redisHost
     value: redis.infrastructure.svc.cluster.local:6379
+  - name: keyPrefix
+    value: none
 ---
 apiVersion: dapr.io/v1alpha1
 kind: Component

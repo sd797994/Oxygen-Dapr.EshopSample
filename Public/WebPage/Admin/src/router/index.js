@@ -144,16 +144,39 @@ export const constantRoutes = [
     children: [
       {
         path: 'total',
-        name: 'TotalStatistics',
+        name: 'Total',
         component: () => import('@/views/permission/index'),
         meta: { title: '综合统计', icon: 'el-icon-odometer' },
         hidden: false
       },
       {
         path: 'trade',
-        name: 'TradeStatistics',
+        name: 'Trade',
         component: () => import('@/views/permission/index'),
         meta: { title: '交易数据', icon: 'el-icon-shopping-cart-full' },
+        hidden: false
+      }
+    ]
+  },
+  {
+    path: '/public',
+    component: Layout,
+    name: 'Public',
+    meta: { title: '基础设置', icon: 'el-icon-setting' },
+    hidden: false,
+    children: [
+      {
+        path: 'mallsetting',
+        name: 'Mallsetting',
+        component: () => import('@/views/public/mallsetting'),
+        meta: { title: '商城设置', icon: 'el-icon-s-tools' },
+        hidden: false
+      },
+      {
+        path: 'eventhandleerrorinfo',
+        name: 'Eventhandleerrorinfo',
+        component: () => import('@/views/public/eventhandleerrorinfo'),
+        meta: { title: '事件异常统计', icon: 'el-icon-s-opportunity' },
         hidden: false
       }
     ]

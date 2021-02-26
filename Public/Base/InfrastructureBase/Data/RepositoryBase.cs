@@ -35,9 +35,13 @@ namespace Infrastructure.EfDataAccess
             context.Set<PersistenceObject>().RemoveRange(context.Set<PersistenceObject>().Where(condition.ReplaceParameter<DomainModel, PersistenceObject>()));
         }
 
-        public virtual async Task<DomainModel> GetAsync(object key)
+        public virtual async Task<DomainModel> GetAsync(object key = null)
         {
-            var po = await context.Set<PersistenceObject>().FindAsync(key);
+            PersistenceObject po;
+            if (key == null)
+                po = await context.Set<PersistenceObject>().FirstOrDefaultAsync();
+            else
+                po = await context.Set<PersistenceObject>().FindAsync(key);
             if (po == null)
                 return default;
             context.Set<PersistenceObject>().Attach(po).State = EntityState.Detached;

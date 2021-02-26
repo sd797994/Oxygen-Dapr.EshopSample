@@ -9,6 +9,7 @@ namespace IApplicationService.TradeService.Dtos.Input
 {
     public class OrderDeleteDto
     {
+        [Required(ErrorMessage = "«Î—°‘Ò∂©µ•")]
         public Guid Id { get; set; }
     }
 }

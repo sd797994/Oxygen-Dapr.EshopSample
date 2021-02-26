@@ -36,18 +36,7 @@ namespace ApplicationService
         [AuthenticationFilter(false)]
         public async Task<ApiResult> GetAccountInfo()
         {
-            var token = HttpContextExt.Current.Headers.FirstOrDefault(x => x.Key == "Authentication").Value;
-            var usertoken = await stateManager.GetState<AccessTokenItem>(new AccountLoginAccessToken(token));
-            if (usertoken == null)
-                throw new ApplicationServiceException("授权登录Token已过期,请重新登录!");
-            var userinfo = await stateManager.GetState<CurrentUser>(new AccountLoginCache(usertoken.Id));
-            if (userinfo == null)
-                throw new ApplicationServiceException("登录用户信息已过期,请重新登录!");
-            else if (userinfo.State == Convert.ToInt32(AccountState.Locking))
-                throw new ApplicationServiceException("登录用户已被锁定,请重新登录!");
-            if (!usertoken.LoginAdmin)
-                userinfo.Permissions = null;
-            return ApiResult.Ok(userinfo);
+            return await ApiResult.Ok(HttpContextExt.Current.User).Async();
         }
         public async Task<ApiResult> CheckRoleBasedAccessControler()
         {

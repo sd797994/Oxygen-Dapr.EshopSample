@@ -35,7 +35,7 @@ namespace DomainBase
         /// 根据主键获取对象
         /// </summary>
         /// <returns></returns>
-        Task<T> GetAsync(object key);
+        Task<T> GetAsync(object key = null);
         /// <summary>
         /// 判断对象是否存在
         /// </summary>

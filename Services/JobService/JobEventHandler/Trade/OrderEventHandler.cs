@@ -13,9 +13,9 @@ namespace JobService.JobEventHandler.Trade
     public class OrderEventHandler : IEventHandler
     {
         [EventHandlerFunc(EventTopicDictionary.Order.CreateOrderSucc)]
-        public async Task<DefaultEventHandlerResponse> CancelOrderJob(EventHandleRequest<CreateOrderSuccDto> input)
+        public async Task<DefaultEventHandlerResponse> CancelOrderJob(EventHandleRequest<OperateOrderSuccDto> input)
         {
-            var jobid = BackgroundJob.Schedule<IEventBus>(x => x.SendEvent(EventTopicDictionary.Order.ExpireCancelOrder, input.data), TimeSpan.FromMinutes(1));
+            var jobid = BackgroundJob.Schedule<IEventBus>(x => x.SendEvent(EventTopicDictionary.Order.ExpireCancelOrder, input.GetData()), TimeSpan.FromSeconds(30));
             return await Task.FromResult(DefaultEventHandlerResponse.Default());
         }
     }

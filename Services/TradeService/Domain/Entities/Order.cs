@@ -50,6 +50,14 @@ namespace Domain.Entities
             OrderItems = orderItems;
             CreateTime = DateTime.Now;
         }
+        public void PayOrder(Guid userId)
+        {
+            if (OrderState != OrderState.Create)
+                throw new DomainException("当前订单状态无法支付,请刷新后再试");
+            if (UserId != userId)
+                throw new DomainException("你无法对该订单进行支付");
+            OrderState = OrderState.Pay;
+        }
         /// <summary>
         /// 生成订单号
         /// </summary>
@@ -61,12 +69,14 @@ namespace Domain.Entities
         /// <summary>
         /// 取消当前订单
         /// </summary>
-        public void CancelOrder()
+        public bool CancelOrder()
         {
             if (OrderState == OrderState.Create)
+            {
                 OrderState = OrderState.Cancel;
-            else
-                throw new DomainException("订单取消成功!");
+                return true;
+            }
+            return false;
         }
     }
 }

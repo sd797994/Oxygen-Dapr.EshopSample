@@ -30,6 +30,7 @@ namespace Domain.Services
             var order = new Order();
             if (orderItems == null || !orderItems.Any())
                 throw new DomainException("订单明细不能为空!");
+            orderItems = orderItems.GroupBy(x => x.GoodsId).Select(x => new OrderItem() { GoodsId = x.Key, Count = x.Sum(y => y.Count) }).ToList();
             //rpc获取商品基本信息
             var goodslist = await getGoodsList(orderItems.Select(x => x.GoodsId));
             //填充订单明细

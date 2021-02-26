@@ -17,7 +17,7 @@ namespace Infrastructure.Http
         }
         public static async Task BeforeSendHandler(object param, OxygenHttpContextWapper oxygenHttpContext)
         {
-            await new OrderAuthenticationHandler().AuthenticationCheck(HttpContextExt.Current.RoutePath);//授权校验
+            await new AuthenticationHandler().AuthenticationCheck(HttpContextExt.Current.RoutePath);//授权校验
             //方法前拦截器，入参校验
             if (param != null)
                 CustomModelValidator.Valid(param);

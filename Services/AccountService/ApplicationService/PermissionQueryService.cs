@@ -117,10 +117,21 @@ namespace ApplicationService
                 }
                 int fathertrade = 0;
                 CheckPermission("order", fathertrade);
-                if (fathergoods >= 3)
+                CheckPermission("distribution", fathertrade);
+                if (fathertrade >= 2)
                 {
                     dynamic item = new ExpandoObject();
-                    item.path = "/goodsmanager";
+                    item.path = "/trade";
+                    item.hidden = true;
+                    result.Add(item);
+                }
+                int fatherpublic = 0;
+                CheckPermission("mallsetting", fatherpublic);
+                CheckPermission("eventhandleerrorinfo", fatherpublic); 
+                if (fatherpublic >= 2)
+                {
+                    dynamic item = new ExpandoObject();
+                    item.path = "/public";
                     item.hidden = true;
                     result.Add(item);
                 }

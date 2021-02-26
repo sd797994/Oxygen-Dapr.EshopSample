@@ -13,7 +13,7 @@ namespace InfrastructureBase.Object
 
     public static class ApiResultExtension
     {
-        public static async Task<ApiResult> RunAsync(this ApiResult apiResult, Func<Task> invokeAsync, Func<Task> cacheAsync = null)
+        public static async Task<ApiResult> RunAsync(this ApiResult apiResult, Func<Task> invokeAsync, Func<Task> catchAsync = null)
         {
             try
             {
@@ -24,8 +24,8 @@ namespace InfrastructureBase.Object
             {
                 try
                 {
-                    if (cacheAsync != null)
-                        await cacheAsync();
+                    if (catchAsync != null)
+                        await catchAsync();
                 }
                 finally { }
                 if (e is ApplicationServiceException || e is DomainException || e is InfrastructureException)

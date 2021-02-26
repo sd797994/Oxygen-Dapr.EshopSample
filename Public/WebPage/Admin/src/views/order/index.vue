@@ -41,27 +41,33 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            编辑
+        <template slot-scope="{row}">
+          <el-button type="primary" size="mini" @click="showlog(row.orderId)">
+            交易记录
           </el-button>
-          <el-popconfirm
-            title="确定删除吗？"
-            style="margin-left:10px"
-            @onConfirm="handleDelete(row,$index)"
-          >
-            <el-button slot="reference" size="mini" type="danger">
-              删除
-            </el-button>
-          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <el-dialog title="交易记录" :visible.sync="dialogFormVisible">
+      <el-timeline>
+        <el-timeline-item
+          v-for="(tradelog, index) in tradelogs"
+          :key="index"
+          type="primary"
+          color="#0bbd87"
+          :timestamp="GetTradeDateStr(tradelog.tradeDate)"
+        >
+          {{ tradelog.tradeLogValue }}
+        </el-timeline-item>
+      </el-timeline>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { GetOrderList } from '@/api/order'
+import { GetTradeLogListByOrderId } from '@/api/tradelog'
+import { parseTime } from '@/utils/index.js'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -76,6 +82,7 @@ export default {
       temp: {
         id: null
       },
+      tradelogs: [],
       listQuery: {
         page: 1,
         limit: 20
@@ -118,6 +125,41 @@ export default {
         })
       }
       return str
+    },
+    showlog(orderId) {
+      this.tradelogs = []
+      GetTradeLogListByOrderId({ orderId: orderId }).then(response => {
+        this.tradelogs = response.data
+        this.dialogFormVisible = true
+      }, msg => { })
+    },
+    GetTradeDateStr(datestr) {
+      return this.getDate(new Date(datestr), new Date())
+    },
+    getDate(start, end) {
+      var span = end.getTime() - start.getTime()
+      var days = Math.floor(span / (24 * 3600 * 1000))
+      var leave1 = span % (24 * 3600 * 1000)
+      var hours = Math.floor(leave1 / (3600 * 1000))
+      var leave2 = leave1 % (3600 * 1000)
+      var minutes = Math.floor(leave2 / (60 * 1000))
+      var leave3 = leave2 % (60 * 1000)
+      var seconds = Math.round(leave3 / 1000)
+      var result = ''
+      if (days > 0) {
+        if (days > 30) {
+          result = parseTime(start, '{y}-{m}-{d} {h}:{i}')
+        } else {
+          result = days + '天前'
+        }
+      } else if (hours > 0) {
+        result = hours + '小时前'
+      } else if (minutes > 0) {
+        result = minutes + '分种前'
+      } else if (seconds > 0) {
+        result = '刚刚'
+      }
+      return result
     }
   }
 }

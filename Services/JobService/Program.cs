@@ -8,10 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Oxygen.IocModule;
-using System;
-using System.Collections.Generic;
+using Oxygen.Mesh.Dapr;
+using Oxygen.Server.Kestrel.Implements;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace JobService
@@ -25,6 +24,15 @@ namespace JobService
         }
 
         static IHostBuilder CreateDefaultHost(string[] args) => new HostBuilder()
+                .ConfigureWebHostDefaults(webhostbuilder => {
+                    //注册成为oxygen服务节点
+                    webhostbuilder.StartOxygenServer<OxygenActorStartup>((config) => {
+                        config.Port = 80;
+                        config.PubSubCompentName = "pubsub";
+                        config.StateStoreCompentName = "statestore";
+                        config.TracingHeaders = "Authentication";
+                    });
+                })
                 .ConfigureAppConfiguration((hostContext, config) =>
                 {
                     config.SetBasePath(Directory.GetCurrentDirectory());
@@ -40,14 +48,6 @@ namespace JobService
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    //注册成为oxygen服务节点
-                    services.StartOxygenServer(config =>
-                    {
-                        config.Port = 80;
-                        config.PubSubCompentName = "pubsub";
-                        config.StateStoreCompentName = "statestore";
-                        config.TracingHeaders = "Authentication";
-                    });
                     services.AddLogging(configure =>
                     {
                         configure.AddConfiguration(_configuration.GetSection("Logging"));

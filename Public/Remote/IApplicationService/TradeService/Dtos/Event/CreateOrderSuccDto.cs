@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.TradeService.Dtos.Event
 {
-    public class CreateOrderSuccDto
+    public class OperateOrderSuccDto
     {
         public Guid OrderId { get; set; }
-        public string OrderDescription { get; set; }
+        public string UserName { get; set; }
         public Guid UserId { get; set; }
     }
 }

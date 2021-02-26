@@ -136,6 +136,52 @@ spec:
           hostPath:
             path: /run/desktop/mnt/host/c/Users/Administrator/vsdbg/vs2017u5
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: publicservice
+  namespace: dapreshop
+  labels:
+    app: publicservice
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: publicservice
+  minReadySeconds: 5 
+  strategy: 
+    type: RollingUpdate 
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1
+  template: 
+    metadata:
+      labels: 
+        app: publicservice
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "publicservice"
+        dapr.io/app-port: "80"
+    spec:
+      containers:
+        - name: web
+          image: publicservice:debug
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /app
+              name: v1
+            - mountPath: /remote_debugger:rw
+              name: v2
+      volumes:
+        - name: v1
+          hostPath:
+            path: /run/desktop/mnt/host/e/dotnet_project/Oxygen-Dapr.EshopSample/Services/PublicService/Host/bin/Debug/net5.0
+        - name: v2
+          hostPath:
+            path: /run/desktop/mnt/host/c/Users/Administrator/vsdbg/vs2017u5
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

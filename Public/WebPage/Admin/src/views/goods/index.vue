@@ -151,6 +151,7 @@ export default {
   methods: {
     OpenChangeStock(row) {
       this.$prompt('请输入库存', '提示', {
+        closeOnClickModal: false,
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         inputValue: row.stock

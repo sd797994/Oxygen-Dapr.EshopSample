@@ -9,7 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Oxygen.IocModule;
+using Oxygen.Mesh.Dapr;
 using Oxygen.ProxyGenerator.Implements;
+using Oxygen.Server.Kestrel.Implements;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -24,6 +26,15 @@ namespace Host
         }
 
         static IHostBuilder CreateDefaultHost(string[] args) => new HostBuilder()
+                .ConfigureWebHostDefaults(webhostbuilder => {
+                    //注册成为oxygen服务节点
+                    webhostbuilder.StartOxygenServer<OxygenActorStartup>((config) => {
+                        config.Port = 80;
+                        config.PubSubCompentName = "pubsub";
+                        config.StateStoreCompentName = "statestore";
+                        config.TracingHeaders = "Authentication";
+                    });
+                })
                 .ConfigureAppConfiguration((hostContext, config) =>
                 {
                     config.SetBasePath(Directory.GetCurrentDirectory());
@@ -40,13 +51,6 @@ namespace Host
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    //注册成为oxygen服务节点
-                    services.StartOxygenServer(config => {
-                        config.Port = 80;
-                        config.PubSubCompentName = "pubsub";
-                        config.StateStoreCompentName = "statestore";
-                        config.TracingHeaders = "Authentication";
-                    });
                     //注册自定义HostService
                     services.AddHostedService<CustomerService>();
                     //注册全局拦截器

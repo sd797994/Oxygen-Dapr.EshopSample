@@ -1,8 +1,11 @@
+using Autofac;
 using DomainBase;
 using IApplicationService;
 using InfrastructureBase;
 using InfrastructureBase.Http;
 using InfrastructureBase.Object;
+using Oxygen.Client.ServerProxyFactory.Interface;
+using Oxygen.Client.ServerSymbol.Events;
 using Oxygen.Common.Implements;
 using System;
 using System.Threading.Tasks;

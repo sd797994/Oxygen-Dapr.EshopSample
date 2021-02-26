@@ -14,7 +14,7 @@ namespace JobService.JobEventHandler.Account
         public async Task<DefaultEventHandlerResponse> LoginCacheExpireJob(EventHandleRequest<LoginSuccessDto> input)
         {
             //作业执行延时后失效登录Token
-            var jobid = BackgroundJob.Schedule<IEventBus>(x => x.SendEvent(EventTopicDictionary.Account.LoginExpire, input.data), TimeSpan.FromDays(7));
+            var jobid = BackgroundJob.Schedule<IEventBus>(x => x.SendEvent(EventTopicDictionary.Account.LoginExpire, input.GetData()), TimeSpan.FromDays(7));
             return await Task.FromResult(DefaultEventHandlerResponse.Default());
         }
     }
