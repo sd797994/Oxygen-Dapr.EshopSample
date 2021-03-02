@@ -127,9 +127,9 @@ export const constantRoutes = [
         hidden: false
       },
       {
-        path: 'distribution',
-        name: 'Distribution',
-        component: () => import('@/views/permission/index'),
+        path: 'logistics',
+        name: 'Logistics',
+        component: () => import('@/views/order/logistics'),
         meta: { title: '物流配送', icon: 'el-icon-truck' },
         hidden: false
       }

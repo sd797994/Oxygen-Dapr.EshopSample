@@ -25,5 +25,10 @@ namespace IApplicationService.AppEvent
             public const string PayOrderSucc = "PayOrderSucc";
             public const string ExpireCancelOrder = "ExpireCancelOrder";
         }
+        public struct Logistics
+        {
+            public const string LogisticsDeliverSucc = "LogisticsDeliverSucc";
+            public const string LogisticsReceiveSucc = "LogisticsReceiveSucc";
+        }
     }
 }

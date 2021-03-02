@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.TradeService.Dtos.Input
 {
-    public class LogisticsReceiveDto: LogisticsDeliverDto
+    public class LogisticsReceiveDto
     {
-		
+        public Guid LogisticsId { get; set; }
+        public DateTime? ReceiveTime { get; set; }
     }
 }

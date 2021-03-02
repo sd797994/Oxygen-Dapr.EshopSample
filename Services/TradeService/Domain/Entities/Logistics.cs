@@ -14,7 +14,7 @@ namespace Domain.Entities
     public class Logistics : Entity, IAggregateRoot
     {
         /// <summary>
-        /// 订单编
+        /// 订单编号
         /// </summary>
         public Guid OrderId { get; set; }
         /// <summary>
@@ -34,6 +34,10 @@ namespace Domain.Entities
         /// </summary>
         public string DeliverAddress { get; set; }
         /// <summary>
+        /// 寄件操作人
+        /// </summary>
+        public Guid DeliverUserId { get; set; }
+        /// <summary>
         /// 收件人姓名
         /// </summary>
         public string ReceiverName { get; set; }
@@ -41,6 +45,10 @@ namespace Domain.Entities
         /// 收件人地址
         /// </summary>
         public string ReceiverAddress { get; set; }
+        /// <summary>
+        /// 收件操作人
+        /// </summary>
+        public Guid ReceiverUserId { get; set; }
         /// <summary>
         /// 寄件时间
         /// </summary>
@@ -64,32 +72,35 @@ namespace Domain.Entities
         /// <param name="receiverName"></param>
         /// <param name="receiverAddress"></param>
         /// <param name="deliveTime"></param>
-        public void Deliver(Guid orderId, LogisticsType logisticsType, string logisticsNo, string deliverName, string deliverAddress, string receiverName, string receiverAddress,DateTime? deliveTime)
+        public void Deliver(Guid orderId, LogisticsType logisticsType, string logisticsNo, string deliverName, string deliverAddress, Guid deliverUserId, string receiverName, string receiverAddress, DateTime? deliveTime)
         {
-            if (orderId == Guid.Empty)
-                throw new DomainException("订单无效!");
             OrderId = orderId;
             LogisticsType = logisticsType;
             LogisticsNo = logisticsNo;
+            if (string.IsNullOrEmpty(deliverName))
+                throw new DomainException("发货人无效!");
+            if (string.IsNullOrEmpty(deliverAddress))
+                throw new DomainException("发货地址未填写!");
+            DeliverUserId = deliverUserId;
             DeliverName = deliverName;
             DeliverAddress = deliverAddress;
             ReceiverName = receiverName;
             ReceiverAddress = receiverAddress;
             if (deliveTime != null && deliveTime.Value >= DateTime.Now)
                 throw new DomainException("发货时间不能晚于现在!");
-            DeliveTime = deliveTime?? DateTime.Now;
+            DeliveTime = deliveTime ?? DateTime.Now;
             LogisticsState = LogisticsState.DeliverGoods;
         }
         /// <summary>
         /// 物流收货
         /// </summary>
         /// <param name="receiveTime"></param>
-        public void Receive(DateTime? receiveTime)
+        public void Receive(Guid receiverUserId, DateTime? receiveTime)
         {
             if (LogisticsState == LogisticsState.DeliverGoods)
             {
                 LogisticsState = LogisticsState.ReceivingGoods;
-
+                ReceiverUserId = receiverUserId;
                 if (receiveTime != null && receiveTime.Value >= DateTime.Now)
                     throw new DomainException("确认收货时间不能晚于现在!");
                 ReceiveTime = receiveTime ?? DateTime.Now;

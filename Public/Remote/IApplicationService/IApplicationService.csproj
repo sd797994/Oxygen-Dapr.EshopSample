@@ -17,8 +17,4 @@
     <PackageReference Include="Oxygen-Dapr" Version="0.0.8" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="PublicService\Dtos\Output\" />
-  </ItemGroup>
 </Project>

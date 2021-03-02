@@ -1,8 +1,12 @@
+using Domain.Dtos;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Repository;
+using Domain.Services;
 using IApplicationService;
 using IApplicationService.AppEvent;
+using IApplicationService.GoodsService;
+using IApplicationService.GoodsService.Dtos.Input;
 using IApplicationService.TradeService.Dtos.Event;
 using Infrastructure.EfDataAccess;
 using InfrastructureBase;
@@ -15,20 +19,24 @@ using System.Threading.Tasks;
 
 namespace ApplicationService
 {
-    public class OrderEventHandler : IEventHandler
+    public class TradeEventHandler : IEventHandler
     {
         private readonly IOrderRepository repository;
+        private readonly ILogisticsRepository logisticsRepository;
         private readonly ITradeLogRepository tradeLogRepository;
         private readonly IUnitofWork unitofWork;
         private readonly IEventBus eventBus;
         private readonly IStateManager stateManager;
-        public OrderEventHandler(IOrderRepository repository, ITradeLogRepository tradeLogRepository, IEventBus eventBus, IStateManager stateManager, IUnitofWork unitofWork)
+        private readonly IGoodsActorService goodsActorService;
+        public TradeEventHandler(IOrderRepository repository, ILogisticsRepository logisticsRepository, ITradeLogRepository tradeLogRepository, IEventBus eventBus, IStateManager stateManager, IUnitofWork unitofWork, IGoodsActorService goodsActorService)
         {
             this.repository = repository;
+            this.logisticsRepository = logisticsRepository;
             this.tradeLogRepository = tradeLogRepository;
             this.unitofWork = unitofWork;
             this.eventBus = eventBus;
             this.stateManager = stateManager;
+            this.goodsActorService = goodsActorService;
         }
         [EventHandlerFunc(EventTopicDictionary.Order.ExpireCancelOrder)]
         public async Task<DefaultEventHandlerResponse> ExpireCancelOrder(EventHandleRequest<OperateOrderSuccDto> input)
@@ -39,7 +47,8 @@ namespace ApplicationService
                  var order = await repository.GetAsync(eventData.OrderId);
                  if (order == null)
                      throw new ApplicationServiceException($"没有找到订单");
-                 if (order.CancelOrder())
+                 var cancelOrderService = new CancelOrderService(UnDeductionGoodsStock);
+                 if (await cancelOrderService.Cancel(order))
                  {
                      repository.Update(order);
                      var tradeLog = new TradeLog();
@@ -79,5 +88,49 @@ namespace ApplicationService
                 await unitofWork.CommitAsync();
             });
         }
+        [EventHandlerFunc(EventTopicDictionary.Logistics.LogisticsDeliverSucc)]
+        public async Task<DefaultEventHandlerResponse> RecordTradeLogByLogisticsDeliverSucc(EventHandleRequest<CreateLogisticsSuccDto> input)
+        {
+            return await new DefaultEventHandlerResponse().RunAsync(nameof(RecordTradeLogByOrderPay), input.GetDataJson(), async () =>
+            {
+                var eventData = input.GetData();
+                var order = await repository.GetAsync(eventData.OrderId);
+                if (order == null)
+                    throw new ApplicationServiceException($"没有找到订单");
+                var log = await logisticsRepository.GetAsync(eventData.LogisticsId);
+                if (log == null)
+                    throw new ApplicationServiceException($"没有找到物流单");
+                var tradeLog = new TradeLog();
+                tradeLog.CreateTradeLog(TradeLogState.DeliverGoods, eventData.OrderId, order.OrderNo, log.Id, log.LogisticsNo, eventData.UserId, eventData.UserName);
+                tradeLogRepository.Add(tradeLog);
+                await unitofWork.CommitAsync();
+            });
+        }
+        [EventHandlerFunc(EventTopicDictionary.Logistics.LogisticsReceiveSucc)]
+        public async Task<DefaultEventHandlerResponse> RecordTradeLogByLogisticsReceiveSucc(EventHandleRequest<CreateLogisticsSuccDto> input)
+        {
+            return await new DefaultEventHandlerResponse().RunAsync(nameof(RecordTradeLogByOrderPay), input.GetDataJson(), async () =>
+            {
+                var eventData = input.GetData();
+                var order = await repository.GetAsync(eventData.OrderId);
+                if (order == null)
+                    throw new ApplicationServiceException($"没有找到订单");
+                var log = await logisticsRepository.GetAsync(eventData.LogisticsId);
+                if (log == null)
+                    throw new ApplicationServiceException($"没有找到物流单");
+                var tradeLog = new TradeLog();
+                tradeLog.CreateTradeLog(TradeLogState.ReceivingGoods, eventData.OrderId, order.OrderNo, log.Id, log.LogisticsNo, eventData.UserId, eventData.UserName);
+                tradeLogRepository.Add(tradeLog);
+                await unitofWork.CommitAsync();
+            });
+        }
+        #region 私有方法
+        async Task<bool> UnDeductionGoodsStock(CreateOrderDeductionGoodsStockDto input)
+        {
+            var data = input.CopyTo<CreateOrderDeductionGoodsStockDto, DeductionStockDto>();
+            data.ActorId = input.GoodsId.ToString();
+            return (await goodsActorService.UnDeductionGoodsStock(data)).GetData<bool>();
+        }
+        #endregion
     }
 }

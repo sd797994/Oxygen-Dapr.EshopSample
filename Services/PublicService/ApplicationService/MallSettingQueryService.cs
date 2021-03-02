@@ -11,6 +11,7 @@ using IApplicationService.Base.AppQuery;
 using System.Linq;
 using InfrastructureBase.Data;
 using Microsoft.EntityFrameworkCore;
+using IApplicationService.PublicService.Dtos.Output;
 
 namespace ApplicationService
 {
@@ -29,9 +30,9 @@ namespace ApplicationService
         {
             var mallsetting = await dbContext.MallSetting.FirstOrDefaultAsync();
             if (mallsetting == null)
-                return ApiResult.Ok(new { DeliverName = "", DeliverAddress = "" });
+                return ApiResult.Ok(new MallSettingOutInfo("",""));
             else
-                return ApiResult.Ok(mallsetting);
+                return ApiResult.Ok(new MallSettingOutInfo(mallsetting.DeliverName, mallsetting.DeliverAddress));
         }
     }
 }

@@ -25,14 +25,31 @@ namespace ApplicationService
             this.dbContext = dbContext;
             this.stateManager = stateManager;
         }
-		
+
         [AuthenticationFilter]
         public async Task<ApiResult> GetLogisticsList(PageQueryInputBase input)
         {
-            var query = from Logistics in dbContext.Logistics select new GetLogisticsListResponse() { };
+            var query = from order in dbContext.Order.Where(x => x.OrderState != Domain.Enums.OrderState.Cancel && x.OrderState != Domain.Enums.OrderState.Create)
+                        join logisticstmp in dbContext.Logistics.DefaultIfEmpty() on order.Id equals logisticstmp.OrderId into tmp
+                        from logistics in tmp.DefaultIfEmpty()
+                        orderby logistics.DeliveTime descending
+                        select new GetLogisticsListResponse()
+                        {
+                            OrderId = order.Id,
+                            Id = logistics == null ? null : logistics.Id,
+                            OrderNo = order.OrderNo,
+                            LogisticsType = logistics == null ? null : (int)logistics.LogisticsType,
+                            LogisticsNo = logistics.LogisticsNo,
+                            DeliverName = logistics.DeliverName,
+                            DeliverAddress = logistics.DeliverAddress,
+                            ReceiverName = logistics.ReceiverName,
+                            ReceiverAddress = logistics.ReceiverAddress,
+                            DeliveTime = logistics.DeliveTime,
+                            ReceiveTime = logistics.ReceiveTime,
+                            LogisticsState = logistics == null ? null : (int)logistics.LogisticsState,
+                        };
             var (Data, Total) = await QueryServiceHelper.PageQuery(query, input.Page, input.Limit);
             return ApiResult.Ok(new PageQueryResonseBase<GetLogisticsListResponse>(Data, Total));
         }
-		
     }
 }
