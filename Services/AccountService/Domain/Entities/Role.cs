@@ -16,7 +16,7 @@ namespace Domain.Entities
         [NotMapped]
         public List<Guid> Permissions { get; set; }
 
-        public void SetRole(string roleName, bool superAdmin, List<Guid>? permissions = null)
+        public void SetRole(string roleName, bool superAdmin, List<Guid> permissions = null)
         {
             if (!string.IsNullOrEmpty(roleName))
                 RoleName = roleName;

@@ -36,7 +36,7 @@ namespace ApplicationService
         public async Task<ApiResult> CreateOrUpdateMallSetting(CreateOrUpdateMallSettingDto input)
         {
             var entity = await repository.GetAsync() ?? new MallSetting();
-            entity.CreateOrUpdate(input.DeliverName, input.DeliverAddress);
+            entity.CreateOrUpdate(input.ShopName, input.ShopDescription, input.ShopIconUrl, input.Notice, input.DeliverName, input.DeliverAddress);
             if (await repository.AnyAsync())
                 repository.Update(entity);
             else

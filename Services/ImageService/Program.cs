@@ -31,7 +31,7 @@ namespace ImageService
         static IHostBuilder CreateDefaultHost(string[] args) => new HostBuilder()
                 .ConfigureWebHostDefaults(webhostbuilder => {
                     //注册成为oxygen服务节点
-                    webhostbuilder.StartOxygenServer<OxygenActorStartup>((config) => {
+                    webhostbuilder.StartOxygenServer<OxygenStartup>((config) => {
                         config.Port = 80;
                         config.PubSubCompentName = "pubsub";
                         config.StateStoreCompentName = "statestore";

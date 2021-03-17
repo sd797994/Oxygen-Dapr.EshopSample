@@ -25,14 +25,14 @@ namespace ApplicationService
             this.stateManager = stateManager;
         }
 
-        [AuthenticationFilter]
         public async Task<ApiResult> GetMallSetting()
         {
-            var mallsetting = await dbContext.MallSetting.FirstOrDefaultAsync();
+            var mallsetting = await dbContext.MallSetting.Select(mallsetting => 
+                new MallSettingOutInfo(mallsetting.ShopName, mallsetting.ShopDescription, mallsetting.ShopIconUrl, mallsetting.Notice, mallsetting.DeliverName, mallsetting.DeliverAddress)).FirstOrDefaultAsync();
             if (mallsetting == null)
-                return ApiResult.Ok(new MallSettingOutInfo("",""));
+                return ApiResult.Ok(new MallSettingOutInfo());
             else
-                return ApiResult.Ok(new MallSettingOutInfo(mallsetting.DeliverName, mallsetting.DeliverAddress));
+                return ApiResult.Ok(mallsetting);
         }
     }
 }

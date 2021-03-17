@@ -1,14 +1,7 @@
-﻿using ApplicationService;
-using Domain;
-using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
-using Microsoft.Extensions.DependencyModel;
-using System.Linq;
-using System.Runtime.Loader;
+﻿using Autofac;
+using Infrastructure.EfDataAccess;
 using InfrastructureBase;
+using InfrastructureBase.Data.Nest;
 using Oxygen.Client.ServerSymbol.Events;
 
 namespace Host.Modules
@@ -22,6 +15,9 @@ namespace Host.Modules
                 .InstancePerLifetimeScope();
             //事件订阅器需要独立注册因为其接口相同
             Common.RegisterAllEventHandlerInAutofac(Common.GetProjectAssembliesArray(), builder);
+            //注入其他基础设施依赖
+            builder.RegisterGeneric(typeof(ElasticSearchRepository<>)).As(typeof(IElasticSearchRepository<>)).InstancePerLifetimeScope();
+            builder.RegisterType<UnitofWorkManager<EfDbContext>>().As<IUnitofWork>().InstancePerLifetimeScope();
         }
     }
 }

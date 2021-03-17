@@ -48,14 +48,20 @@ namespace ApplicationService
             var role = new Role();
             role.SetRole("超级管理员", true);
             roleRepository.Add(role);
-            var account = new Account();
-            account.CreateAccount("eshopadmin", "商城管理员", "x1234567", Common.GetMD5SaltCode);
-            account.SetRoles(new List<Guid>() { role.Id });
-            accountRepository.Add(account);
+            var admin = new Account();
+            var defpwd = "x1234567";
+            admin.CreateAccount("eshopadmin", "商城管理员", defpwd, Common.GetMD5SaltCode);
+            admin.SetRoles(new List<Guid>() { role.Id });
+            var defbuyer = new Account();
+            defbuyer.CreateAccount("eshopuser", "白云苍狗", defpwd, Common.GetMD5SaltCode);
+            defbuyer.User.CreateOrUpdateUser("张老三", "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fhbimg.huabanimg.com%2F0830450561b24f4573bed70d7f74bd43f39302e11bee-s2tj6i_fw658&refer=http%3A%2F%2Fhbimg.huabanimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1618110799&t=b215598f3b458ad7c08aee2b4614622b", "北京市海淀区太平路1号", "13000000000", UserGender.Male, Convert.ToDateTime("1980-01-01"));
+            accountRepository.Add(admin);
+            accountRepository.Add(defbuyer);
             if (await new UniqueSuperRoleSpecification(roleRepository).IsSatisfiedBy(role))
                 await unitofWork.CommitAsync(tran);
             await stateManager.SetState(new RoleBaseInitCheckCache(true));
-            return ApiResult.Ok(new DefLoginAccountResponse { LoginName = "eshopadmin", Password = "x1234567" }, $"权限初始化成功,已创建超管角色和默认登录账号");
+            await eventBus.SendEvent(EventTopicDictionary.Account.InitTestUserSuccess, "");
+            return ApiResult.Ok(new DefLoginAccountResponse { LoginName = admin.LoginName, Password = defpwd }, $"权限初始化成功,已创建超管角色和默认登录账号");
         }
         public async Task<ApiResult> AccountRegister(CreateAccountDto input)
         {

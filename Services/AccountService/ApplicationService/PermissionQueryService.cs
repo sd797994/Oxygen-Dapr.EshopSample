@@ -41,10 +41,9 @@ namespace ApplicationService
         [AuthenticationFilter]
         public async Task<ApiResult> GetPermissionList(PageQueryInputBase input)
         {
-            var rootId = Guid.Empty;
             var query = (from permission in dbContext.Permission
-                        where permission.FatherId != rootId
-                        join father in dbContext.Permission on permission.FatherId equals father.Id
+                        where permission.FatherId != Guid.Empty
+                         join father in dbContext.Permission on permission.FatherId equals father.Id
                         select new GetPermissionListResponse()
                         {
                             Id = permission.Id,
@@ -84,7 +83,7 @@ namespace ApplicationService
             {
                 void CheckPermission(string name,int father)
                 {
-                    if (!HttpContextExt.Current.User.Permissions.Any(x => x.Contains($"{name}query")) && !HttpContextExt.Current.User.Permissions.Any(x => x.Contains($"{name}usecase")))
+                    if (HttpContextExt.Current.User.Permissions.Any(x => x.Contains($"{name}query")) || HttpContextExt.Current.User.Permissions.Any(x => x.Contains($"{name}usecase")))
                     {
                         father++;
                         dynamic item = new ExpandoObject();
@@ -117,11 +116,21 @@ namespace ApplicationService
                 }
                 int fathertrade = 0;
                 CheckPermission("order", fathertrade);
-                CheckPermission("distribution", fathertrade);
+                CheckPermission("logistics", fathertrade);
                 if (fathertrade >= 2)
                 {
                     dynamic item = new ExpandoObject();
                     item.path = "/trade";
+                    item.hidden = true;
+                    result.Add(item);
+                }
+                int fatherstatistics = 0;
+                CheckPermission("total", fatherstatistics);
+                CheckPermission("trade", fatherstatistics);
+                if (fatherstatistics >= 2)
+                {
+                    dynamic item = new ExpandoObject();
+                    item.path = "/statistics";
                     item.hidden = true;
                     result.Add(item);
                 }

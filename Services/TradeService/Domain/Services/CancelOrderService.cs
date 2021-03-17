@@ -25,6 +25,7 @@ namespace Domain.Services
                     var deductstock = new CreateOrderDeductionGoodsStockDto(item.GoodsId, item.Count);
                     await undeductionGoodsStock(deductstock);
                 }
+                order.OrderState = Enums.OrderState.Cancel;
                 return true;
             }
             else

@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Host.Modules;
 using Infrastructure.EfDataAccess;
 using Infrastructure.Http;
+using InfrastructureBase.Data.Nest;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,7 +48,6 @@ namespace Host
                     builder.RegisterOxygenModule();
                     //◊¢»Î“µŒÒ“¿¿µ
                     builder.RegisterModule(new ServiceModule());
-                    builder.RegisterType<UnitofWorkManager<EfDbContext>>().As<IUnitofWork>().InstancePerLifetimeScope();
                 })
                 .ConfigureServices((context, services) =>
                 {
