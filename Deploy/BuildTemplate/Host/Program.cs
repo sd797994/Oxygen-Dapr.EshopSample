@@ -47,7 +47,6 @@ namespace Host
                     builder.RegisterOxygenModule();
                     //注入业务依赖
                     builder.RegisterModule(new ServiceModule());
-                    builder.RegisterType<UnitofWorkManager<EfDbContext>>().As<IUnitofWork>().InstancePerLifetimeScope();
                 })
                 .ConfigureServices((context, services) =>
                 {

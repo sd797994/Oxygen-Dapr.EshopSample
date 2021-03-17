@@ -24,6 +24,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "accountservice"
         dapr.io/app-port: "80"
+        dapr.io/config: "zipkin"
     spec:
       containers:
         - name: web
@@ -70,6 +71,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "goodsservice"
         dapr.io/app-port: "80"
+        dapr.io/config: "zipkin"
     spec:
       containers:
         - name: web
@@ -116,6 +118,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "tradeservice"
         dapr.io/app-port: "80"
+        dapr.io/config: "zipkin"
     spec:
       containers:
         - name: web
@@ -162,6 +165,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "publicservice"
         dapr.io/app-port: "80"
+        dapr.io/config: "zipkin"
     spec:
       containers:
         - name: web
@@ -231,6 +235,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "jobservice"
         dapr.io/app-port: "80"
+        dapr.io/config: "zipkin"
     spec:
       containers:
         - name: web
@@ -277,6 +282,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "imageservice"
         dapr.io/app-port: "80"
+        dapr.io/config: "zipkin"
     spec:
       containers:
         - name: web
