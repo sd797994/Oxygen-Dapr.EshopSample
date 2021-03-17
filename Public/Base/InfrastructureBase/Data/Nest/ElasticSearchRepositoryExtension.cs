@@ -50,9 +50,9 @@ namespace InfrastructureBase.Data.Nest
             var impl = repo as ElasticSearchRepository<T>;
             if (query != null)
             {
-                BinaryExpression be = query.Body as BinaryExpression;
-                if (be != null)
+                if (query.Body is BinaryExpression)
                 {
+                    BinaryExpression be = query.Body as BinaryExpression;
                     var paramName = "";
                     object paramValue = "";
                     bool isDate = false;
@@ -128,6 +128,37 @@ namespace InfrastructureBase.Data.Nest
                                 rangefunc = (x) => x.DateRange(r => r.Field(paramName).LessThanOrEquals((DateTime)paramValue));
                             impl.rangeQueries.Add(rangefunc);
                             break;
+                    }
+                }
+                else if (query.Body is MethodCallExpression)//暂时只能处理Contains一种逻辑
+                {
+                    MethodCallExpression me = query.Body as MethodCallExpression;
+                    if (me.Method.Name == "Contains")
+                    {
+                        if (me.Arguments.Count > 1)//array
+                        {
+                            var paramName = CamelCase((me.Arguments[1] as MemberExpression).Member.Name);
+                            dynamic paramValue = GetValue(me.Arguments[0] as MemberExpression);
+                            Func<QueryContainerDescriptor<T>, QueryContainer> rangefunc = (x) => x.Terms(r => r.Field(paramName).Terms(paramValue));
+                            impl.mustQueries.Add(rangefunc);
+                        }
+                        else
+                        {
+                            if (me.Arguments[0] is MemberExpression)  //list
+                            {
+                                var paramName = CamelCase((me.Arguments[0] as MemberExpression).Member.Name);
+                                dynamic paramValue = Expression.Lambda((query.Body as MethodCallExpression).Object).Compile().DynamicInvoke();
+                                Func<QueryContainerDescriptor<T>, QueryContainer> rangefunc = (x) => x.Terms(r => r.Field(paramName).Terms(paramValue));
+                                impl.mustQueries.Add(rangefunc);
+                            }
+                            else if (me.Arguments[0] is ConstantExpression) //string
+                            {
+                                var paramName = CamelCase(((query.Body as MethodCallExpression).Object as MemberExpression).Member.Name);
+                                dynamic paramValue = (me.Arguments[0] as ConstantExpression).Value;
+                                Func<QueryContainerDescriptor<T>, QueryContainer> likefunc = (x) => x.Wildcard(r => r.Field(paramName).Value($"*{paramValue}*"));
+                                impl.mustQueries.Add(likefunc);
+                            }
+                        }
                     }
                 }
             }

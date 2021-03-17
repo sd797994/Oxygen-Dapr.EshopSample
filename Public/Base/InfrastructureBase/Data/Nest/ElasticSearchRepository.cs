@@ -37,8 +37,9 @@ namespace InfrastructureBase.Data.Nest
                 searchParams.Index(IndexName).Sort(s => sortQueries).Query(q => q.Bool(b => b.Must(mustQueries).MustNot(mustnotQueries).Filter(rangeQueries)));
                 search = (s) => searchParams;
                 var response = await NestClientProvider.GetClient().SearchAsync(search);
-                return response.Documents.ToList();
-
+                if (response.ApiCall.Success)
+                    return response.Documents.ToList();
+                throw new InfrastructureException("数据访问失败!");
             }
             else
                 throw new Exception("没有初始化ElasticSearchRepository!");
