@@ -45,7 +45,7 @@ namespace InfrastructureBase.Object
             {
                 apiResult.Data = await apiResult.TaskData;
             }
-            catch(Exception e) { return ApiResult.Err(); }
+            catch (Exception) { return ApiResult.Err(); }
             return apiResult;
         }
         public static T GetData<T>(this ApiResult apiResult)

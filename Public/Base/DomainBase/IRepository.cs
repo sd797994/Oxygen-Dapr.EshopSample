@@ -41,7 +41,7 @@ namespace DomainBase
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        Task<bool> AnyAsync(object? key = null);
+        Task<bool> AnyAsync(object key = null);
         /// <summary>
         /// 根据条件判断对象是否存在
         /// </summary>

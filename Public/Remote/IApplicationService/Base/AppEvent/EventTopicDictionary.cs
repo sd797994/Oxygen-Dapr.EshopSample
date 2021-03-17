@@ -15,6 +15,7 @@ namespace IApplicationService.AppEvent
         }
         public struct Account
         {
+            public const string InitTestUserSuccess = "InitTestUserSuccess";
             public const string LoginSucc = "AccountLoginSuccess";
             public const string Loginout = "AccountLoginOut";
             public const string LoginExpire = "AccountLoginExpire";
