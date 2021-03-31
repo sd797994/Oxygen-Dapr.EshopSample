@@ -47,18 +47,12 @@ namespace ApplicationService
         [EventHandlerFunc(EventTopicDictionary.Account.InitTestUserSuccess)]
         public async Task<DefaultEventHandlerResponse> EventHandleSetDefMallSetting(EventHandleRequest<string> input)
         {
-            Console.WriteLine("0");
             return await new DefaultEventHandlerResponse().RunAsync(nameof(EventHandleSetDefMallSetting), input.GetDataJson(), async () =>
             {
-                Console.WriteLine("1");
                 var entity = new MallSetting();
-                Console.WriteLine("2");
                 entity.CreateOrUpdate("粥品香坊", "蜂鸟专送/38分钟送达", "http://static.galileo.xiaojukeji.com/static/tms/seller_avatar_256px.jpg", "粥品香坊其烹饪粥料的秘方源于中国千年古法，在融和现代制作工艺，由世界烹饪大师屈浩先生领衔研发。坚守纯天然、0添加的良心品质深得消费者青睐，发展至今成为粥类的引领品牌。是2008年奥运会和2013年园博会指定餐饮服务商。", "李老二", "北京市海淀区太平路13号粥品香坊");
-                Console.WriteLine("3");
                 mallsettingRepository.Add(entity);
-                Console.WriteLine("4");
                 await unitofWork.CommitAsync();
-                Console.WriteLine("5");
             });
         }
     }
