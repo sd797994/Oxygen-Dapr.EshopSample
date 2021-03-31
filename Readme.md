@@ -61,7 +61,7 @@ Enjoy
 
 简要拓扑图（仅含服务间简易依赖关系)
 
-​	![image-20210331143423979](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210331143423979.png)
+![image-20210331143423979](https://user-images.githubusercontent.com/26075482/113103072-688c2580-9231-11eb-82ae-285fa3153638.png)
 
 ### 服务节点及分层设计简述
 
@@ -73,13 +73,25 @@ Enjoy
 
 3、其他业务服务
 
-​	业务服务采用领域驱动设计清洁模型分层、每个小项目会分为应用层、领域层、基础设施层。关于领域驱动设计和清洁模型可参考文章：https://www.jdon.com/ddd.html  https://www.jdon.com/artichect/the-clean-architecture.html。应用层包含查询服务、用例服务、事件订阅器。领域层包含聚合(根、实体、值对象)、事件、规约、仓储抽象。基础设施层包含仓储实现、orm及其他基础支撑。其中领域层和基础设施层会依赖于Public/Base 下的领域服务base和基础设施base，主要是公共部分的抽象和封装
+业务服务采用领域驱动设计清洁模型分层、每个小项目会分为应用层、领域层、基础设施层。关于领域驱动设计和清洁模型可参考文章：
+https://www.jdon.com/ddd.html  
+https://www.jdon.com/artichect/the-clean-architecture.html
+
+应用层包含查询服务、用例服务、事件订阅器。领域层包含聚合(根、实体、值对象)、事件、规约、仓储抽象。基础设施层包含仓储实现、orm及其他基础支撑。其中领域层和基础设施层会依赖于Public/Base 下的领域服务base和基础设施base，主要是公共部分的抽象和封装
 
 ### 功能说明
 
 ------
 
 整个项目主要的逻辑是通过管理端创建权限、角色、用户来登录和管理后台系统，拥有相关权限的操作人员可以访问商品分类、商品、活动、订单、物流以及商城基本设置等页面进行商品or特价活动创建、订单管理、物流收发货以及商城基本设置管理。前端M站可以浏览商品、加入购物车并下单
+
+### 其他依赖
+
+------
+
+管理端页面fork：https://github.com/PanJiaChen/vue-element-admin/tree/i18n
+
+M站页面fork: https://github.com/JerryYgh/m-eleme
 
 ## License
 
