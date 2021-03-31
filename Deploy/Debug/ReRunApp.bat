@@ -1,6 +1,0 @@
-PowerShell -Command "kubectl delete po $(kubectl get po -n dapreshop|findstr account |%%{$_.split()[0]}) -n dapreshop"
-PowerShell -Command "kubectl delete po $(kubectl get po -n dapreshop|findstr goods|%%{$_.split()[0]}) -n dapreshop"
-PowerShell -Command "kubectl delete po $(kubectl get po -n dapreshop|findstr job|%%{$_.split()[0]}) -n dapreshop"
-PowerShell -Command "kubectl delete po $(kubectl get po -n dapreshop|findstr public|%%{$_.split()[0]}) -n dapreshop"
-PowerShell -Command "kubectl delete po $(kubectl get po -n dapreshop|findstr trade|%%{$_.split()[0]}) -n dapreshop"
-PowerShell -Command "kubectl get po -n dapreshop -w"
