@@ -61,7 +61,7 @@ Enjoy
 
 简要拓扑图（仅含服务间简易依赖关系)
 
-​	![image-20210331143423979](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210331143423979.png)
+![image-20210331143423979](https://user-images.githubusercontent.com/26075482/113103072-688c2580-9231-11eb-82ae-285fa3153638.png)
 
 ### 服务节点及分层设计简述
 
@@ -73,7 +73,10 @@ Enjoy
 
 3、其他业务服务
 
-​	业务服务采用领域驱动设计清洁模型分层、每个小项目会分为应用层、领域层、基础设施层。关于领域驱动设计和清洁模型可参考文章：https://www.jdon.com/ddd.html  https://www.jdon.com/artichect/the-clean-architecture.html。应用层包含查询服务、用例服务、事件订阅器。领域层包含聚合(根、实体、值对象)、事件、规约、仓储抽象。基础设施层包含仓储实现、orm及其他基础支撑。其中领域层和基础设施层会依赖于Public/Base 下的领域服务base和基础设施base，主要是公共部分的抽象和封装
+业务服务采用领域驱动设计清洁模型分层、每个小项目会分为应用层、领域层、基础设施层。关于领域驱动设计和清洁模型可参考文章：
+https://www.jdon.com/ddd.html  
+https://www.jdon.com/artichect/the-clean-architecture.html
+应用层包含查询服务、用例服务、事件订阅器。领域层包含聚合(根、实体、值对象)、事件、规约、仓储抽象。基础设施层包含仓储实现、orm及其他基础支撑。其中领域层和基础设施层会依赖于Public/Base 下的领域服务base和基础设施base，主要是公共部分的抽象和封装
 
 ### 功能说明
 
