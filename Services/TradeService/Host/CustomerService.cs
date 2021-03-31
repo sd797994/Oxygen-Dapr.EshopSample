@@ -1,4 +1,4 @@
-using IApplicationService.AccountService.Dtos.Input;
+ï»¿using IApplicationService.AccountService.Dtos.Input;
 using IApplicationService.AppEvent;
 using Infrastructure.EfDataAccess;
 using InfrastructureBase.AuthBase;
@@ -17,26 +17,17 @@ namespace Host
     {
         private readonly EfDbContext dbContext;
         private readonly IEventBus eventBus;
-        public CustomerService(EfDbContext dbContext, IEventBus eventBus)
+        private readonly IStateManager stateManager;
+        public CustomerService(EfDbContext dbContext, IEventBus eventBus, IStateManager stateManager)
         {
             this.dbContext = dbContext;
             this.eventBus = eventBus;
+            this.stateManager = stateManager;
         }
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            dbContext.Database.EnsureCreated();//×Ô¶¯Ç¨ÒÆÊı¾İ¿â
-            _ = Task.Run(async () =>
-            {
-                while (true)
-                {
-                    Thread.Sleep(20000);//µÈ´ısidercarÆô¶¯
-                    var sender = await eventBus.SendEvent(EventTopicDictionary.Common.InitAuthApiList, new InitPermissionApiEvent<List<AuthenticationInfo>>(AuthenticationManager.AuthenticationMethods));//½«µ±Ç°·şÎñµÄĞè¼øÈ¨½Ó¿Ú·¢ËÍ¸øÓÃ»§·şÎñ
-                    if (sender != default(DefaultResponse))
-                        break;
-                    else
-                        Console.WriteLine("ÊÂ¼ş³õÊ¼»¯Ê§°Ü£¬20ÃëºóÖØÊÔ!");
-                }
-            });
+            dbContext.Database.EnsureCreated();//è‡ªåŠ¨è¿ç§»æ•°æ®åº“
+            await stateManager.SetState(new PermissionState() { Key = "trade", Data = AuthenticationManager.AuthenticationMethods });
             await Task.CompletedTask;
         }
         public async Task StopAsync(CancellationToken cancellationToken)

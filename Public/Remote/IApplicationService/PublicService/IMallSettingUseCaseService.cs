@@ -1,4 +1,4 @@
-using Oxygen.Client.ServerSymbol;
+ï»¿using Oxygen.Client.ServerSymbol;
 using IApplicationService.PublicService.Dtos.Input;
 using System;
 using System.Collections.Generic;
@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.PublicService
 {
-    [RemoteService("publicservice", "mallsettingusecase", "¹«¹²·şÎñ")]
+    [RemoteService("publicservice", "mallsettingusecase", "å…¬å…±æœåŠ¡")]
     public interface IMallSettingUseCaseService
     {
-        [RemoteFunc(funcDescription: "´´½¨»ò¸üĞÂÉÌ³ÇÅäÖÃ")]
+        [RemoteFunc(funcDescription: "åˆ›å»ºæˆ–æ›´æ–°å•†åŸé…ç½®")]
         Task<ApiResult> CreateOrUpdateMallSetting(CreateOrUpdateMallSettingDto input);
     }
 }

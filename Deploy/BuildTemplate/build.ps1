@@ -13,6 +13,6 @@ Rename-Item -Path tmp/%ctxplaceholder%Service -NewName $newname
 Get-ChildItem -Path tmp -Recurse -Include *.cs,*.csproj,*.json,*.vue,*.js | Rename-Item -NewName { $_.Name -replace '%placeholder%',$Svc }
 get-childitem -path tmp -recurse -force -Include *.cs,*.csproj,*.json,*.vue,*.js | foreach-object -process {
 $content=Get-Content $_.fullname
-Set-Content $_.fullname -Value $content.Replace('%ctxplaceholder%',$ctx).Replace('%placeholder%',$Svc)
+Set-Content $_.fullname -Value $content.Replace('%ctxplaceholder%',$ctx).Replace('%placeholder%',$Svc) -Encoding "UTF8"
 }
 Read-Host

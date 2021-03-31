@@ -1,4 +1,4 @@
-using Oxygen.Client.ServerSymbol;
+锘縰sing Oxygen.Client.ServerSymbol;
 using IApplicationService.Base.AppQuery;
 using System;
 using System.Collections.Generic;
@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.TradeService
 {
-    [RemoteService("tradeservice", "logisticsquery", "物流服务")]
+    [RemoteService("tradeservice", "logisticsquery", "鐗╂祦鏈嶅姟")]
     public interface ILogisticsQueryService
     {
-        [RemoteFunc(funcDescription: "获取物流信息")]
+        [RemoteFunc(funcDescription: "鑾峰彇鐗╂祦淇℃伅")]
         Task<ApiResult> GetLogisticsList(PageQueryInputBase input);
     }
 }

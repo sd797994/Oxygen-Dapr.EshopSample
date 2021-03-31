@@ -19,7 +19,7 @@ namespace InfrastructureBase.Http
         public CurrentUser User { get; set; }
         public bool GetAuthIgnore()
         {
-            if (Headers.TryGetValue("AuthIgnore", out string val))
+            if (Headers.TryGetValue("Authignore", out string val))
                 return val == "true";
             return false;
         }

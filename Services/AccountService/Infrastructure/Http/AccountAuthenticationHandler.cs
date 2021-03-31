@@ -17,14 +17,17 @@ namespace Infrastructure.Http
         }
         public override async Task AuthenticationCheck(string routePath)
         {
-            var authMethod = AuthenticationMethods.FirstOrDefault(x => x.Path.Equals(routePath));
-            if (authMethod != null)
+            if (!HttpContextExt.Current.GetAuthIgnore())
             {
-                var token = HttpContextExt.Current.Headers.FirstOrDefault(x => x.Key == "Authentication").Value;
-                var accountInfo = await GetAccountInfo(HttpContextExt.Current.RequestService.Resolve<IStateManager>());
-                HttpContextExt.SetUser(accountInfo);
-                if (!HttpContextExt.Current.User.IgnorePermission && authMethod.CheckPermission && !HttpContextExt.Current.GetAuthIgnore() && !HttpContextExt.Current.User.Permissions.Contains(routePath))
-                    throw new InfrastructureException("当前登录用户缺少使用该接口的必要权限,请重试!");
+                var authMethod = AuthenticationMethods.FirstOrDefault(x => x.Path.Equals(routePath));
+                if (authMethod != null)
+                {
+                    var token = HttpContextExt.Current.Headers.FirstOrDefault(x => x.Key == "Authentication").Value;
+                    var accountInfo = await GetAccountInfo(HttpContextExt.Current.RequestService.Resolve<IStateManager>());
+                    HttpContextExt.SetUser(accountInfo);
+                    if (!HttpContextExt.Current.User.IgnorePermission && authMethod.CheckPermission && !HttpContextExt.Current.GetAuthIgnore() && HttpContextExt.Current.User.Permissions != null && !HttpContextExt.Current.User.Permissions.Contains(routePath))
+                        throw new InfrastructureException("当前登录用户缺少使用该接口的必要权限,请重试!");
+                }
             }
         }
 

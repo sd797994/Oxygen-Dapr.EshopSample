@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,26 +9,26 @@ namespace IApplicationService.TradeService.Dtos.Output
     public class GetOrderListResponse
     {
         public Guid OrderId { get; set; }
-        //¶©µ¥ºÅ
+        //è®¢å•å·
         public string OrderNo { get; set; }
-        //¶©µ¥×´Ì¬
+        //è®¢å•çŠ¶æ€
         public int OrderState { get; set; }
-        //¶©µ¥×Ü¼Û
+        //è®¢å•æ€»ä»·
         public decimal TotalPrice { get; set; }
-        //¶©µ¥Ã÷Ï¸
+        //è®¢å•æ˜ç»†
         public IEnumerable<GetOrderListItemResponse> OrderItems { get; set; }
-        //ÏÂµ¥ÈË
+        //ä¸‹å•äºº
         public string UserName { get; set; }
-        //ÏÂµ¥Ê±¼ä
+        //ä¸‹å•æ—¶é—´
         public DateTime CreateTime { get; set; }
     }
     public class GetOrderListItemResponse
     {
-        //ÉÌÆ·Ãû
+        //å•†å“å
         public string GoodsName { get; set; }
-        //ÉÌÆ·¼Û¸ñ
+        //å•†å“ä»·æ ¼
         public decimal Price { get; set; }
-        //ÉÌÆ·ÊıÁ¿
+        //å•†å“æ•°é‡
         public int Count { get; set; }
     }
 }

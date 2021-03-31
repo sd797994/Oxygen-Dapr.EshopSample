@@ -25,7 +25,6 @@ namespace Host
         {
             await CreateDefaultHost(args).Build().RunAsync();
         }
-
         static IHostBuilder CreateDefaultHost(string[] _) => new HostBuilder()
                 .ConfigureWebHostDefaults(webhostbuilder => {
                     //注册成为oxygen服务节点
@@ -33,7 +32,7 @@ namespace Host
                         config.Port = 80;
                         config.PubSubCompentName = "pubsub";
                         config.StateStoreCompentName = "statestore";
-                        config.TracingHeaders = "Authentication";
+                        config.TracingHeaders = "Authentication,AuthIgnore";
                     });
                 })
                 .ConfigureAppConfiguration((hostContext, config) =>

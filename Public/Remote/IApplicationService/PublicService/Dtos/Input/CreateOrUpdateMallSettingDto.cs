@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,34 +10,34 @@ namespace IApplicationService.PublicService.Dtos.Input
     public class CreateOrUpdateMallSettingDto
     {
         /// <summary>
-        /// ÉÌÆÌÃû
+        /// å•†é“ºå
         /// </summary>
-        [Required(ErrorMessage = "ÇëÊäÈëÉÌÆÌÃû")]
+        [Required(ErrorMessage = "è¯·è¾“å…¥å•†é“ºå")]
         public string ShopName { get; set; }
         /// <summary>
-        /// ÉÌÆÌÒ»¾ä»°ÃèÊö
+        /// å•†é“ºä¸€å¥è¯æè¿°
         /// </summary>
-        [Required(ErrorMessage = "ÇëÊäÈëÉÌÆÌÒ»¾ä»°ÃèÊö")]
+        [Required(ErrorMessage = "è¯·è¾“å…¥å•†é“ºä¸€å¥è¯æè¿°")]
         public string ShopDescription { get; set; }
         /// <summary>
-        /// ÉÌÆÌÍ¼±ê
+        /// å•†é“ºå›¾æ ‡
         /// </summary>
-        [Required(ErrorMessage = "ÇëÉÏ´«ÉÌÆÌÍ¼±ê")]
+        [Required(ErrorMessage = "è¯·ä¸Šä¼ å•†é“ºå›¾æ ‡")]
         public string ShopIconUrl { get; set; }
         /// <summary>
-        /// Í¨ÓÃ¹«¸æ
+        /// é€šç”¨å…¬å‘Š
         /// </summary>
-        [Required(ErrorMessage = "ÇëÊäÈëÍ¨ÓÃ¹«¸æ")]
+        [Required(ErrorMessage = "è¯·è¾“å…¥é€šç”¨å…¬å‘Š")]
         public string Notice { get; set; }
         /// <summary>
-        /// ¼Ä¼şÈËĞÕÃû
+        /// å¯„ä»¶äººå§“å
         /// </summary>
-        [Required(ErrorMessage = "ÇëÊäÈë¼Ä¼şÈËĞÕÃû")]
+        [Required(ErrorMessage = "è¯·è¾“å…¥å¯„ä»¶äººå§“å")]
         public string DeliverName { get; set; }
         /// <summary>
-        /// ¼Ä¼şÈËµØÖ·
+        /// å¯„ä»¶äººåœ°å€
         /// </summary>
-        [Required(ErrorMessage = "ÇëÊäÈë¼Ä¼şÈËµØÖ·")]
+        [Required(ErrorMessage = "è¯·è¾“å…¥å¯„ä»¶äººåœ°å€")]
         public string DeliverAddress { get; set; }
     }
 }

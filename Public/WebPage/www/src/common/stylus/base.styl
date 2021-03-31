@@ -1,0 +1,35 @@
+body,html
+	line-height: 1
+	font-weight: 200
+	font-family: 'PingFang SC', 'Microsoft YaHei','STHeitiSC-Light',arial,sans-ser
+.clearfix
+	display: inline-block
+	&:after
+		display: block
+		height: 0
+		line-height: 0
+		clear: both
+		content: '.'
+		visibility: hidden
+
+.white
+	background: #fff
+@media(-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5)
+	.border-bottom-1px
+		&::after
+			-webkit-transform: scaleY(.7)
+			transform: scaleY(.7)
+	.border-top-1px
+		&::before
+			-webkit-transform: scaleY(.7)
+			transform: scaleY(.7)
+
+@media(-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2)
+	.border-top-1px
+		&::before
+			-webkit-transform: scaleY(.5)
+			transform: scaleY(.5)
+	.border-bottom-1px
+		&::before
+			-webkit-transform: scaleY(.5)
+			transform: scaleY(.5)

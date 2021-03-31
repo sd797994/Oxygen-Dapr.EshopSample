@@ -1,4 +1,4 @@
-using Oxygen.Client.ServerSymbol;
+锘縰sing Oxygen.Client.ServerSymbol;
 using IApplicationService.Base.AppQuery;
 using System;
 using System.Collections.Generic;
@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.PublicService
 {
-    [RemoteService("publicservice", "mallsettingquery", "公共服务")]
+    [RemoteService("publicservice", "mallsettingquery", "鍏叡鏈嶅姟")]
     public interface IMallSettingQueryService
     {
-        [RemoteFunc(funcDescription: "获取商城配置")]
+        [RemoteFunc(funcDescription: "鑾峰彇鍟嗗煄閰嶇疆")]
         Task<ApiResult> GetMallSetting();
     }
 }

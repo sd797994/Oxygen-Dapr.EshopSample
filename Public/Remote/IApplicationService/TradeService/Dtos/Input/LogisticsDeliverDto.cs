@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,12 +9,12 @@ namespace IApplicationService.TradeService.Dtos.Input
 {
     public class LogisticsDeliverDto
     {
-        [Required(ErrorMessage = "ÇëÑ¡Ôñ¶©µ¥")]
+        [Required(ErrorMessage = "è¯·é€‰æ‹©è®¢å•")]
         public Guid OrderId { get; set; }
-        [Required(ErrorMessage = "ÇëÑ¡ÔñÎïÁ÷ÀàĞÍ")]
-        [Range(0, 5, ErrorMessage = "ÎïÁ÷ÀàĞÍÑ¡Ôñ´íÎó")]
+        [Required(ErrorMessage = "è¯·é€‰æ‹©ç‰©æµç±»å‹")]
+        [Range(0, 5, ErrorMessage = "ç‰©æµç±»å‹é€‰æ‹©é”™è¯¯")]
         public int LogisticsType { get; set; }
-        [Required(ErrorMessage = "ÇëÊäÈëÎïÁ÷»ØÖ´")]
+        [Required(ErrorMessage = "è¯·è¾“å…¥ç‰©æµå›æ‰§")]
         public string LogisticsNo { get; set; }
         public DateTime? DeliveTime { get; set; }
     }

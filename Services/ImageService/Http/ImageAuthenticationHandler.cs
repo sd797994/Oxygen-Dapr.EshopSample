@@ -1,4 +1,4 @@
-using Autofac;
+ï»¿using Autofac;
 using IApplicationService.Base.AccessToken;
 using InfrastructureBase;
 using InfrastructureBase.AuthBase;
@@ -24,7 +24,7 @@ namespace Infrastructure.Http
                 var accountInfo = await GetAccountInfo(HttpContextExt.Current.RequestService.Resolve<IStateManager>());
                 HttpContextExt.SetUser(accountInfo);
                 if (!HttpContextExt.Current.User.IgnorePermission && authMethod.CheckPermission && !HttpContextExt.Current.GetAuthIgnore() && !HttpContextExt.Current.User.Permissions.Contains(routePath))
-                    throw new InfrastructureException("µ±Ç°µÇÂ¼ÓÃ»§È±ÉÙÊ¹ÓÃ¸Ã½Ó¿ÚµÄ±ØÒªÈ¨ÏŞ,ÇëÖØÊÔ!");
+                    throw new InfrastructureException("å½“å‰ç™»å½•ç”¨æˆ·ç¼ºå°‘ä½¿ç”¨è¯¥æ¥å£çš„å¿…è¦æƒé™,è¯·é‡è¯•!");
             }
         }
 
@@ -33,12 +33,12 @@ namespace Infrastructure.Http
             var token = HttpContextExt.Current.Headers.FirstOrDefault(x => x.Key == "Authentication").Value;
             var usertoken = await stateManager.GetState<AccessTokenItem>(new AccountLoginAccessToken(token));
             if (usertoken == null)
-                throw new InfrastructureException("ÊÚÈ¨µÇÂ¼TokenÒÑ¹ıÆÚ,ÇëÖØĞÂµÇÂ¼!");
+                throw new InfrastructureException("æˆæƒç™»å½•Tokenå·²è¿‡æœŸ,è¯·é‡æ–°ç™»å½•!");
             var userinfo = await stateManager.GetState<CurrentUser>(new AccountLoginCache(usertoken.Id));
             if (userinfo == null)
-                throw new InfrastructureException("µÇÂ¼ÓÃ»§ĞÅÏ¢ÒÑ¹ıÆÚ,ÇëÖØĞÂµÇÂ¼!");
+                throw new InfrastructureException("ç™»å½•ç”¨æˆ·ä¿¡æ¯å·²è¿‡æœŸ,è¯·é‡æ–°ç™»å½•!");
             else if (userinfo.State == 1)
-                throw new InfrastructureException("µÇÂ¼ÓÃ»§ÒÑ±»Ëø¶¨,ÇëÖØĞÂµÇÂ¼!");
+                throw new InfrastructureException("ç™»å½•ç”¨æˆ·å·²è¢«é”å®š,è¯·é‡æ–°ç™»å½•!");
             if (!usertoken.LoginAdmin)
                 userinfo.Permissions = null;
             return userinfo;

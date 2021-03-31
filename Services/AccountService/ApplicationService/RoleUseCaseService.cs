@@ -1,4 +1,4 @@
-using Domain;
+锘縰sing Domain;
 using Domain.Entities;
 using Domain.Repository;
 using Domain.Specification;
@@ -38,7 +38,7 @@ namespace ApplicationService
             rolerepository.Add(role);
             if (await new PermissionValidityCheckSpecification(permissionRepository).IsSatisfiedBy(role))
                 await unitofWork.CommitAsync(tran);
-            return ApiResult.Ok("角色创建成功");
+            return ApiResult.Ok("瑙掕壊鍒涘缓鎴愬姛");
         }
         [AuthenticationFilter]
         public async Task<ApiResult> RoleUpdate(RoleUpdateDto input)
@@ -46,12 +46,12 @@ namespace ApplicationService
             using var tran = await unitofWork.BeginTransactionAsync();
             var role = await rolerepository.GetAsync(input.RoleId);
             if (role == null)
-                throw new ApplicationServiceException("所选角色不存在!");
+                throw new ApplicationServiceException("鎵�閫夎鑹蹭笉瀛樺湪!");
             role.SetRole(input.RoleName, input.SuperAdmin, input.Permissions);
             rolerepository.Update(role);
             if (await new PermissionValidityCheckSpecification(permissionRepository).IsSatisfiedBy(role))
                 await unitofWork.CommitAsync(tran);
-            return ApiResult.Ok("角色更新成功");
+            return ApiResult.Ok("瑙掕壊鏇存柊鎴愬姛");
         }
 
         [AuthenticationFilter]
@@ -60,11 +60,11 @@ namespace ApplicationService
             using var tran = await unitofWork.BeginTransactionAsync();
             var role = await rolerepository.GetAsync(input.RoleId);
             if (role == null)
-                throw new ApplicationServiceException("所选角色不存在!");
+                throw new ApplicationServiceException("鎵�閫夎鑹蹭笉瀛樺湪!");
             rolerepository.Delete(role);
             if (await new RoleDeleteCheckSpecification(rolerepository).IsSatisfiedBy(role))
                 await unitofWork.CommitAsync(tran);
-            return ApiResult.Ok("角色删除成功");
+            return ApiResult.Ok("瑙掕壊鍒犻櫎鎴愬姛");
         }
     }
 }

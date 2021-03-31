@@ -1,4 +1,4 @@
-using IApplicationService;
+﻿using IApplicationService;
 using IApplicationService.Base.AppQuery;
 using IApplicationService.GoodsCategoryService;
 using Infrastructure.EfDataAccess;

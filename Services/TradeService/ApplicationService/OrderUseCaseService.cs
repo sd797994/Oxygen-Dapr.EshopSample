@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using IApplicationService;
@@ -26,6 +26,8 @@ using IApplicationService.GoodsService.Dtos.Input;
 using InfrastructureBase.Http;
 using IApplicationService.AppEvent;
 using Domain.Events;
+using IApplicationService.AccountService;
+using IApplicationService.AccountService.Dtos.Output;
 
 namespace ApplicationService
 {
@@ -37,7 +39,8 @@ namespace ApplicationService
         private readonly IStateManager stateManager;
         private readonly IGoodsQueryService goodsQueryService;
         private readonly IGoodsActorService goodsActorService;
-        public OrderUseCaseService(IOrderRepository repository, IEventBus eventBus, IStateManager stateManager, IUnitofWork unitofWork, IGoodsQueryService goodsQueryService, IGoodsActorService goodsActorService)
+        private readonly IAccountQueryService accountQueryService;
+        public OrderUseCaseService(IOrderRepository repository, IAccountQueryService accountQueryService, IEventBus eventBus, IStateManager stateManager, IUnitofWork unitofWork, IGoodsQueryService goodsQueryService, IGoodsActorService goodsActorService)
         {
             this.repository = repository;
             this.unitofWork = unitofWork;
@@ -45,38 +48,39 @@ namespace ApplicationService
             this.stateManager = stateManager;
             this.goodsQueryService = goodsQueryService;
             this.goodsActorService = goodsActorService;
+            this.accountQueryService = accountQueryService;
         }
 
-        [AuthenticationFilter]
         public async Task<ApiResult> CreateOrder(OrderCreateDto input)
         {
-            //ÉêÃ÷Ò»¸ö´´½¨¶©µ¥ÁìÓò·şÎñÊµÀı,½«Ô¶³Ìrpcµ÷ÓÃ×÷ÎªÄäÃûº¯Êı´«µİ½øÈ¥
+            var mockUser = (await accountQueryService.GetMockAccount()).GetData<CurrentUser>();
+            //ç”³æ˜ä¸€ä¸ªåˆ›å»ºè®¢å•é¢†åŸŸæœåŠ¡å®ä¾‹,å°†è¿œç¨‹rpcè°ƒç”¨ä½œä¸ºåŒ¿åå‡½æ•°ä¼ é€’è¿›å»
             var createOrderService = new CreateOrderService(GetGoodsListByIds, DeductionGoodsStock, UnDeductionGoodsStock);
-            return await ApiResult.Ok("¶©µ¥´´½¨³É¹¦!").RunAsync(async () =>
+            return await ApiResult.Ok("è®¢å•åˆ›å»ºæˆåŠŸ!").RunAsync(async () =>
             {
-                var order = await createOrderService.CreateOrder(HttpContextExt.Current.User.Id, HttpContextExt.Current.User.UserName, HttpContextExt.Current.User.Address, HttpContextExt.Current.User.Tel, input.Items.CopyTo<OrderCreateDto.OrderCreateItemDto, OrderItem>().ToList());//Í¨¹ı¶©µ¥·şÎñ´´½¨¶©µ¥
+                var order = await createOrderService.CreateOrder(mockUser.Id, mockUser.UserName, mockUser.Address, mockUser.Tel, input.Items.CopyTo<OrderCreateDto.OrderCreateItemDto, OrderItem>().ToList());//é€šè¿‡è®¢å•æœåŠ¡åˆ›å»ºè®¢å•
                 repository.Add(order);
                 if (await new CheckOrderCanCreateSpecification(repository).IsSatisfiedBy(order))
                     await unitofWork.CommitAsync();
-                await eventBus.SendEvent(EventTopicDictionary.Order.CreateOrderSucc, new OperateOrderSuccessEvent(order, HttpContextExt.Current.User.UserName));//·¢ËÍ¶©µ¥´´½¨³É¹¦ÊÂ¼ş
+                await eventBus.SendEvent(EventTopicDictionary.Order.CreateOrderSucc, new OperateOrderSuccessEvent(order, mockUser.UserName));//å‘é€è®¢å•åˆ›å»ºæˆåŠŸäº‹ä»¶
             },
-            //Ê§°Ü»Ø¹ö
+            //å¤±è´¥å›æ»š
             createOrderService.UnCreateOrder);
         }
-        [AuthenticationFilter(false)]
         public async Task<ApiResult> OrderPay(OrderPayDto input)
         {
+            var mockUser = (await accountQueryService.GetMockAccount()).GetData<CurrentUser>();
             var order = await repository.GetAsync(input.OrderId);
             if (order == null)
-                throw new ApplicationServiceException("Ã»ÓĞÕÒµ½¸Ã¶©µ¥!");
-            order.PayOrder(HttpContextExt.Current.User.Id);
+                throw new ApplicationServiceException("æ²¡æœ‰æ‰¾åˆ°è¯¥è®¢å•!");
+            order.PayOrder(mockUser.Id);
             repository.Update(order);
             await unitofWork.CommitAsync();
-            await eventBus.SendEvent(EventTopicDictionary.Order.PayOrderSucc, new OperateOrderSuccessEvent(order, HttpContextExt.Current.User.UserName));//·¢ËÍ¶©µ¥Ö§¸¶³É¹¦ÊÂ¼ş
+            await eventBus.SendEvent(EventTopicDictionary.Order.PayOrderSucc, new OperateOrderSuccessEvent(order, mockUser.UserName));//å‘é€è®¢å•æ”¯ä»˜æˆåŠŸäº‹ä»¶
             return ApiResult.Ok();
         }
 
-        #region Ë½ÓĞÔ¶³Ì·şÎñ°ü×°Æ÷·½·¨
+        #region ç§æœ‰è¿œç¨‹æœåŠ¡åŒ…è£…å™¨æ–¹æ³•
         async Task<List<OrderGoodsSnapshot>> GetGoodsListByIds(IEnumerable<Guid> input)
         {
             return (await goodsQueryService.GetGoodsListByIds(new GetGoodsListByIdsDto(input))).GetData<List<OrderGoodsSnapshot>>();

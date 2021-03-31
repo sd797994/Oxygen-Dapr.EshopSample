@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyModel;
 using System.Linq;
 using System.Runtime.Loader;
 using InfrastructureBase;
+using System.Linq;
 
 namespace ImageService.Modules
 {
@@ -14,7 +15,7 @@ namespace ImageService.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(Common.GetProjectAssembliesArray())
+            builder.RegisterAssemblyTypes(Common.GetProjectAssembliesArray()).Where(x => !Common.IsSystemType(x))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
         }

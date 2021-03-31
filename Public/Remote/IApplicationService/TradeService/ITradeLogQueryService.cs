@@ -1,4 +1,4 @@
-using Oxygen.Client.ServerSymbol;
+锘縰sing Oxygen.Client.ServerSymbol;
 using IApplicationService.Base.AppQuery;
 using System;
 using System.Collections.Generic;
@@ -8,10 +8,10 @@ using IApplicationService.TradeService.Dtos.Input;
 
 namespace IApplicationService.TradeService
 {
-    [RemoteService("tradeservice", "tradelogquery", "交易服务")]
+    [RemoteService("tradeservice", "tradelogquery", "浜ゆ槗鏈嶅姟")]
     public interface ITradeLogQueryService
     {
-        [RemoteFunc(funcDescription: "获取交易记录")]
+        [RemoteFunc(funcDescription: "鑾峰彇浜ゆ槗璁板綍")]
         Task<ApiResult> GetTradeLogListByOrderId(GetTradeLogListByOrderIdDto input);
     }
 }

@@ -1,4 +1,4 @@
-using Autofac;
+ï»¿using Autofac;
 using DomainBase;
 using IApplicationService;
 using InfrastructureBase;
@@ -16,12 +16,12 @@ namespace Infrastructure.Http
     {
         public static void ContextHandler(OxygenHttpContextWapper oxygenHttpContext)
         {
-            HttpContextExt.SetCurrent(oxygenHttpContext);//×¢ÈëhttpÉÏÏÂÎÄ¸ø±¾µØÒµÎñÉÏÏÂÎÄ¶ÔÏó
+            HttpContextExt.SetCurrent(oxygenHttpContext);//æ³¨å…¥httpä¸Šä¸‹æ–‡ç»™æœ¬åœ°ä¸šåŠ¡ä¸Šä¸‹æ–‡å¯¹è±¡
         }
         public static async Task BeforeSendHandler(object param, OxygenHttpContextWapper oxygenHttpContext)
         {
-            await new TradeAuthenticationHandler().AuthenticationCheck(HttpContextExt.Current.RoutePath);//ÊÚÈ¨Ğ£Ñé
-            //·½·¨Ç°À¹½ØÆ÷£¬Èë²ÎĞ£Ñé
+            await new TradeAuthenticationHandler().AuthenticationCheck(HttpContextExt.Current.RoutePath);//æˆæƒæ ¡éªŒ
+            //æ–¹æ³•å‰æ‹¦æˆªå™¨ï¼Œå…¥å‚æ ¡éªŒ
             if (param != null)
                 CustomModelValidator.Valid(param);
             oxygenHttpContext.Headers.Add("AuthIgnore", "true");
@@ -34,14 +34,14 @@ namespace Infrastructure.Http
 
         public static async Task<object> ExceptionHandler(Exception exception)
         {
-            //Òì³£´¦Àí
+            //å¼‚å¸¸å¤„ç†
             if (exception is ApplicationServiceException || exception is DomainException || exception is InfrastructureException)
             {
                 return await ApiResult.Err(exception.Message).Async();
             }
             else
             {
-                Console.WriteLine("ÏµÍ³Òì³££º" + exception.Message);
+                Console.WriteLine("ç³»ç»Ÿå¼‚å¸¸ï¼š" + exception.Message);
                 return await ApiResult.Err().Async();
             }
         }

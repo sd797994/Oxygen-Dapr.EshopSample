@@ -1,4 +1,4 @@
-using IApplicationService.GoodsService.Dtos.Input;
+ï»¿using IApplicationService.GoodsService.Dtos.Input;
 using Oxygen.Client.ServerSymbol;
 using System;
 using System.Collections.Generic;
@@ -9,25 +9,25 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.GoodsService
 {
-    [RemoteService("goodsservice", "goodsusecase", "ÉÌÆ··şÎñ")]
+    [RemoteService("goodsservice", "goodsusecase", "å•†å“æœåŠ¡")]
     public interface IGoodsUseCaseService
     {
-        [RemoteFunc(funcDescription: "´´½¨ÉÌÆ·")]
+        [RemoteFunc(funcDescription: "åˆ›å»ºå•†å“")]
         Task<ApiResult> CreateGoods(GoodsCreateDto input);
 
-        [RemoteFunc(funcDescription: "¸üĞÂÉÌÆ·»ù´¡ĞÅÏ¢")]
+        [RemoteFunc(funcDescription: "æ›´æ–°å•†å“åŸºç¡€ä¿¡æ¯")]
         Task<ApiResult> UpdateGoods(GoodsUpdateDto input);
 
-        [RemoteFunc(funcDescription: "É¾³ıÉÌÆ·")]
+        [RemoteFunc(funcDescription: "åˆ é™¤å•†å“")]
         Task<ApiResult> DeleteGoods(GoodsDeleteDto input);
 
-        [RemoteFunc(funcDescription: "ÉÏÏÂ¼ÜÉÌÆ·")]
+        [RemoteFunc(funcDescription: "ä¸Šä¸‹æ¶å•†å“")]
         Task<ApiResult> UpOrDownShelfGoods(UpOrDownShelfGoodsDto input);
 
-        [RemoteFunc(funcDescription: "¸üĞÂÉÌÆ·¿â´æ")]
+        [RemoteFunc(funcDescription: "æ›´æ–°å•†å“åº“å­˜")]
         Task<ApiResult> UpdateGoodsStock(DeductionStockDto input);
 
-        [RemoteFunc(funcDescription: "ĞŞ¸ÄÉÌÆ·¿â´æ")]
+        [RemoteFunc(funcDescription: "ä¿®æ”¹å•†å“åº“å­˜")]
         Task<ApiResult> DeductionGoodsStock(DeductionStockDto input);
     }
 }

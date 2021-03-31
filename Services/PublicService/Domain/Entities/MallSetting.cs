@@ -1,35 +1,35 @@
-using System;
+ï»¿using System;
 using DomainBase;
 
 namespace Domain.Entities
 {
     /// <summary>
-    /// ÁìÓòÊµÌå
+    /// é¢†åŸŸå®ä½“
     /// </summary>
     public class MallSetting : Entity, IAggregateRoot
     {
         /// <summary>
-        /// ÉÌÆÌÃû
+        /// å•†é“ºå
         /// </summary>
         public string ShopName { get; set; }
         /// <summary>
-        /// ÉÌÆÌÒ»¾ä»°ÃèÊö
+        /// å•†é“ºä¸€å¥è¯æè¿°
         /// </summary>
         public string ShopDescription { get; set; }
         /// <summary>
-        /// ÉÌÆÌÍ¼±ê
+        /// å•†é“ºå›¾æ ‡
         /// </summary>
         public string ShopIconUrl { get; set; }
         /// <summary>
-        /// Í¨ÓÃ¹«¸æ
+        /// é€šç”¨å…¬å‘Š
         /// </summary>
         public string Notice { get; set; }
         /// <summary>
-        /// ¼Ä¼şÈËĞÕÃû
+        /// å¯„ä»¶äººå§“å
         /// </summary>
         public string DeliverName { get; set; }
         /// <summary>
-        /// ¼Ä¼şÈËµØÖ·
+        /// å¯„ä»¶äººåœ°å€
         /// </summary>
         public string DeliverAddress { get; set; }
         public void CreateOrUpdate(string shopName, string shopDescription, string shopIconUrl, string notice, string deliverName, string deliverAddress)

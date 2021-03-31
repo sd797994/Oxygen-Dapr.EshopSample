@@ -1,4 +1,4 @@
-using Oxygen.Client.ServerSymbol;
+ï»¿using Oxygen.Client.ServerSymbol;
 using IApplicationService.LimitedTimeActivitieService.Dtos.Input;
 using System;
 using System.Collections.Generic;
@@ -10,19 +10,19 @@ using IApplicationService.GoodsService.Dtos.Input;
 
 namespace IApplicationService.LimitedTimeActivitieService
 {
-    [RemoteService("goodsservice", "activitiusecase", "ÏŞÊ±»î¶¯·şÎñ")]
+    [RemoteService("goodsservice", "activitiusecase", "é™æ—¶æ´»åŠ¨æœåŠ¡")]
     public interface ILimitedTimeActivitieUseCaseService
     {
-        [RemoteFunc(funcDescription: "´´½¨ÏŞÊ±»î¶¯")]
+        [RemoteFunc(funcDescription: "åˆ›å»ºé™æ—¶æ´»åŠ¨")]
         Task<ApiResult> CreateLimitedTimeActivitie(LimitedTimeActivitieCreateDto input);
 		
-        [RemoteFunc(funcDescription: "¸üĞÂÏŞÊ±»î¶¯ĞÅÏ¢")]
+        [RemoteFunc(funcDescription: "æ›´æ–°é™æ—¶æ´»åŠ¨ä¿¡æ¯")]
         Task<ApiResult> UpdateLimitedTimeActivitie(LimitedTimeActivitieUpdateDto input);
 		
-        [RemoteFunc(funcDescription: "É¾³ıÏŞÊ±»î¶¯")]
+        [RemoteFunc(funcDescription: "åˆ é™¤é™æ—¶æ´»åŠ¨")]
         Task<ApiResult> DeleteLimitedTimeActivitie(LimitedTimeActivitieDeleteDto input);
 
-        [RemoteFunc(funcDescription: "ÏŞÊ±»î¶¯ÉÏÏÂ¼Ü")]
+        [RemoteFunc(funcDescription: "é™æ—¶æ´»åŠ¨ä¸Šä¸‹æ¶")]
         Task<ApiResult> UpOrDownShelfActivitie(UpOrDownShelfActivitieDto input);
     }
 }

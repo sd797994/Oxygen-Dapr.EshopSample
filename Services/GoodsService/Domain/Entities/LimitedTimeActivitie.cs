@@ -1,35 +1,35 @@
-using DomainBase;
+ï»¿using DomainBase;
 using System;
 
 namespace Domain.Entities
 {
     /// <summary>
-    /// ÁìÓòÊµÌå
+    /// é¢†åŸŸå®ä½“
     /// </summary>
     public class LimitedTimeActivitie : Entity, IAggregateRoot
     {
         /// <summary>
-        /// »î¶¯Ãû
+        /// æ´»åŠ¨å
         /// </summary>
         public string ActivitieName { get; set; }
         /// <summary>
-        /// ´ÙÏúÉÌÆ·
+        /// ä¿ƒé”€å•†å“
         /// </summary>
         public Guid GoodsId { get; set; }
         /// <summary>
-        /// ´ÙÏú¼Û
+        /// ä¿ƒé”€ä»·
         /// </summary>
         public decimal ActivitiePrice { get; set; }
         /// <summary>
-        /// »î¶¯¿ªÊ¼Ê±¼ä
+        /// æ´»åŠ¨å¼€å§‹æ—¶é—´
         /// </summary>
         public DateTime StartTime { get; set; }
         /// <summary>
-        /// »î¶¯½áÊøÊ±¼ä
+        /// æ´»åŠ¨ç»“æŸæ—¶é—´
         /// </summary>
         public DateTime EndTime { get; set; }
         /// <summary>
-        /// »î¶¯ÊÇ·ñÉÏ¼Ü
+        /// æ´»åŠ¨æ˜¯å¦ä¸Šæ¶
         /// </summary>
         public bool ShelfState { get; set; }
 
@@ -39,16 +39,16 @@ namespace Domain.Entities
                 ActivitieName = activitieName;
             GoodsId = goodsId;
             if (activitiePrice <= 0)
-                throw new DomainException("»î¶¯¼Û²»ÄÜĞ¡ÓÚ0");
+                throw new DomainException("æ´»åŠ¨ä»·ä¸èƒ½å°äº0");
             ActivitiePrice = activitiePrice;
             StartTime = startTime;
             if (endTime < DateTime.Now)
-                throw new DomainException("»î¶¯½áÊøÊ±¼ä²»ÄÜĞ¡ÓÚµ±Ç°Ê±¼ä");
+                throw new DomainException("æ´»åŠ¨ç»“æŸæ—¶é—´ä¸èƒ½å°äºå½“å‰æ—¶é—´");
             if (endTime > DateTime.Now.AddMonths(1))
-                throw new DomainException("»î¶¯½áÊøÊ±¼ä²»ÄÜ³¬¹ıµ±Ç°Ê±¼äÒ»¸öÔÂ");
+                throw new DomainException("æ´»åŠ¨ç»“æŸæ—¶é—´ä¸èƒ½è¶…è¿‡å½“å‰æ—¶é—´ä¸€ä¸ªæœˆ");
             EndTime = endTime;
             if (startTime >= endTime)
-                throw new DomainException("»î¶¯½áÊøÊ±¼ä±ØĞë´óÓÚ¿ªÊ¼Ê±¼ä");
+                throw new DomainException("æ´»åŠ¨ç»“æŸæ—¶é—´å¿…é¡»å¤§äºå¼€å§‹æ—¶é—´");
         }
 
         public void UpOrDownShelf(bool shelfState)

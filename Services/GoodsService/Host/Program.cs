@@ -1,4 +1,4 @@
-using Autofac;
+ï»¿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Host.Modules;
 using Infrastructure.EfDataAccess;
@@ -28,12 +28,12 @@ namespace Host
 
         static IHostBuilder CreateDefaultHost(string[] args) => new HostBuilder()
                 .ConfigureWebHostDefaults(webhostbuilder => {
-                    //×¢²á³ÉÎªoxygen·şÎñ½Úµã
+                    //æ³¨å†Œæˆä¸ºoxygenæœåŠ¡èŠ‚ç‚¹
                     webhostbuilder.StartOxygenServer<OxygenActorStartup>((config) => {
                         config.Port = 80;
                         config.PubSubCompentName = "pubsub";
                         config.StateStoreCompentName = "statestore";
-                        config.TracingHeaders = "Authentication";
+                        config.TracingHeaders = "Authentication,AuthIgnore";
                     });
                 })
                 .ConfigureAppConfiguration((hostContext, config) =>
@@ -44,18 +44,18 @@ namespace Host
                 })
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
-                    //×¢ÈëoxygenÒÀÀµ
+                    //æ³¨å…¥oxygenä¾èµ–
                     builder.RegisterOxygenModule();
-                    //×¢ÈëÒµÎñÒÀÀµ
+                    //æ³¨å…¥ä¸šåŠ¡ä¾èµ–
                     builder.RegisterModule(new ServiceModule());
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    //×¢²á×Ô¶¨ÒåHostService
+                    //æ³¨å†Œè‡ªå®šä¹‰HostService
                     services.AddHostedService<CustomerService>();
-                    //×¢²áÈ«¾ÖÀ¹½ØÆ÷
+                    //æ³¨å†Œå…¨å±€æ‹¦æˆªå™¨
                     LocalMethodAopProvider.RegisterPipelineHandler(AopHandlerProvider.ContextHandler, AopHandlerProvider.BeforeSendHandler, AopHandlerProvider.AfterMethodInvkeHandler, AopHandlerProvider.ExceptionHandler);
-                    //×¢²á¼øÈ¨À¹½ØÆ÷
+                    //æ³¨å†Œé‰´æƒæ‹¦æˆªå™¨
                     GoodsAuthenticationHandler.RegisterAllFilter();
                     services.AddLogging(configure =>
                     {

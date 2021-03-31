@@ -23,7 +23,7 @@ namespace Infrastructure.Http
                 var token = HttpContextExt.Current.Headers.FirstOrDefault(x => x.Key == "Authentication").Value;
                 var accountInfo = await GetAccountInfo(HttpContextExt.Current.RequestService.Resolve<IStateManager>());
                 HttpContextExt.SetUser(accountInfo);
-                if (!HttpContextExt.Current.User.IgnorePermission && authMethod.CheckPermission && !HttpContextExt.Current.GetAuthIgnore() && !HttpContextExt.Current.User.Permissions.Contains(routePath))
+                if (!HttpContextExt.Current.User.IgnorePermission && authMethod.CheckPermission && !HttpContextExt.Current.GetAuthIgnore() && HttpContextExt.Current.User.Permissions != null && !HttpContextExt.Current.User.Permissions.Contains(routePath))
                     throw new InfrastructureException("当前登录用户缺少使用该接口的必要权限,请重试!");
             }
         }

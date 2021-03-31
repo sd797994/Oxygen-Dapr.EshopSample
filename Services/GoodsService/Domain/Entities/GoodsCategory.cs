@@ -1,9 +1,9 @@
-using DomainBase;
+锘縰sing DomainBase;
 
 namespace Domain.Entities
 {
     /// <summary>
-    /// 领域实体
+    /// 棰嗗煙瀹炰綋
     /// </summary>
     public class GoodsCategory : Entity, IAggregateRoot
     {
@@ -14,7 +14,7 @@ namespace Domain.Entities
             if (!string.IsNullOrEmpty(categoryName))
                 CategoryName = categoryName;
             if (sort < 0)
-                throw new DomainException("分类排序必须大于0");
+                throw new DomainException("鍒嗙被鎺掑簭蹇呴』澶т簬0");
             Sort = sort;
         }
     }

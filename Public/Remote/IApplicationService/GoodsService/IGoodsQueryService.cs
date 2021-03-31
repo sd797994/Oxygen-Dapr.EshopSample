@@ -1,4 +1,4 @@
-using IApplicationService.Base.AppQuery;
+锘縰sing IApplicationService.Base.AppQuery;
 using IApplicationService.GoodsService.Dtos.Input;
 using Oxygen.Client.ServerSymbol;
 using System;
@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.GoodsService
 {
-    [RemoteService("goodsservice", "goodsquery","商品服务")]
+    [RemoteService("goodsservice", "goodsquery","鍟嗗搧鏈嶅姟")]
     public interface IGoodsQueryService
     {
-        [RemoteFunc(funcDescription: "获取商品列表")]
+        [RemoteFunc(funcDescription: "鑾峰彇鍟嗗搧鍒楄〃")]
         Task<ApiResult> GetGoodsList(PageQueryInputBase input);
-        [RemoteFunc(funcDescription: "获取商品列表")]
+        [RemoteFunc(funcDescription: "鑾峰彇鍟嗗搧鍒楄〃")]
         Task<ApiResult> GetGoodsListByIds(GetGoodsListByIdsDto input);
 
-        [RemoteFunc(funcDescription: "搜索商品列表")]
+        [RemoteFunc(funcDescription: "鎼滅储鍟嗗搧鍒楄〃")]
         Task<ApiResult> GetGoodslistByGoodsName(GetGoodslistByGoodsNameDto input);
+        [RemoteFunc(funcDescription: "鍓嶇鑾峰彇鍟嗗搧鍒楄〃")]
+        Task<ApiResult> GetEsGoods(PageQueryInputBase input);
     }
 }

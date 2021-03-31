@@ -1,4 +1,4 @@
-using IApplicationService.AccountService.Dtos.Input;
+锘縰sing IApplicationService.AccountService.Dtos.Input;
 using Oxygen.Client.ServerSymbol;
 using System;
 using System.Collections.Generic;
@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.RoleService
 {
-    [RemoteService("accountservice", "roleusecase", "角色服务")]
+    [RemoteService("accountservice", "roleusecase", "瑙掕壊鏈嶅姟")]
     public interface IRoleUseCaseService
     {
-        [RemoteFunc(funcDescription: "创建角色")]
+        [RemoteFunc(funcDescription: "鍒涘缓瑙掕壊")]
         Task<ApiResult> RoleCreate(RoleCreateDto input);
 
-        [RemoteFunc(funcDescription: "更新角色")]
+        [RemoteFunc(funcDescription: "鏇存柊瑙掕壊")]
         Task<ApiResult> RoleUpdate(RoleUpdateDto input);
 
-        [RemoteFunc(funcDescription: "删除角色")]
+        [RemoteFunc(funcDescription: "鍒犻櫎瑙掕壊")]
         Task<ApiResult> RoleDelete(RoleDeleteDto input); 
     }
 }

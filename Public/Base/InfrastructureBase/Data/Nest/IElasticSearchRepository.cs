@@ -10,6 +10,7 @@ namespace InfrastructureBase.Data.Nest
     {
         IElasticSearchRepository<T> GetRepo(string Index);
         Task<List<T>> SearchData();
-        Task SaveData(List<T> data);
+        Task SaveData(params T[] data);
+        Task RemoveData(params T[] item);
     }
 }

@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Linq;
 using System.Threading.Tasks;
 using IApplicationService;
@@ -50,7 +50,7 @@ namespace ApplicationService
             using var tran = await unitofWork.BeginTransactionAsync();
             var order = await orderRepository.GetAsync(input.OrderId);
             if (order == null)
-                throw new ApplicationServiceException("∂©µ•Œﬁ–ß!");
+                throw new ApplicationServiceException("ËÆ¢ÂçïÊó†Êïà!");
             var logistics = new Logistics();
             var mallSetting = (await mallSettingQuery.GetMallSetting()).GetData<MallSettingOutInfo>();
             logistics.Deliver(input.OrderId, (LogisticsType)input.LogisticsType, input.LogisticsNo, mallSetting.DeliverName, mallSetting.DeliverAddress, HttpContextExt.Current.User.Id, order.ConsigneeInfo.Name, order.ConsigneeInfo.Address, input.DeliveTime);
@@ -58,7 +58,7 @@ namespace ApplicationService
             if (await new LogisticsDeliverCheckSpecification(repository).IsSatisfiedBy(logistics))
             {
                 await unitofWork.CommitAsync(tran);
-                await eventBus.SendEvent(EventTopicDictionary.Logistics.LogisticsDeliverSucc, new OperateLogisticsSuccessEvent(logistics, HttpContextExt.Current.User.UserName));
+                await eventBus.SendEvent(EventTopicDictionary.Logistics.LogisticsDeliverSucc, new OperateLogisticsSuccessEvent(logistics, HttpContextExt.Current.User.LoginName));
             }
             return ApiResult.Ok();
         }
@@ -68,11 +68,11 @@ namespace ApplicationService
         {
             var logistics = await repository.GetAsync(input.LogisticsId);
             if (logistics == null)
-                throw new ApplicationServiceException("ŒÔ¡˜µ•Œﬁ–ß!");
+                throw new ApplicationServiceException("Áâ©ÊµÅÂçïÊó†Êïà!");
             logistics.Receive(HttpContextExt.Current.User.Id, input.ReceiveTime);
             repository.Update(logistics);
             await unitofWork.CommitAsync();
-            await eventBus.SendEvent(EventTopicDictionary.Logistics.LogisticsReceiveSucc, new OperateLogisticsSuccessEvent(logistics, HttpContextExt.Current.User.UserName));
+            await eventBus.SendEvent(EventTopicDictionary.Logistics.LogisticsReceiveSucc, new OperateLogisticsSuccessEvent(logistics, HttpContextExt.Current.User.LoginName));
             return ApiResult.Ok();
         }
     }

@@ -16,7 +16,7 @@ namespace InfrastructureBase.Data.Nest
             var impl = repo as ElasticSearchRepository<T>;
             if (!impl.InitPage)
             {
-                impl.searchParams.From(pageIndex * pageSize).Size(pageSize);
+                impl.searchParams.From((pageIndex - 1) * pageSize).Size(pageSize);
                 impl.InitPage = true;
             }
             return impl;
@@ -26,22 +26,12 @@ namespace InfrastructureBase.Data.Nest
             var impl = repo as ElasticSearchRepository<T>;
             if (sortfunc != null)
             {
-                string sortName;
-                Type sortNameType;
-                if (sortfunc.Body is UnaryExpression)
-                {
-                    sortName = CamelCase(((MemberExpression)((UnaryExpression)sortfunc.Body).Operand).Member.Name);
-                    sortNameType = (((MemberExpression)((UnaryExpression)sortfunc.Body).Operand).Member as PropertyInfo).PropertyType;
-                }
-                else
-                {
-                    sortName = CamelCase(((MemberExpression)sortfunc.Body).Member.Name);
-                    sortNameType = (((MemberExpression)sortfunc.Body).Member as PropertyInfo).PropertyType;
-                }
+                var memberprop = GetMember(sortfunc.Body);
+                var sortName = CamelCase(memberprop.memberInfo.Name, memberprop.propertyInfo.PropertyType);
                 if (desc)
-                    impl.sortQueries.Descending($"{sortName}{(sortNameType == typeof(string) ? ".keyword" : "")}");
+                    impl.sortQueries.Descending(sortName);
                 else
-                    impl.sortQueries.Ascending($"{sortName}{(sortNameType == typeof(string) ? ".keyword" : "")}");
+                    impl.sortQueries.Ascending(sortName);
             }
             return impl;
         }
@@ -56,40 +46,12 @@ namespace InfrastructureBase.Data.Nest
                     var paramName = "";
                     object paramValue = "";
                     bool isDate = false;
-                    if (be.Left is UnaryExpression)
-                    {
-                        paramName = CamelCase(((MemberExpression)((UnaryExpression)be.Left).Operand).Member.Name);
-                        if ((((MemberExpression)((UnaryExpression)be.Left).Operand).Member as PropertyInfo).PropertyType == typeof(DateTime) ||
-                            (((MemberExpression)((UnaryExpression)be.Left).Operand).Member as PropertyInfo).PropertyType == typeof(DateTime?))
-                            isDate = true;
-                    }
-                    else
-                    {
-                        paramName = CamelCase(((MemberExpression)be.Left).Member.Name);
-                        if ((((MemberExpression)be.Left).Member as PropertyInfo).PropertyType == typeof(DateTime) ||
-                            (((MemberExpression)be.Left).Member as PropertyInfo).PropertyType == typeof(DateTime?))
-                            isDate = true;
-                    }
+                    var memberprop = GetMember(be.Left);
+                    paramName = CamelCase(memberprop.memberInfo.Name, memberprop.propertyInfo.PropertyType);
+                    if (memberprop.propertyInfo.PropertyType == typeof(DateTime) || memberprop.propertyInfo.PropertyType == typeof(DateTime?))
+                        isDate = true;
                     ExpressionType type = be.NodeType;
-                    if (be.Right is ConstantExpression)
-                    {
-                        paramValue = ((ConstantExpression)be.Right).Value;
-                    }
-                    else if (be.Right is MemberExpression)
-                    {
-                        paramValue = GetValue((MemberExpression)be.Right);
-                    }
-                    else if (be.Right is MethodCallExpression)
-                    {
-                        paramValue = Expression.Lambda(be.Right).Compile().DynamicInvoke();
-                    }
-                    else
-                    {
-                        if (((UnaryExpression)be.Right).Operand is not MethodCallExpression)
-                            paramValue = GetValue((MemberExpression)((UnaryExpression)be.Right).Operand);
-                        else
-                            paramValue = Expression.Lambda(be.Right).Compile().DynamicInvoke();
-                    }
+                    paramValue = GetValue(be.Right);
                     Func<QueryContainerDescriptor<T>, QueryContainer> func = (x) => x.Term(paramName, paramValue);
                     Func<QueryContainerDescriptor<T>, QueryContainer> rangefunc;
                     switch (type)
@@ -135,28 +97,44 @@ namespace InfrastructureBase.Data.Nest
                     MethodCallExpression me = query.Body as MethodCallExpression;
                     if (me.Method.Name == "Contains")
                     {
+                        string paramName;
+                        dynamic paramValue;
                         if (me.Arguments.Count > 1)//array
                         {
-                            var paramName = CamelCase((me.Arguments[1] as MemberExpression).Member.Name);
-                            dynamic paramValue = GetValue(me.Arguments[0] as MemberExpression);
+                            var memberprop = GetMember(me.Arguments[1]);
+                            paramName = CamelCase(memberprop.memberInfo.Name, memberprop.propertyInfo.PropertyType);
+                            paramValue = GetValue(me.Arguments[0] as MemberExpression);
                             Func<QueryContainerDescriptor<T>, QueryContainer> rangefunc = (x) => x.Terms(r => r.Field(paramName).Terms(paramValue));
                             impl.mustQueries.Add(rangefunc);
                         }
                         else
                         {
-                            if (me.Arguments[0] is MemberExpression)  //list
+                            if (me.Arguments[0] is MemberExpression) //property
                             {
-                                var paramName = CamelCase((me.Arguments[0] as MemberExpression).Member.Name);
-                                dynamic paramValue = Expression.Lambda((query.Body as MethodCallExpression).Object).Compile().DynamicInvoke();
-                                Func<QueryContainerDescriptor<T>, QueryContainer> rangefunc = (x) => x.Terms(r => r.Field(paramName).Terms(paramValue));
-                                impl.mustQueries.Add(rangefunc);
+                                if ((me.Object as MemberExpression).Member is PropertyInfo)
+                                {
+                                    var memberprop = GetMember(query.Body);
+                                    paramName = CamelCase(memberprop.memberInfo.Name, memberprop.propertyInfo.PropertyType);
+                                    paramValue = GetValue(me.Arguments[0]);
+                                    Func<QueryContainerDescriptor<T>, QueryContainer> containsfunc = (x) => x.Wildcard(r => r.Field(paramName).Value($"*{paramValue}*"));
+                                    impl.mustQueries.Add(containsfunc);
+                                }
+                                else  //list
+                                {
+                                    var memberprop = GetMember(me.Arguments[0]);
+                                    paramName = CamelCase(memberprop.memberInfo.Name, memberprop.propertyInfo.PropertyType);
+                                    paramValue = Expression.Lambda((query.Body as MethodCallExpression).Object).Compile().DynamicInvoke();
+                                    Func<QueryContainerDescriptor<T>, QueryContainer> rangefunc = (x) => x.Terms(r => r.Field(paramName).Terms(paramValue));
+                                    impl.mustQueries.Add(rangefunc);
+                                }
                             }
                             else if (me.Arguments[0] is ConstantExpression) //string
                             {
-                                var paramName = CamelCase(((query.Body as MethodCallExpression).Object as MemberExpression).Member.Name);
-                                dynamic paramValue = (me.Arguments[0] as ConstantExpression).Value;
-                                Func<QueryContainerDescriptor<T>, QueryContainer> likefunc = (x) => x.Wildcard(r => r.Field(paramName).Value($"*{paramValue}*"));
-                                impl.mustQueries.Add(likefunc);
+                                var memberprop = GetMember(query.Body);
+                                paramName = CamelCase(memberprop.memberInfo.Name, memberprop.propertyInfo.PropertyType);
+                                paramValue = GetValue(me.Arguments[0]);
+                                Func<QueryContainerDescriptor<T>, QueryContainer> containsfunc = (x) => x.Wildcard(r => r.Field(paramName).Value($"*{paramValue}*"));
+                                impl.mustQueries.Add(containsfunc);
                             }
                         }
                     }
@@ -173,14 +151,56 @@ namespace InfrastructureBase.Data.Nest
             var getter = getterLambda.Compile();
             return getter();
         }
-        static string CamelCase(string sourceStr)
+        static object GetValue(Expression expression)
+        {
+            if (expression is ConstantExpression)
+                return GetValue(expression as ConstantExpression);
+            else if (expression is MemberExpression)
+                return GetValue(expression as MemberExpression);
+            else if (expression is UnaryExpression)
+                return GetValue(expression as UnaryExpression);
+            else
+                return Expression.Lambda(expression).Compile().DynamicInvoke();
+        }
+        static object GetValue(ConstantExpression methodCall)
+        {
+            return methodCall.Value;
+        }
+        static object GetValue(UnaryExpression unary)
+        {
+            if (unary.Operand is MemberExpression)
+                return GetValue(unary.Operand as MemberExpression);
+            else
+                return GetValue(unary as Expression);
+        }
+
+        static string CamelCase(string sourceStr, Type type = null)
         {
             if (sourceStr.Length == 1)
                 return sourceStr.AsSpan()[0].ToString().ToLower();
-            var result = sourceStr.AsSpan()[0].ToString().ToLower() + sourceStr.AsSpan()[1..].ToString();
+            var result = sourceStr.AsSpan()[0].ToString().ToLower() + sourceStr.AsSpan()[1..].ToString() + (type == typeof(string) ? ".keyword" : "");
             if (result == "id")
                 return "_id";
             return result;
+        }
+        static (MemberInfo memberInfo, PropertyInfo propertyInfo) GetMember(Expression func)
+        {
+            MemberInfo memberInfo = default;
+            PropertyInfo propertyInfo;
+            if(func is UnaryExpression)
+            {
+                func = (func as UnaryExpression).Operand;
+            }
+            if (func is MemberExpression)
+            {
+                memberInfo = (func as MemberExpression).Member;
+            }
+            else if (func is MethodCallExpression)
+            {
+                memberInfo = ((func as MethodCallExpression).Object as MemberExpression).Member;
+            }
+            propertyInfo = memberInfo as PropertyInfo;
+            return (memberInfo, propertyInfo);
         }
         #endregion
     }

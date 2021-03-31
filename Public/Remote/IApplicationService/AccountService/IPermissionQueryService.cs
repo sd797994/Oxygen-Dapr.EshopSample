@@ -1,4 +1,4 @@
-using IApplicationService.Base.AppQuery;
+ï»¿using IApplicationService.Base.AppQuery;
 using Oxygen.Client.ServerSymbol;
 using System;
 using System.Collections.Generic;
@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.PermissionService
 {
-    [RemoteService("accountservice", "permissionquery", "È¨ÏŞ·şÎñ")]
+    [RemoteService("accountservice", "permissionquery", "æƒé™æœåŠ¡")]
     public interface IPermissionQueryService
     {
-        [RemoteFunc(funcDescription: "»ñÈ¡³õÊ¼»¯È¨ÏŞ½Ó¿Ú")]
+        [RemoteFunc(funcDescription: "è·å–åˆå§‹åŒ–æƒé™æ¥å£")]
         Task<ApiResult> GetInitPermissionApilist();
 
-        [RemoteFunc(funcDescription: "»ñÈ¡È¨ÏŞÁĞ±í")]
+        [RemoteFunc(funcDescription: "è·å–æƒé™åˆ—è¡¨")]
         Task<ApiResult> GetPermissionList(PageQueryInputBase input);
 
-        [RemoteFunc(funcDescription: "»ñÈ¡ËùÓĞÈ¨ÏŞ")]
+        [RemoteFunc(funcDescription: "è·å–æ‰€æœ‰æƒé™")]
         Task<ApiResult> GetAllPermissions();
 
-        [RemoteFunc(funcDescription: "»ñÈ¡ÓÃ»§Â·ÓÉ")]
+        [RemoteFunc(funcDescription: "è·å–ç”¨æˆ·è·¯ç”±")]
         Task<ApiResult> GetUserRouter();
     }
 }

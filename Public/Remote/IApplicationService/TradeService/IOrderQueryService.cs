@@ -1,16 +1,20 @@
-using Oxygen.Client.ServerSymbol;
+ï»¿using Oxygen.Client.ServerSymbol;
 using IApplicationService.Base.AppQuery;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using IApplicationService.TradeService.Dtos.Input;
 
 namespace IApplicationService.TradeService
 {
-    [RemoteService("tradeservice", "orderquery", "¶©µ¥·şÎñ")]
+    [RemoteService("tradeservice", "orderquery", "è®¢å•æœåŠ¡")]
     public interface IOrderQueryService
     {
-        [RemoteFunc(funcDescription: "»ñÈ¡¶©µ¥ÁĞ±í")]
+        [RemoteFunc(funcDescription: "è·å–è®¢å•åˆ—è¡¨")]
         Task<ApiResult> GetOrderList(PageQueryInputBase input);
+
+        [RemoteFunc(funcDescription: "è·å–è®¢å•å”®å–æ•°")]
+        Task<ApiResult> GetOrderSellCountByGoodsId(GetOrderSellCountByGoodsIdDto input);
     }
 }

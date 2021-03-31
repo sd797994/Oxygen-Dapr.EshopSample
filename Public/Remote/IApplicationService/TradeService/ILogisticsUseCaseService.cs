@@ -1,4 +1,4 @@
-using Oxygen.Client.ServerSymbol;
+锘縰sing Oxygen.Client.ServerSymbol;
 using IApplicationService.TradeService.Dtos.Input;
 using System;
 using System.Collections.Generic;
@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.TradeService
 {
-    [RemoteService("tradeservice", "logisticsusecase", "物流服务")]
+    [RemoteService("tradeservice", "logisticsusecase", "鐗╂祦鏈嶅姟")]
     public interface ILogisticsUseCaseService
     {
-        [RemoteFunc(funcDescription: "发货")]
+        [RemoteFunc(funcDescription: "鍙戣揣")]
         Task<ApiResult> Deliver(LogisticsDeliverDto input);
 		
-        [RemoteFunc(funcDescription: "确认收货")]
+        [RemoteFunc(funcDescription: "纭鏀惰揣")]
         Task<ApiResult> Receive(LogisticsReceiveDto input);
     }
 }

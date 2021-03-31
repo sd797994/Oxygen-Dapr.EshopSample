@@ -1,4 +1,4 @@
-using IApplicationService.Base.AppQuery;
+锘縰sing IApplicationService.Base.AppQuery;
 using Oxygen.Client.ServerSymbol;
 using System;
 using System.Collections.Generic;
@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.GoodsCategoryService
 {
-    [RemoteService("goodsservice", "categoryquery","商品分类服务")]
+    [RemoteService("goodsservice", "categoryquery","鍟嗗搧鍒嗙被鏈嶅姟")]
     public interface IGoodsCategoryQueryService
     {
 
-        [RemoteFunc(funcDescription: "获取商品分类列表")]
+        [RemoteFunc(funcDescription: "鑾峰彇鍟嗗搧鍒嗙被鍒楄〃")]
         Task<ApiResult> GetCategoryList(PageQueryInputBase input);
-        [RemoteFunc(funcDescription: "获取全部商品分类")]
+        [RemoteFunc(funcDescription: "鑾峰彇鍏ㄩ儴鍟嗗搧鍒嗙被")]
         Task<ApiResult> GetAllCategoryList();
     }
 }

@@ -1,0 +1,442 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: accountservice
+  namespace: dapreshop
+  labels:
+    app: accountservice
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: accountservice
+  minReadySeconds: 5 
+  strategy: 
+    type: RollingUpdate 
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1
+  template: 
+    metadata:
+      labels: 
+        app: accountservice
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "accountservice"
+        dapr.io/app-port: "80"
+    spec:
+      containers:
+        - name: web
+          image: accountservice:release
+          imagePullPolicy: Never
+          readinessProbe:
+            httpGet:
+              path: v1.0/healthz
+              port: 3500
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds : 5
+            failureThreshold : 3
+          ports:
+            - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goodsservice
+  namespace: dapreshop
+  labels:
+    app: goodsservice
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goodsservice
+  minReadySeconds: 5 
+  strategy: 
+    type: RollingUpdate 
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1
+  template: 
+    metadata:
+      labels: 
+        app: goodsservice
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "goodsservice"
+        dapr.io/app-port: "80"
+    spec:
+      containers:
+        - name: web
+          image: goodsservice:release
+          imagePullPolicy: Never
+          readinessProbe:
+            httpGet:
+              path: v1.0/healthz
+              port: 3500
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds : 5
+            failureThreshold : 3
+          ports:
+            - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tradeservice
+  namespace: dapreshop
+  labels:
+    app: tradeservice
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tradeservice
+  minReadySeconds: 5 
+  strategy: 
+    type: RollingUpdate 
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1
+  template: 
+    metadata:
+      labels: 
+        app: tradeservice
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "tradeservice"
+        dapr.io/app-port: "80"
+    spec:
+      containers:
+        - name: web
+          image: tradeservice:release
+          imagePullPolicy: Never
+          readinessProbe:
+            httpGet:
+              path: v1.0/healthz
+              port: 3500
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds : 5
+            failureThreshold : 3
+          ports:
+            - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: publicservice
+  namespace: dapreshop
+  labels:
+    app: publicservice
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: publicservice
+  minReadySeconds: 5 
+  strategy: 
+    type: RollingUpdate 
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1
+  template: 
+    metadata:
+      labels: 
+        app: publicservice
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "publicservice"
+        dapr.io/app-port: "80"
+    spec:
+      containers:
+        - name: web
+          image: publicservice:release
+          imagePullPolicy: Never
+          readinessProbe:
+            httpGet:
+              path: v1.0/healthz
+              port: 3500
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds : 5
+            failureThreshold : 3
+          ports:
+            - containerPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: dapreshop
+  name: apigateway
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    nginx.ingress.kubernetes.io/cors-allow-headers: 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authentication,AuthIgnore'
+spec:
+  rules:
+  - host: api.dapreshop.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: apigateway
+            port:
+              number: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobservice
+  namespace: dapreshop
+  labels:
+    app: jobservice
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jobservice
+  minReadySeconds: 5 
+  strategy: 
+    type: RollingUpdate 
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1
+  template: 
+    metadata:
+      labels: 
+        app: jobservice
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "jobservice"
+        dapr.io/app-port: "80"
+    spec:
+      containers:
+        - name: web
+          image: jobservice:release
+          imagePullPolicy: Never
+          readinessProbe:
+            httpGet:
+              path: v1.0/healthz
+              port: 3500
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds : 5
+            failureThreshold : 3
+          ports:
+            - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imageservice
+  namespace: dapreshop
+  labels:
+    app: imageservice
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: imageservice
+  minReadySeconds: 5 
+  strategy: 
+    type: RollingUpdate 
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1
+  template: 
+    metadata:
+      labels: 
+        app: imageservice
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "imageservice"
+        dapr.io/app-port: "80"
+    spec:
+      containers:
+        - name: web
+          image: imageservice:release
+          imagePullPolicy: Never
+          readinessProbe:
+            httpGet:
+              path: v1.0/healthz
+              port: 3500
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds : 5
+            failureThreshold : 3
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: imageservice
+  namespace: dapreshop
+spec:
+  selector:
+    app: imageservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: dapreshop
+  name: imageservice
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    nginx.ingress.kubernetes.io/cors-allow-headers: 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authentication,AuthIgnore'
+spec:
+  rules:
+  - host: image.dapreshop.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: imageservice
+            port:
+              number: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adminfrontend
+  namespace: dapreshop
+  labels:
+    app: adminfrontend
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adminfrontend
+  minReadySeconds: 5 
+  strategy: 
+    type: RollingUpdate 
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1
+  template: 
+    metadata:
+      labels: 
+        app: adminfrontend
+    spec:
+      containers:
+        - name: web
+          image: adminfrontend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adminfrontend
+  namespace: dapreshop
+spec:
+  selector:
+    app: adminfrontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: dapreshop
+  name: adminfrontend
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    nginx.ingress.kubernetes.io/cors-allow-headers: 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authentication,AuthIgnore'
+spec:
+  rules:
+  - host: admin.dapreshop.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: adminfrontend
+            port:
+              number: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mobilefrontend
+  namespace: dapreshop
+  labels:
+    app: mobilefrontend
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mobilefrontend
+  minReadySeconds: 5 
+  strategy: 
+    type: RollingUpdate 
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1
+  template: 
+    metadata:
+      labels: 
+        app: mobilefrontend
+    spec:
+      containers:
+        - name: web
+          image: mobilefrontend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mobilefrontend
+  namespace: dapreshop
+spec:
+  selector:
+    app: mobilefrontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: dapreshop
+  name: mobilefrontend
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: '*'
+    nginx.ingress.kubernetes.io/cors-allow-headers: 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authentication,AuthIgnore'
+spec:
+  rules:
+  - host: m.dapreshop.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mobilefrontend
+            port:
+              number: 80

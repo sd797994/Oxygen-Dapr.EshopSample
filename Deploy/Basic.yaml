@@ -147,21 +147,22 @@ spec:
     spec:
       containers:
         - name: web
-          image: nginx:latest
+          image: apigateway:latest
           imagePullPolicy: IfNotPresent
+          readinessProbe:
+            httpGet:
+              path: v1.0/healthz
+              port: 3500
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds : 5
+            failureThreshold : 3
           ports:
             - containerPort: 80
               name: web
-          volumeMounts:
-            - mountPath: /etc/nginx/conf.d
-              name: v1
           env:
             - name: TZ
               value: "Asia/Shanghai"
-      volumes:
-        - name: v1
-          hostPath:
-            path: /run/desktop/mnt/host/e/dotnet_project/Oxygen-Dapr.EshopSample/Deploy/GateWayConf
 ---
 apiVersion: v1
 kind: Service

@@ -1,4 +1,4 @@
-using Domain;
+﻿using Domain;
 using Domain.Repository;
 using IApplicationService;
 using IApplicationService.TradeService.Dtos.Output;
@@ -18,6 +18,7 @@ using IApplicationService.AccountService;
 using IApplicationService.AccountService.Dtos.Input;
 using IApplicationService.AccountService.Dtos.Output;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationService
 {
@@ -72,6 +73,20 @@ namespace ApplicationService
                 CreateTime = x.CreateTime
             }).ToList();
             return ApiResult.Ok(new PageQueryResonseBase<GetOrderListResponse>(result, Total));
+        }
+
+        [AuthenticationFilter(false)]
+        public async Task<ApiResult> GetOrderSellCountByGoodsId(GetOrderSellCountByGoodsIdDto input)
+        {
+            var sellcount = await (from a in dbContext.OrderItem.Where(x => input.GoodsIds.Contains(x.GoodsId))
+                                   join b in dbContext.Order.Where(x => x.OrderState != OrderState.Cancel && x.CreateTime >= input.ExpressTime) on a.OrderId equals b.Id
+                                   group a by a.GoodsId into g
+                                   select new GetOrderSellCountResponse()
+                                   {
+                                       GoodsId = g.Key,
+                                       CellCount = g.Sum(x => x.Count)
+                                   }).ToListAsync();
+            return ApiResult.Ok(sellcount);
         }
     }
 }

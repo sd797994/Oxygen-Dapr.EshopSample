@@ -1,4 +1,4 @@
-using Oxygen.Client.ServerSymbol;
+锘縰sing Oxygen.Client.ServerSymbol;
 using IApplicationService.Base.AppQuery;
 using System;
 using System.Collections.Generic;
@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.PublicService
 {
-    [RemoteService("publicservice", "eventhandleerrorinfoquery", "公共服务")]
+    [RemoteService("publicservice", "eventhandleerrorinfoquery", "鍏叡鏈嶅姟")]
     public interface IEventHandleErrorInfoQueryService
     {
-        [RemoteFunc(funcDescription: "获取列表")]
+        [RemoteFunc(funcDescription: "鑾峰彇鍒楄〃")]
         Task<ApiResult> GetEventHandleErrorInfoList(PageQueryInputBase input);
     }
 }

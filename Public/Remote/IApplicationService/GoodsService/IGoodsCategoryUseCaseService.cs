@@ -1,4 +1,4 @@
-using IApplicationService.GoodsService.Dtos.Input;
+锘縰sing IApplicationService.GoodsService.Dtos.Input;
 using Oxygen.Client.ServerSymbol;
 using System;
 using System.Collections.Generic;
@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.GoodsCategoryService
 {
-    [RemoteService("goodsservice", "categoryusecase","商品分类服务")]
+    [RemoteService("goodsservice", "categoryusecase","鍟嗗搧鍒嗙被鏈嶅姟")]
     public interface IGoodsCategoryUseCaseService
     {
-        [RemoteFunc(funcDescription: "创建商品分类")]
+        [RemoteFunc(funcDescription: "鍒涘缓鍟嗗搧鍒嗙被")]
         Task<ApiResult> CreateCategory(CategoryCreateDto input);
-        [RemoteFunc(funcDescription: "更新商品分类")]
+        [RemoteFunc(funcDescription: "鏇存柊鍟嗗搧鍒嗙被")]
         Task<ApiResult> UpdateCategory(CategoryUpdateDto input);
-        [RemoteFunc(funcDescription: "删除商品分类")]
+        [RemoteFunc(funcDescription: "鍒犻櫎鍟嗗搧鍒嗙被")]
         Task<ApiResult> DeleteCategory(CategoryDeleteDto input);
     }
 }

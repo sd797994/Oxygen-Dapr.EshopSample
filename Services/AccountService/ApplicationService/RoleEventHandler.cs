@@ -1,4 +1,4 @@
-using Domain.Repository;
+﻿using Domain.Repository;
 using Infrastructure.EfDataAccess;
 using Oxygen.Client.ServerProxyFactory.Interface;
 using Oxygen.Client.ServerSymbol.Events;

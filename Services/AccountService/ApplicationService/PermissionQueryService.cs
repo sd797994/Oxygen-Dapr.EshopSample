@@ -1,4 +1,4 @@
-using Domain.Repository;
+ï»¿using Domain.Repository;
 using IApplicationService;
 using IApplicationService.AccountService.Dtos.Input;
 using IApplicationService.AccountService.Dtos.Output;
@@ -35,7 +35,12 @@ namespace ApplicationService
         [AuthenticationFilter]
         public async Task<ApiResult> GetInitPermissionApilist()
         {
-            return await ApiResult.Ok(stateManager.GetState<List<AuthenticationInfo>>(new PermissionListCacheStore())).Async();
+            var result = new List<AuthenticationInfo>();
+            result.AddRange(await stateManager.GetState<List<AuthenticationInfo>>(new PermissionState() { Key = "account" }) ?? new List<AuthenticationInfo>());
+            result.AddRange(await stateManager.GetState<List<AuthenticationInfo>>(new PermissionState() { Key = "goods" }) ?? new List<AuthenticationInfo>());
+            result.AddRange(await stateManager.GetState<List<AuthenticationInfo>>(new PermissionState() { Key = "trade" }) ?? new List<AuthenticationInfo>());
+            result.AddRange(await stateManager.GetState<List<AuthenticationInfo>>(new PermissionState() { Key = "public" }) ?? new List<AuthenticationInfo>());
+            return await ApiResult.Ok(result).Async();
         }
 
         [AuthenticationFilter]
@@ -72,7 +77,7 @@ namespace ApplicationService
             return ApiResult.Ok(result);
         }
         /// <summary>
-        /// Ò»¸ö¼òÒ×µÄÄ£Äâ¶¯Ì¬Â·ÓÉ
+        /// ä¸€ä¸ªç®€æ˜“çš„æ¨¡æ‹ŸåŠ¨æ€è·¯ç”±
         /// </summary>
         /// <returns></returns>
         [AuthenticationFilter(false)]
@@ -145,7 +150,7 @@ namespace ApplicationService
                     result.Add(item);
                 }
             }
-            return await ApiResult.Ok(result, "²Ù×÷³É¹¦").Async();
+            return await ApiResult.Ok(result, "æ“ä½œæˆåŠŸ").Async();
         }
     }
 }

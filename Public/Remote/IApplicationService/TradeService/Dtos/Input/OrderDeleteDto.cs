@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace IApplicationService.TradeService.Dtos.Input
 {
     public class OrderDeleteDto
     {
-        [Required(ErrorMessage = "��ѡ�񶩵�")]
+        [Required(ErrorMessage = "请选择订单")]
         public Guid Id { get; set; }
     }
 }

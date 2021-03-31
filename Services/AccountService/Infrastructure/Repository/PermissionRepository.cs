@@ -1,4 +1,4 @@
-using Infrastructure.EfDataAccess;
+锘縰sing Infrastructure.EfDataAccess;
 using Infrastructure.PersistenceObject;
 using InfrastructureBase.Object;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +17,9 @@ namespace Infrastructure.Repository
         public override void Delete(Expression<Func<Domain.Entities.Permission, bool>> condition)
         {
             var delPermissions = context.Permission.Where(condition.ReplaceParameter<Domain.Entities.Permission, Permission>());
-            context.Permission.RemoveRange(delPermissions);//删除对应权限
+            context.Permission.RemoveRange(delPermissions);//鍒犻櫎瀵瑰簲鏉冮檺
             var delPermissionIds = delPermissions.Select(x => x.Id);
-            context.RolePermission.RemoveRange(context.RolePermission.Where(x => delPermissionIds.Contains(x.PermissionId)));//删除对应权限角色关系
+            context.RolePermission.RemoveRange(context.RolePermission.Where(x => delPermissionIds.Contains(x.PermissionId)));//鍒犻櫎瀵瑰簲鏉冮檺瑙掕壊鍏崇郴
         }
     }
 }

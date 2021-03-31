@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace IApplicationService.GoodsService.Dtos.Input
 {
     public class GoodsUpdateDto: GoodsCreateDto
     {
-        [Required(ErrorMessage = "ÇëÑ¡ÔñÒ»¸öÉÌÆ·")]
+        [Required(ErrorMessage = "è¯·é€‰æ‹©ä¸€ä¸ªå•†å“")]
         public Guid Id { get; set; }
     }
 }

@@ -7,3 +7,11 @@ export function GetOrderList(data) {
     data
   })
 }
+
+export function OrderPay(data) {
+  return request({
+    url: '/tradeservice/orderusecase/OrderPay',
+    method: 'post',
+    data
+  })
+}

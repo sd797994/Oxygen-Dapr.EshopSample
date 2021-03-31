@@ -1,4 +1,4 @@
-using Domain.Dtos;
+锘縰sing Domain.Dtos;
 using Domain.Repository;
 using Domain.Services;
 using IApplicationService;
@@ -33,7 +33,7 @@ namespace ApplicationService
             var result = input.CopyTo<CreatePermissionDto, CreatePermissionTmpDto>();
             new PermissionMultiCreateService(repository, result).Create();
             await unitofWork.CommitAsync();
-            return await ApiResult.Ok("权限批量导入成功").Async();
+            return await ApiResult.Ok("鏉冮檺鎵归噺瀵煎叆鎴愬姛").Async();
         }
     }
 }

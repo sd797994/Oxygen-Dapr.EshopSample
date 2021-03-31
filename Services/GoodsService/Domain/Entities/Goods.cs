@@ -1,10 +1,10 @@
-using DomainBase;
+ï»¿using DomainBase;
 using System;
 
 namespace Domain.Entities
 {
     /// <summary>
-    /// ÁìÓòÊµÌå
+    /// é¢†åŸŸå®ä½“
     /// </summary>
     public class Goods : Entity, IAggregateRoot
     {
@@ -23,7 +23,7 @@ namespace Domain.Entities
                 GoodsImage = goodsImage;
             CategoryId = categoryId;
             if (price <= 0)
-                throw new DomainException("ÉÌÆ·¼Û¸ñ²»ÄÜÎª0");
+                throw new DomainException("å•†å“ä»·æ ¼ä¸èƒ½ä¸º0");
             Price = price;
 
         }
@@ -34,7 +34,7 @@ namespace Domain.Entities
         public void ChangeStock(int stock)
         {
             if (stock < 0 || stock > 100000)
-                throw new DomainException("¿â´æ²»ÄÜĞ¡ÓÚ0»ò´óÓÚ100000");
+                throw new DomainException("åº“å­˜ä¸èƒ½å°äº0æˆ–å¤§äº100000");
             Stock = stock;
         }
     }

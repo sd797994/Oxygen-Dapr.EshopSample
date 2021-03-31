@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Oxygen.Client.ServerProxyFactory.Interface;
 using Oxygen.Client.ServerSymbol.Events;
+using Oxygen.Client.ServerSymbol.Store;
+using Oxygen.Common.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,26 +20,17 @@ namespace Host
     {
         private readonly EfDbContext dbContext;
         private readonly IEventBus eventBus;
-        public CustomerService(EfDbContext dbContext, IEventBus eventBus)
+        private readonly IStateManager stateManager;
+        public CustomerService(EfDbContext dbContext, IEventBus eventBus, IStateManager stateManager)
         {
             this.dbContext = dbContext;
             this.eventBus = eventBus;
+            this.stateManager = stateManager;
         }
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             dbContext.Database.EnsureCreated();//自动迁移数据库
-            _ = Task.Run(async () =>
-            {
-                while (true)
-                {
-                    Thread.Sleep(20000);//等待sidercar启动
-                    var sender = await eventBus.SendEvent(EventTopicDictionary.Common.InitAuthApiList, new InitPermissionApiEvent<List<AuthenticationInfo>>(AuthenticationManager.AuthenticationMethods));//将当前服务的需鉴权接口发送给用户服务
-                    if (sender != default(DefaultResponse))
-                        break;
-                    else
-                        Console.WriteLine($"{DateTime.Now}事件初始化失败，20秒后重试!");
-                }
-            });
+            await stateManager.SetState(new PermissionState() { Key = "account", Data = AuthenticationManager.AuthenticationMethods });
             await Task.CompletedTask;
         }
         public async Task StopAsync(CancellationToken cancellationToken)

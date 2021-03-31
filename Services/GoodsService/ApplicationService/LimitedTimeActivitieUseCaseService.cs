@@ -1,4 +1,4 @@
-using Domain.Repository;
+ï»¿using Domain.Repository;
 using Domain.Specification;
 using IApplicationService;
 using IApplicationService.GoodsService.Dtos.Input;
@@ -37,7 +37,7 @@ namespace ApplicationService
             repository.Add(entity);
             if (await new LimitedTimeActivitieValidityCheckSpecification(goodsRepository).IsSatisfiedBy(entity))
                 await unitofWork.CommitAsync();
-            return ApiResult.Ok("»î¶¯´´½¨³É¹¦");
+            return ApiResult.Ok("æ´»åŠ¨åˆ›å»ºæˆåŠŸ");
         }
 		
         [AuthenticationFilter]
@@ -45,12 +45,12 @@ namespace ApplicationService
         {
             var entity = await repository.GetAsync(input.Id);
             if (entity == null)
-                throw new ApplicationServiceException("Ã»ÓĞÕÒµ½¸Ã»î¶¯");
+                throw new ApplicationServiceException("æ²¡æœ‰æ‰¾åˆ°è¯¥æ´»åŠ¨");
             entity.CreateOrUpdate(input.ActivitieName, input.GoodsId, input.ActivitiePrice, input.StartTime, input.EndTime);
             repository.Update(entity);
             if (await new LimitedTimeActivitieValidityCheckSpecification(goodsRepository).IsSatisfiedBy(entity))
                 await unitofWork.CommitAsync();
-            return ApiResult.Ok("»î¶¯¸üĞÂ³É¹¦");
+            return ApiResult.Ok("æ´»åŠ¨æ›´æ–°æˆåŠŸ");
         }
 		
         [AuthenticationFilter]
@@ -58,10 +58,10 @@ namespace ApplicationService
         {
             var entity = await repository.GetAsync(input.Id);
             if (entity == null)
-                throw new ApplicationServiceException("Ã»ÓĞÕÒµ½¸Ã»î¶¯");
+                throw new ApplicationServiceException("æ²¡æœ‰æ‰¾åˆ°è¯¥æ´»åŠ¨");
             repository.Delete(entity);
             await unitofWork.CommitAsync();
-            return ApiResult.Ok("»î¶¯É¾³ı³É¹¦");
+            return ApiResult.Ok("æ´»åŠ¨åˆ é™¤æˆåŠŸ");
         }
 
         [AuthenticationFilter]
@@ -69,11 +69,11 @@ namespace ApplicationService
         {
             var entity = await repository.GetAsync(input.Id);
             if (entity == null)
-                throw new ApplicationServiceException("Ã»ÓĞÕÒµ½¸Ã»î¶¯");
+                throw new ApplicationServiceException("æ²¡æœ‰æ‰¾åˆ°è¯¥æ´»åŠ¨");
             entity.UpOrDownShelf(input.ShelfState);
             repository.Update(entity);
             await unitofWork.CommitAsync();
-            return ApiResult.Ok("»î¶¯ÉÏ¼Ü/ÏÂ¼Ü³É¹¦");
+            return ApiResult.Ok("æ´»åŠ¨ä¸Šæ¶/ä¸‹æ¶æˆåŠŸ");
         }
     }
 }

@@ -9,6 +9,10 @@ namespace InfrastructureBase.Data.Nest
 {
     public class ElasticSearchRepository<T> : IElasticSearchRepository<T> where T : class
     {
+        public ElasticSearchRepository()
+        {
+            NestClientProvider.GetClient();
+        }
         internal Func<SearchDescriptor<T>, ISearchRequest> search { get; set; }
         internal SortDescriptor<T> sortQueries { get; set; }
         internal List<Func<QueryContainerDescriptor<T>, QueryContainer>> mustQueries { get; set; }
@@ -45,12 +49,22 @@ namespace InfrastructureBase.Data.Nest
                 throw new Exception("没有初始化ElasticSearchRepository!");
         }
 
-        public async Task SaveData(List<T> data)
+        public async Task SaveData(params T[] data)
         {
             if (Init)
             {
                 foreach (var item in data)
                     await NestClientProvider.GetClient().IndexAsync(item, idx => idx.Index(IndexName));
+            }
+            else
+                throw new Exception("没有初始化ElasticSearchRepository!");
+        }
+        public async Task RemoveData(params T[] data)
+        {
+            if (Init)
+            {
+                foreach (var item in data)
+                    await NestClientProvider.GetClient().DeleteAsync<T>(item, i => i.Index(IndexName));
             }
             else
                 throw new Exception("没有初始化ElasticSearchRepository!");

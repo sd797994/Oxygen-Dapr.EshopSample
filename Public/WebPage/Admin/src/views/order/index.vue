@@ -45,6 +45,9 @@
           <el-button type="primary" size="mini" @click="showlog(row.orderId)">
             交易记录
           </el-button>
+          <el-button v-show="row.orderState === 0" type="primary" size="mini" @click="mockPay(row)">
+            模拟支付
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -65,7 +68,7 @@
   </div>
 </template>
 <script>
-import { GetOrderList } from '@/api/order'
+import { GetOrderList, OrderPay } from '@/api/order'
 import { GetTradeLogListByOrderId } from '@/api/tradelog'
 import { parseTime } from '@/utils/index.js'
 import Pagination from '@/components/Pagination'
@@ -160,6 +163,15 @@ export default {
         result = '刚刚'
       }
       return result
+    },
+    mockPay(order) {
+      OrderPay({ orderId: order.orderId }).then(response => {
+        this.$message({
+          type: 'success',
+          message: response.message
+        })
+        order.orderState = 1
+      }, msg => { })
     }
   }
 }

@@ -1,4 +1,4 @@
-using Domain;
+ï»¿using Domain;
 using Domain.Entities;
 using Domain.Repository;
 using Domain.Specification;
@@ -37,30 +37,30 @@ namespace ApplicationService
             repository.Add(goodsCategory);
             if (await new UniqueGoodsCategoryNameSpecification(repository).IsSatisfiedBy(goodsCategory))
                 await unitofWork.CommitAsync();
-            return ApiResult.Ok("ÉÌÆ··ÖÀà´´½¨³É¹¦");
+            return ApiResult.Ok("å•†å“åˆ†ç±»åˆ›å»ºæˆåŠŸ");
         }
         [AuthenticationFilter]
         public async Task<ApiResult> DeleteCategory(CategoryDeleteDto input)
         {
             var goodsCategory = await repository.GetAsync(input.Id);
             if (goodsCategory == null)
-                throw new ApplicationServiceException("Ã»ÓĞÕÒµ½¸ÃÉÌÆ··ÖÀà!");
+                throw new ApplicationServiceException("æ²¡æœ‰æ‰¾åˆ°è¯¥å•†å“åˆ†ç±»!");
             repository.Delete(goodsCategory);
             if (await new CheckGoodsCategoryCanRemoveSpecification(goodsRepository).IsSatisfiedBy(goodsCategory))
                 await unitofWork.CommitAsync();
-            return ApiResult.Ok("ÉÌÆ··ÖÀàÉ¾³ı³É¹¦");
+            return ApiResult.Ok("å•†å“åˆ†ç±»åˆ é™¤æˆåŠŸ");
         }
         [AuthenticationFilter]
         public async Task<ApiResult> UpdateCategory(CategoryUpdateDto input)
         {
             var goodsCategory = await repository.GetAsync(input.Id);
             if (goodsCategory == null)
-                throw new ApplicationServiceException("Ã»ÓĞÕÒµ½¸ÃÉÌÆ··ÖÀà!");
+                throw new ApplicationServiceException("æ²¡æœ‰æ‰¾åˆ°è¯¥å•†å“åˆ†ç±»!");
             goodsCategory.CreateOrUpdate(input.CategoryName, input.Sort);
             repository.Update(goodsCategory);
             if (await new UniqueGoodsCategoryNameSpecification(repository).IsSatisfiedBy(goodsCategory))
                 await unitofWork.CommitAsync();
-            return ApiResult.Ok("ÉÌÆ··ÖÀà¸üĞÂ³É¹¦");
+            return ApiResult.Ok("å•†å“åˆ†ç±»æ›´æ–°æˆåŠŸ");
         }
     }
 }

@@ -1,7 +1,8 @@
-using Microsoft.EntityFrameworkCore;
+锘縰sing Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace Infrastructure.EfDataAccess
         public DbSet<PersistenceObject.LimitedTimeActivitie> LimitedTimeActivitie { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //启用Guid主键类型扩展
+            //鍚敤Guid涓婚敭绫诲瀷鎵╁睍
             modelBuilder.HasPostgresExtension("uuid-ossp");
             base.OnModelCreating(modelBuilder);
         }

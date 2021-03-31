@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace IApplicationService.LimitedTimeActivitieService.Dtos.Input
 {
     public class LimitedTimeActivitieDeleteDto
     {
-        [Required(ErrorMessage = "ÇëÑ¡ÔñÒ»¸ö»î¶¯")]
+        [Required(ErrorMessage = "è¯·é€‰æ‹©ä¸€ä¸ªæ´»åŠ¨")]
         public Guid Id { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-using Domain.Repository;
+锘縰sing Domain.Repository;
 using IApplicationService;
 using IApplicationService.GoodsService.Dtos.Input;
 using Infrastructure.EfDataAccess;
@@ -19,6 +19,9 @@ using Oxygen.Client.ServerSymbol.Events;
 using Oxygen.Client.ServerSymbol;
 using Oxygen.Client.ServerSymbol.Actors;
 using Oxygen.Mesh.Dapr.Model;
+using InfrastructureBase.Data.Nest;
+using Infrastructure.Elasticsearch;
+using IApplicationService.AppEvent;
 
 namespace ApplicationService
 {
@@ -31,7 +34,9 @@ namespace ApplicationService
         private readonly IStateManager stateManager;
         private readonly IGoodsActorService actorService;
         private readonly IServiceProxyFactory serviceProxyFactory;
-        public GoodsUseCaseService(IGoodsRepository repository, IGoodsCategoryRepository goodsCategoryRepository, IServiceProxyFactory serviceProxyFactory, IEventBus eventBus, IStateManager stateManager, IUnitofWork unitofWork)
+        private readonly ILocalEventBus localEventBus;
+        private readonly IEsGoodsRepository esGoodsRepository;
+        public GoodsUseCaseService(IGoodsRepository repository, IGoodsCategoryRepository goodsCategoryRepository, IEsGoodsRepository esGoodsRepository, ILocalEventBus localEventBus, IServiceProxyFactory serviceProxyFactory, IEventBus eventBus, IStateManager stateManager, IUnitofWork unitofWork)
         {
             this.repository = repository;
             this.goodsCategoryRepository = goodsCategoryRepository;
@@ -40,6 +45,8 @@ namespace ApplicationService
             this.stateManager = stateManager;
             this.serviceProxyFactory = serviceProxyFactory;
             this.actorService = serviceProxyFactory.CreateActorProxy<IGoodsActorService>();
+            this.esGoodsRepository = esGoodsRepository;
+            this.localEventBus = localEventBus;
         }
         [AuthenticationFilter]
         public async Task<ApiResult> CreateGoods(GoodsCreateDto input)
@@ -50,41 +57,61 @@ namespace ApplicationService
             goods.ChangeStock(input.Stock);
             repository.Add(goods);
             if (await new GoodsValidityCheckSpecification(repository, goodsCategoryRepository).IsSatisfiedBy(goods))
-                await unitofWork.CommitAsync();
-            return ApiResult.Ok("商品创建成功");
+            {
+                if(await unitofWork.CommitAsync())
+                {
+                    await localEventBus.SendEvent(EventTopicDictionary.Goods.Loc_WriteToElasticsearch, goods);
+                    return ApiResult.Ok("鍟嗗搧鍒涘缓鎴愬姛");
+                }
+            }
+            return ApiResult.Ok("鍟嗗搧鍒涘缓澶辫触");
         }
         [AuthenticationFilter]
         public async Task<ApiResult> UpdateGoods(GoodsUpdateDto input)
         {
             var goods = await repository.GetAsync(input.Id);
             if (goods == null)
-                throw new ApplicationServiceException("没有查询到该商品!");
+                throw new ApplicationServiceException("娌℃湁鏌ヨ鍒拌鍟嗗搧!");
             goods.CreateOrUpdateGoods(input.GoodsName, input.GoodsImage, input.Price, input.CategoryId);
             repository.Update(goods);
             if (await new GoodsValidityCheckSpecification(repository, goodsCategoryRepository).IsSatisfiedBy(goods))
-                await unitofWork.CommitAsync();
-            return ApiResult.Ok("商品更新成功");
+            {
+                if (await unitofWork.CommitAsync())
+                {
+                    await localEventBus.SendEvent(EventTopicDictionary.Goods.Loc_WriteToElasticsearch, goods);
+                    return ApiResult.Ok("鍟嗗搧鏇存柊鎴愬姛");
+                }
+            }
+            return ApiResult.Ok("鍟嗗搧鏇存柊澶辫触");
         }
         [AuthenticationFilter]
         public async Task<ApiResult> UpOrDownShelfGoods(UpOrDownShelfGoodsDto input)
         {
             var goods = await repository.GetAsync(input.Id);
             if (goods == null)
-                throw new ApplicationServiceException("没有查询到该商品!");
+                throw new ApplicationServiceException("娌℃湁鏌ヨ鍒拌鍟嗗搧!");
             goods.UpOrDownShelf(input.ShelfState);
             repository.Update(goods);
-            await unitofWork.CommitAsync();
-            return ApiResult.Ok("商品上架/下架成功");
+            if (await unitofWork.CommitAsync())
+            {
+                await localEventBus.SendEvent(EventTopicDictionary.Goods.Loc_WriteToElasticsearch, goods);
+                return ApiResult.Ok("鍟嗗搧涓婃灦/涓嬫灦鎴愬姛");
+            }
+            return ApiResult.Ok("鍟嗗搧涓婃灦/涓嬫灦澶辫触");
         }
         [AuthenticationFilter]
         public async Task<ApiResult> DeleteGoods(GoodsDeleteDto input)
         {
-            var entity = await repository.GetAsync(input.Id);
-            if (entity == null)
-                throw new ApplicationServiceException("没有查询到该商品!");
-            repository.Delete(entity);
-            await unitofWork.CommitAsync();
-            return ApiResult.Ok("商品删除成功");
+            var goods = await repository.GetAsync(input.Id);
+            if (goods == null)
+                throw new ApplicationServiceException("娌℃湁鏌ヨ鍒拌鍟嗗搧!");
+            repository.Delete(goods);
+            if (await unitofWork.CommitAsync())
+            {
+                await localEventBus.SendEvent(EventTopicDictionary.Goods.Loc_RemoveToElasticsearch, goods);
+                return ApiResult.Ok("鍟嗗搧鍒犻櫎鎴愬姛");
+            }
+            return ApiResult.Ok("鍟嗗搧鍒犻櫎澶辫触");
         }
 
         [AuthenticationFilter]

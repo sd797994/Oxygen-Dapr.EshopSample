@@ -1,4 +1,4 @@
-using Autofac;
+锘縰sing Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Hangfire;
 using JobService.Modules;
@@ -24,13 +24,15 @@ namespace JobService
         }
 
         static IHostBuilder CreateDefaultHost(string[] args) => new HostBuilder()
-                .ConfigureWebHostDefaults(webhostbuilder => {
-                    //注册成为oxygen服务节点
-                    webhostbuilder.StartOxygenServer<OxygenStartup>((config) => {
+                .ConfigureWebHostDefaults(webhostbuilder =>
+                {
+                    //娉ㄥ唽鎴愪负oxygen鏈嶅姟鑺傜偣
+                    webhostbuilder.StartOxygenServer<OxygenStartup>((config) =>
+                    {
                         config.Port = 80;
                         config.PubSubCompentName = "pubsub";
                         config.StateStoreCompentName = "statestore";
-                        config.TracingHeaders = "Authentication";
+                        config.TracingHeaders = "Authentication,AuthIgnore";
                     });
                 })
                 .ConfigureAppConfiguration((hostContext, config) =>
@@ -41,9 +43,9 @@ namespace JobService
                 })
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
-                    //注入oxygen依赖
+                    //娉ㄥ叆oxygen渚濊禆
                     builder.RegisterOxygenModule();
-                    //注入业务依赖
+                    //娉ㄥ叆涓氬姟渚濊禆
                     builder.RegisterModule(new ServiceModule());
                 })
                 .ConfigureServices((context, services) =>
@@ -56,6 +58,7 @@ namespace JobService
                     GlobalConfiguration.Configuration.UseRedisStorage(_configuration.GetSection("RedisConnection").Value);
                     services.AddHangfire(x => { });
                     services.AddHangfireServer();
+                    services.AddHostedService<CronJobService>();//娉ㄥ唽骞惰繍琛屾墍鏈夌殑鍛ㄦ湡浣滀笟
                     services.AddAutofac();
                 })
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory());

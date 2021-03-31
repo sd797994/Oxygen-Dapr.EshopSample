@@ -136,29 +136,6 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/statistics',
-    component: Layout,
-    name: 'Statistics',
-    meta: { title: '统计', icon: 'el-icon-s-data' },
-    hidden: false,
-    children: [
-      {
-        path: 'total',
-        name: 'Total',
-        component: () => import('@/views/permission/index'),
-        meta: { title: '综合统计', icon: 'el-icon-odometer' },
-        hidden: false
-      },
-      {
-        path: 'trade',
-        name: 'Trade',
-        component: () => import('@/views/permission/index'),
-        meta: { title: '交易数据', icon: 'el-icon-shopping-cart-full' },
-        hidden: false
-      }
-    ]
-  },
-  {
     path: '/public',
     component: Layout,
     name: 'Public',

@@ -1,4 +1,4 @@
-using Autofac;
+ï»¿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using ImageService.Modules;
 using Infrastructure.Http;
@@ -30,12 +30,12 @@ namespace ImageService
 
         static IHostBuilder CreateDefaultHost(string[] args) => new HostBuilder()
                 .ConfigureWebHostDefaults(webhostbuilder => {
-                    //×¢²á³ÉÎªoxygen·şÎñ½Úµã
+                    //æ³¨å†Œæˆä¸ºoxygenæœåŠ¡èŠ‚ç‚¹
                     webhostbuilder.StartOxygenServer<OxygenStartup>((config) => {
                         config.Port = 80;
                         config.PubSubCompentName = "pubsub";
                         config.StateStoreCompentName = "statestore";
-                        config.TracingHeaders = "Authentication";
+                        config.TracingHeaders = "Authentication,AuthIgnore";
                         config.UseStaticFiles = true;
                     });
                 })
@@ -47,17 +47,17 @@ namespace ImageService
                 })
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
-                    //×¢ÈëoxygenÒÀÀµ
+                    //æ³¨å…¥oxygenä¾èµ–
                     builder.RegisterOxygenModule();
-                    //×¢ÈëÒµÎñÒÀÀµ
+                    //æ³¨å…¥ä¸šåŠ¡ä¾èµ–
                     builder.RegisterModule(new ServiceModule());
                     builder.RegisterType<ImageAppService.ImageAppService>().As<IApplicationService.Base.IImageAppService>().InstancePerLifetimeScope();
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    //×¢²áÈ«¾ÖÀ¹½ØÆ÷
+                    //æ³¨å†Œå…¨å±€æ‹¦æˆªå™¨
                     LocalMethodAopProvider.RegisterPipelineHandler(AopHandlerProvider.ContextHandler, AopHandlerProvider.BeforeSendHandler, AopHandlerProvider.AfterMethodInvkeHandler, AopHandlerProvider.ExceptionHandler);
-                    //×¢²á¼øÈ¨À¹½ØÆ÷
+                    //æ³¨å†Œé‰´æƒæ‹¦æˆªå™¨
                     ImageAuthenticationHandler.RegisterAllFilter();
                     services.AddLogging(configure =>
                     {

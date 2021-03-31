@@ -83,5 +83,25 @@ namespace ApplicationService
             var query = efDbContext.User.Where(x => input.Ids.Contains(x.AccountId)).Select(x => new GetAccountUserNameByIdsResponse { AccountId = x.AccountId, Name = x.UserName }).ToListAsync();
             return await ApiResult.Ok(query).Async();
         }
+
+        public async Task<ApiResult> GetMockAccount()
+        {
+            var result = await (from account in efDbContext.Account.Where(x => x.LoginName == "eshopuser")
+                                join user in efDbContext.User on account.Id equals user.AccountId
+                                select new CurrentUser
+                                {
+                                    Id = account.Id,
+                                    LoginName = account.LoginName,
+                                    UserImage = user.UserImage,
+                                    NickName = account.NickName,
+                                    State = (int)account.State,
+                                    UserName = user.UserName,
+                                    Gender = (int)user.Gender,
+                                    BirthDay = user.BirthDay,
+                                    Address = user.Address,
+                                    Tel = user.Tel
+                                }).FirstOrDefaultAsync();
+            return ApiResult.Ok(result);
+        }
     }
 }

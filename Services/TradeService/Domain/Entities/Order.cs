@@ -1,4 +1,4 @@
-using Domain.Dtos;
+ï»¿using Domain.Dtos;
 using Domain.Enums;
 using Domain.ValueObject;
 using DomainBase;
@@ -10,30 +10,30 @@ using System.Linq;
 namespace Domain.Entities
 {
     /// <summary>
-    /// ÁìÓòÊµÌå
+    /// é¢†åŸŸå®ä½“
     /// </summary>
     public class Order : Entity, IAggregateRoot
     {
-        //¶©µ¥ºÅ
+        //è®¢å•å·
         public string OrderNo { get; set; }
-        //¶©µ¥×Ü¼Û
+        //è®¢å•æ€»ä»·
         public decimal TotalPrice { get; set; }
-        //¶©µ¥ÏêÇé
+        //è®¢å•è¯¦æƒ…
         [NotMapped]
         public IEnumerable<OrderItem> OrderItems { get; set; }
-        //¶©µ¥×´Ì¬
+        //è®¢å•çŠ¶æ€
         public OrderState OrderState { get; set; }
-        //ÏÂµ¥ÈË
+        //ä¸‹å•äºº
         public Guid UserId { get; set; }
-        //ÏÂµ¥Ê±¼ä
+        //ä¸‹å•æ—¶é—´
         public DateTime CreateTime { get; set; }
         
         public OrderConsigneeInfo ConsigneeInfo { get; set; }
-        //´´½¨¶©µ¥
+        //åˆ›å»ºè®¢å•
         public void CreateOrder(Guid userId, string consigneeName, string consigneeAddress, string consigneeTel, IEnumerable<OrderItem> orderItems)
         {
             if (string.IsNullOrEmpty(consigneeName) || string.IsNullOrEmpty(consigneeAddress) || string.IsNullOrEmpty(consigneeTel))
-                throw new DomainException("ÊÕ¼şÈËĞÅÏ¢È±Ê§,Çë²¹È«ÊÕ¼şÈËĞÅÏ¢ÔÙ½øĞĞÏÂµ¥²Ù×÷!");
+                throw new DomainException("æ”¶ä»¶äººä¿¡æ¯ç¼ºå¤±,è¯·è¡¥å…¨æ”¶ä»¶äººä¿¡æ¯å†è¿›è¡Œä¸‹å•æ“ä½œ!");
             ConsigneeInfo = new OrderConsigneeInfo()
             {
                 Name = consigneeName,
@@ -42,7 +42,7 @@ namespace Domain.Entities
             };
 
             if (!orderItems.Any())
-                throw new DomainException("¶©µ¥Ã÷Ï¸²»ÄÜÎª¿Õ!");
+                throw new DomainException("è®¢å•æ˜ç»†ä¸èƒ½ä¸ºç©º!");
             OrderNo = CreateOrderNo();
             TotalPrice = orderItems.Sum(x => x.TotalPrice);
             OrderState = OrderState.Create;
@@ -53,13 +53,13 @@ namespace Domain.Entities
         public void PayOrder(Guid userId)
         {
             if (OrderState != OrderState.Create)
-                throw new DomainException("µ±Ç°¶©µ¥×´Ì¬ÎŞ·¨Ö§¸¶,ÇëË¢ĞÂºóÔÙÊÔ");
+                throw new DomainException("å½“å‰è®¢å•çŠ¶æ€æ— æ³•æ”¯ä»˜,è¯·åˆ·æ–°åå†è¯•");
             if (UserId != userId)
-                throw new DomainException("ÄãÎŞ·¨¶Ô¸Ã¶©µ¥½øĞĞÖ§¸¶");
+                throw new DomainException("ä½ æ— æ³•å¯¹è¯¥è®¢å•è¿›è¡Œæ”¯ä»˜");
             OrderState = OrderState.Pay;
         }
         /// <summary>
-        /// Éú³É¶©µ¥ºÅ
+        /// ç”Ÿæˆè®¢å•å·
         /// </summary>
         /// <returns></returns>
         string CreateOrderNo()
@@ -67,7 +67,7 @@ namespace Domain.Entities
             return $"{DateTime.Now.ToString("yyyyMMddHHmmss")}{new Random(Guid.NewGuid().GetHashCode()).Next(1000, 9999)}";
         }
         /// <summary>
-        /// È¡Ïûµ±Ç°¶©µ¥
+        /// å–æ¶ˆå½“å‰è®¢å•
         /// </summary>
         public bool CancelOrder()
         {

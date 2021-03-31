@@ -1,4 +1,4 @@
-using Oxygen.Client.ServerSymbol;
+锘縰sing Oxygen.Client.ServerSymbol;
 using IApplicationService.TradeService.Dtos.Input;
 using System;
 using System.Collections.Generic;
@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.TradeService
 {
-    [RemoteService("tradeservice", "orderusecase", "订单服务")]
+    [RemoteService("tradeservice", "orderusecase", "璁㈠崟鏈嶅姟")]
     public interface IOrderUseCaseService
     {
-        [RemoteFunc(funcDescription: "创建订单")]
+        [RemoteFunc(funcDescription: "鍒涘缓璁㈠崟")]
         Task<ApiResult> CreateOrder(OrderCreateDto input);
 
-        [RemoteFunc(funcDescription: "支付订单")]
+        [RemoteFunc(funcDescription: "鏀粯璁㈠崟")]
         Task<ApiResult> OrderPay(OrderPayDto input);
     }
 }

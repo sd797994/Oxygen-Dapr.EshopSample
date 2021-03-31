@@ -1,4 +1,4 @@
-using IApplicationService.AccountService.Dtos.Input;
+锘縰sing IApplicationService.AccountService.Dtos.Input;
 using Oxygen.Client.ServerSymbol;
 using System;
 using System.Collections.Generic;
@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.PermissionService
 {
-    [RemoteService("accountservice", "permissionusecase", "权限服务")]
+    [RemoteService("accountservice", "permissionusecase", "鏉冮檺鏈嶅姟")]
     public interface IPermissionUseCaseService
     {
-        [RemoteFunc(funcDescription:"批量保存权限")]
+        [RemoteFunc(funcDescription:"鎵归噺淇濆瓨鏉冮檺")]
         Task<ApiResult> SavePermissions(List<CreatePermissionDto> input);
     }
 }

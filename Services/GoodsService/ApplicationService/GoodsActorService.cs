@@ -4,9 +4,11 @@ using Domain;
 using Domain.Entities;
 using Domain.Repository;
 using IApplicationService;
+using IApplicationService.AppEvent;
 using IApplicationService.GoodsService;
 using IApplicationService.GoodsService.Dtos.Input;
 using Infrastructure.EfDataAccess;
+using Infrastructure.Elasticsearch;
 using InfrastructureBase;
 using InfrastructureBase.Object;
 using Oxygen.Mesh.Dapr;
@@ -22,12 +24,12 @@ namespace ApplicationService
     {
         private readonly IGoodsRepository repository;
         private readonly IUnitofWork unitofWork;
-        private readonly Guid Key;
-        public GoodsActorService(IGoodsRepository repository, IUnitofWork unitofWork)
+        private readonly ILocalEventBus localEventBus;
+        public GoodsActorService(IGoodsRepository repository, IUnitofWork unitofWork, ILocalEventBus localEventBus)
         {
-            Key = Guid.NewGuid();
             this.repository = repository;
             this.unitofWork = unitofWork;
+            this.localEventBus = localEventBus;
         }
         public async Task<ApiResult> UpdateGoodsStock(DeductionStockDto input)
         {
@@ -81,6 +83,7 @@ namespace ApplicationService
             if (goods != null)
                 goods.ChangeStock(model.Stock);
             repository.Update(goods);
+            await localEventBus.SendEvent(EventTopicDictionary.Goods.Loc_WriteToElasticsearch, goods);
             await unitofWork.CommitAsync();
             await Task.CompletedTask;
         }

@@ -1,4 +1,4 @@
-using IApplicationService.Base.AppQuery;
+ï»¿using IApplicationService.Base.AppQuery;
 using Oxygen.Client.ServerSymbol;
 using System;
 using System.Collections.Generic;
@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.RoleService
 {
-    [RemoteService("accountservice", "rolequery", "½ÇÉ«·şÎñ")]
+    [RemoteService("accountservice", "rolequery", "è§’è‰²æœåŠ¡")]
     public interface IRoleQueryService
     {
-        [RemoteFunc(funcDescription: "»ñÈ¡½ÇÉ«ÁĞ±í")]
+        [RemoteFunc(funcDescription: "è·å–è§’è‰²åˆ—è¡¨")]
         Task<ApiResult> GetRoleList(PageQueryInputBase input);
 
-        [RemoteFunc(funcDescription: "»ñÈ¡ËùÓĞ½ÇÉ«")]
+        [RemoteFunc(funcDescription: "è·å–æ‰€æœ‰è§’è‰²")]
         Task<ApiResult> GetAllRoles();
     }
 }

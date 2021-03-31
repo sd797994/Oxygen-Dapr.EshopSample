@@ -10,7 +10,6 @@ namespace IApplicationService.AppEvent
     {
         public struct Common
         {
-            public const string InitAuthApiList = "InitAuthApiList";
             public const string EventHandleErrCatch = "EventHandleErrCatch";
         }
         public struct Account
@@ -30,6 +29,12 @@ namespace IApplicationService.AppEvent
         {
             public const string LogisticsDeliverSucc = "LogisticsDeliverSucc";
             public const string LogisticsReceiveSucc = "LogisticsReceiveSucc";
+        }
+        public struct Goods
+        {
+            public const string UpdateGoodsToEs = "UpdateGoodsToEs";
+            public const string Loc_WriteToElasticsearch = "Loc_WriteToElasticsearch";
+            public const string Loc_RemoveToElasticsearch = "Loc_RemoveToElasticsearch"; 
         }
     }
 }

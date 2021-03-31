@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,30 +10,30 @@ namespace IApplicationService.LimitedTimeActivitieService.Dtos.Input
     public class LimitedTimeActivitieCreateDto
     {
         /// <summary>
-        /// »î¶¯Ãû
+        /// æ´»åŠ¨å
         /// </summary>
-        [Required(ErrorMessage = "»î¶¯Ãû±ØĞëÌîĞ´")]
-        [MaxLength(40, ErrorMessage = "»î¶¯Ãû³Æ±ØĞëÔÚ40×ÖÒÔÄÚ")]
+        [Required(ErrorMessage = "æ´»åŠ¨åå¿…é¡»å¡«å†™")]
+        [MaxLength(40, ErrorMessage = "æ´»åŠ¨åç§°å¿…é¡»åœ¨40å­—ä»¥å†…")]
         public string ActivitieName { get; set; }
         /// <summary>
-        /// ´ÙÏúÉÌÆ·
+        /// ä¿ƒé”€å•†å“
         /// </summary>
         public Guid GoodsId { get; set; }
         /// <summary>
-        /// ´ÙÏú¼Û
+        /// ä¿ƒé”€ä»·
         /// </summary>
-        [Required(ErrorMessage = "´ÙÏú¼Û¸ñ±ØĞëÌîĞ´")]
-        [Range(0, double.MaxValue, ErrorMessage = "´ÙÏú¼Û¸ñ±ØĞë´óÓÚ0")]
+        [Required(ErrorMessage = "ä¿ƒé”€ä»·æ ¼å¿…é¡»å¡«å†™")]
+        [Range(0, double.MaxValue, ErrorMessage = "ä¿ƒé”€ä»·æ ¼å¿…é¡»å¤§äº0")]
         public decimal ActivitiePrice { get; set; }
         /// <summary>
-        /// »î¶¯¿ªÊ¼Ê±¼ä
+        /// æ´»åŠ¨å¼€å§‹æ—¶é—´
         /// </summary>
-        [Required(ErrorMessage = "»î¶¯¿ªÊ¼Ê±¼ä±ØĞëÌîĞ´")]
+        [Required(ErrorMessage = "æ´»åŠ¨å¼€å§‹æ—¶é—´å¿…é¡»å¡«å†™")]
         public DateTime StartTime { get; set; }
         /// <summary>
-        /// »î¶¯½áÊøÊ±¼ä
+        /// æ´»åŠ¨ç»“æŸæ—¶é—´
         /// </summary>
-        [Required(ErrorMessage = "»î¶¯½áÊøÊ±¼ä±ØĞëÌîĞ´")]
+        [Required(ErrorMessage = "æ´»åŠ¨ç»“æŸæ—¶é—´å¿…é¡»å¡«å†™")]
         public DateTime EndTime { get; set; }
     }
 }

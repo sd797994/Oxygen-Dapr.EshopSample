@@ -1,4 +1,4 @@
-using Oxygen.Client.ServerSymbol;
+锘縰sing Oxygen.Client.ServerSymbol;
 using IApplicationService.Base.AppQuery;
 using System;
 using System.Collections.Generic;
@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace IApplicationService.LimitedTimeActivitieService
 {
-    [RemoteService("goodsservice", "activitiquery", "限时活动服务")]
+    [RemoteService("goodsservice", "activitiquery", "闄愭椂娲诲姩鏈嶅姟")]
     public interface ILimitedTimeActivitieQueryService
     {
-        [RemoteFunc(funcDescription: "获取限时活动列表")]
+        [RemoteFunc(funcDescription: "鑾峰彇闄愭椂娲诲姩鍒楄〃")]
         Task<ApiResult> GetLimitedTimeActivitieList(PageQueryInputBase input);
     }
 }

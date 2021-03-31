@@ -22,5 +22,8 @@ namespace IApplicationService.AccountService
 
         [RemoteFunc(funcDescription: "根据用户编号获取用户姓名")]
         Task<ApiResult> GetAccountUserNameByIds(GetAccountUserNameByIdsDto input);
+
+        [RemoteFunc(funcDescription: "获取一个模拟用户数据")]
+        Task<ApiResult> GetMockAccount();
     }
 }

@@ -1,4 +1,4 @@
-using Domain.Entities;
+ï»¿using Domain.Entities;
 using Domain.Repository;
 using IApplicationService.AppEvent;
 using IApplicationService.PublicService.Dtos.Event;
@@ -40,18 +40,26 @@ namespace ApplicationService
             }
             catch (Exception e)
             {
-                logger.LogError($"ÊÂ¼ş¶©ÔÄÆ÷Òì³£´¦Àí³Ö¾Ã»¯Ê§°Ü,Òì³£ĞÅÏ¢:{e.Message}");
+                logger.LogError($"äº‹ä»¶è®¢é˜…å™¨å¼‚å¸¸å¤„ç†æŒä¹…åŒ–å¤±è´¥,å¼‚å¸¸ä¿¡æ¯:{e.Message}");
             }
             return DefaultEventHandlerResponse.Default();
         }
         [EventHandlerFunc(EventTopicDictionary.Account.InitTestUserSuccess)]
         public async Task<DefaultEventHandlerResponse> EventHandleSetDefMallSetting(EventHandleRequest<string> input)
         {
-            var entity = new MallSetting();
-            entity.CreateOrUpdate("ÖàÆ·Ïã·»", "·äÄñ×¨ËÍ/38·ÖÖÓËÍ´ï", "http://static.galileo.xiaojukeji.com/static/tms/seller_avatar_256px.jpg", "ÖàÆ·Ïã·»ÆäÅëâ¿ÖàÁÏµÄÃØ·½Ô´ÓÚÖĞ¹úÇ§Äê¹Å·¨£¬ÔÚÈÚºÍÏÖ´úÖÆ×÷¹¤ÒÕ£¬ÓÉÊÀ½çÅëâ¿´óÊ¦ÇüºÆÏÈÉúÁìÏÎÑĞ·¢¡£¼áÊØ´¿ÌìÈ»¡¢0Ìí¼ÓµÄÁ¼ĞÄÆ·ÖÊÉîµÃÏû·ÑÕßÇàíù£¬·¢Õ¹ÖÁ½ñ³ÉÎªÖàÀàµÄÒıÁìÆ·ÅÆ¡£ÊÇ2008Äê°ÂÔË»áºÍ2013ÄêÔ°²©»áÖ¸¶¨²ÍÒû·şÎñÉÌ¡£", "ÀîÀÏ¶ş", "±±¾©ÊĞº£µíÇøÌ«Æ½Â·13ºÅÖàÆ·Ïã·»");
-            mallsettingRepository.Add(entity);
-            await unitofWork.CommitAsync();
-            return DefaultEventHandlerResponse.Default();
+            Console.WriteLine("0");
+            return await new DefaultEventHandlerResponse().RunAsync(nameof(EventHandleSetDefMallSetting), input.GetDataJson(), async () =>
+            {
+                Console.WriteLine("1");
+                var entity = new MallSetting();
+                Console.WriteLine("2");
+                entity.CreateOrUpdate("ç²¥å“é¦™åŠ", "èœ‚é¸Ÿä¸“é€/38åˆ†é’Ÿé€è¾¾", "http://static.galileo.xiaojukeji.com/static/tms/seller_avatar_256px.jpg", "ç²¥å“é¦™åŠå…¶çƒ¹é¥ªç²¥æ–™çš„ç§˜æ–¹æºäºä¸­å›½åƒå¹´å¤æ³•ï¼Œåœ¨èå’Œç°ä»£åˆ¶ä½œå·¥è‰ºï¼Œç”±ä¸–ç•Œçƒ¹é¥ªå¤§å¸ˆå±ˆæµ©å…ˆç”Ÿé¢†è¡”ç ”å‘ã€‚åšå®ˆçº¯å¤©ç„¶ã€0æ·»åŠ çš„è‰¯å¿ƒå“è´¨æ·±å¾—æ¶ˆè´¹è€…é’çï¼Œå‘å±•è‡³ä»Šæˆä¸ºç²¥ç±»çš„å¼•é¢†å“ç‰Œã€‚æ˜¯2008å¹´å¥¥è¿ä¼šå’Œ2013å¹´å›­åšä¼šæŒ‡å®šé¤é¥®æœåŠ¡å•†ã€‚", "æè€äºŒ", "åŒ—äº¬å¸‚æµ·æ·€åŒºå¤ªå¹³è·¯13å·ç²¥å“é¦™åŠ");
+                Console.WriteLine("3");
+                mallsettingRepository.Add(entity);
+                Console.WriteLine("4");
+                await unitofWork.CommitAsync();
+                Console.WriteLine("5");
+            });
         }
     }
 }

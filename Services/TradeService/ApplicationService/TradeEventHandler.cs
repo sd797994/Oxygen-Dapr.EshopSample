@@ -1,4 +1,4 @@
-using Domain.Dtos;
+Ôªøusing Domain.Dtos;
 using Domain.Entities;
 using Domain.Enums;
 using Domain.Repository;
@@ -46,7 +46,7 @@ namespace ApplicationService
                  var eventData = input.GetData();
                  var order = await repository.GetAsync(eventData.OrderId);
                  if (order == null)
-                     throw new ApplicationServiceException($"√ª”–’“µΩ∂©µ•");
+                     throw new ApplicationServiceException($"Ê≤°ÊúâÊâæÂà∞ËÆ¢Âçï");
                  var cancelOrderService = new CancelOrderService(UnDeductionGoodsStock);
                  if (await cancelOrderService.Cancel(order))
                  {
@@ -66,7 +66,7 @@ namespace ApplicationService
                 var eventData = input.GetData();
                 var order = await repository.GetAsync(eventData.OrderId);
                 if (order == null)
-                    throw new ApplicationServiceException($"√ª”–’“µΩ∂©µ•");
+                    throw new ApplicationServiceException($"Ê≤°ÊúâÊâæÂà∞ËÆ¢Âçï");
                 var tradeLog = new TradeLog();
                 tradeLog.CreateTradeLog(TradeLogState.CreateOrder, eventData.OrderId, order.OrderNo, null, null, eventData.UserId, eventData.UserName);
                 tradeLogRepository.Add(tradeLog);
@@ -81,7 +81,7 @@ namespace ApplicationService
                 var eventData = input.GetData();
                 var order = await repository.GetAsync(eventData.OrderId);
                 if (order == null)
-                    throw new ApplicationServiceException($"√ª”–’“µΩ∂©µ•");
+                    throw new ApplicationServiceException($"Ê≤°ÊúâÊâæÂà∞ËÆ¢Âçï");
                 var tradeLog = new TradeLog();
                 tradeLog.CreateTradeLog(TradeLogState.PayOrder, eventData.OrderId, order.OrderNo, null, null, eventData.UserId, eventData.UserName);
                 tradeLogRepository.Add(tradeLog);
@@ -96,10 +96,10 @@ namespace ApplicationService
                 var eventData = input.GetData();
                 var order = await repository.GetAsync(eventData.OrderId);
                 if (order == null)
-                    throw new ApplicationServiceException($"√ª”–’“µΩ∂©µ•");
+                    throw new ApplicationServiceException($"Ê≤°ÊúâÊâæÂà∞ËÆ¢Âçï");
                 var log = await logisticsRepository.GetAsync(eventData.LogisticsId);
                 if (log == null)
-                    throw new ApplicationServiceException($"√ª”–’“µΩŒÔ¡˜µ•");
+                    throw new ApplicationServiceException($"Ê≤°ÊúâÊâæÂà∞Áâ©ÊµÅÂçï");
                 var tradeLog = new TradeLog();
                 tradeLog.CreateTradeLog(TradeLogState.DeliverGoods, eventData.OrderId, order.OrderNo, log.Id, log.LogisticsNo, eventData.UserId, eventData.UserName);
                 tradeLogRepository.Add(tradeLog);
@@ -114,17 +114,17 @@ namespace ApplicationService
                 var eventData = input.GetData();
                 var order = await repository.GetAsync(eventData.OrderId);
                 if (order == null)
-                    throw new ApplicationServiceException($"√ª”–’“µΩ∂©µ•");
+                    throw new ApplicationServiceException($"Ê≤°ÊúâÊâæÂà∞ËÆ¢Âçï");
                 var log = await logisticsRepository.GetAsync(eventData.LogisticsId);
                 if (log == null)
-                    throw new ApplicationServiceException($"√ª”–’“µΩŒÔ¡˜µ•");
+                    throw new ApplicationServiceException($"Ê≤°ÊúâÊâæÂà∞Áâ©ÊµÅÂçï");
                 var tradeLog = new TradeLog();
                 tradeLog.CreateTradeLog(TradeLogState.ReceivingGoods, eventData.OrderId, order.OrderNo, log.Id, log.LogisticsNo, eventData.UserId, eventData.UserName);
                 tradeLogRepository.Add(tradeLog);
                 await unitofWork.CommitAsync();
             });
         }
-        #region ÀΩ”–∑Ω∑®
+        #region ÁßÅÊúâÊñπÊ≥ï
         async Task<bool> UnDeductionGoodsStock(CreateOrderDeductionGoodsStockDto input)
         {
             var data = input.CopyTo<CreateOrderDeductionGoodsStockDto, DeductionStockDto>();
