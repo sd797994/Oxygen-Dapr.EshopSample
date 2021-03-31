@@ -84,6 +84,13 @@ https://www.jdon.com/artichect/the-clean-architecture.html
 
 整个项目主要的逻辑是通过管理端创建权限、角色、用户来登录和管理后台系统，拥有相关权限的操作人员可以访问商品分类、商品、活动、订单、物流以及商城基本设置等页面进行商品or特价活动创建、订单管理、物流收发货以及商城基本设置管理。前端M站可以浏览商品、加入购物车并下单
 
+### 其他依赖
+
+------
+
+管理端页面fork：https://github.com/PanJiaChen/vue-element-admin/tree/i18n
+M站页面fork: https://github.com/JerryYgh/m-eleme
+
 ## License
 
 MIT
