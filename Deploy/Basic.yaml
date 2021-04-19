@@ -200,6 +200,9 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9411
+          env:
+            - name: TZ
+              value: "Asia/Shanghai"
 ---
 apiVersion: v1
 kind: Service
