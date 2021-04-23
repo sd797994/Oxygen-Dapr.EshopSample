@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationService.Dtos
 {
-    public class GoodsActor : ActorStateModel
+    public record GoodsActor : ActorStateModel
     {
         public GoodsActor()
         {
