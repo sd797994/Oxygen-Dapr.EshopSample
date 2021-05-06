@@ -140,6 +140,7 @@ spec:
     metadata:
       labels:
         app: apigateway
+        version: v1
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "apigateway"

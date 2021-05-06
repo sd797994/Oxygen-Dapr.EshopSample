@@ -2,6 +2,7 @@ import { login, logout, getInfo, updateuser, checkRolebasedInit, InitRoleBasedAc
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import { MessageBox, Message } from 'element-ui'
+import Cookies from 'js-cookie'
 
 const getDefaultState = () => {
   return {
@@ -56,7 +57,8 @@ const actions = {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            InitRoleBasedAccessControler().then((response) => {
+            var cookie = Cookies.get("githubuser");
+            InitRoleBasedAccessControler({OauthData:cookie}).then((response) => {
               Message({
                 message: response.message,
                 type: 'success',

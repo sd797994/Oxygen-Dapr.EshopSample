@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">电商Demo管理端</h3>
+        <h3 class="title">Eshop Sample for Dapr</h3>
       </div>
 
       <el-form-item prop="username">
@@ -41,6 +41,9 @@
         </span>
       </el-form-item>
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <a href="http://oauth.dapreshop.com:30882/v1.0/invoke/oauthservice/method/github/GetUserinfo">
+      <img style="width:25px;" src="@/assets/github.png" alt="github">
+      </a>
       <div v-show="initusername != ''" class="tips">
         <span style="margin-right:20px;">username: {{ initusername }}</span>
         <span> password: {{ inituserpwd }}</span>
@@ -51,7 +54,6 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-
 export default {
   name: 'Login',
   data() {

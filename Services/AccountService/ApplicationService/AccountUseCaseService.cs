@@ -24,6 +24,7 @@ using ApplicationService.Dtos;
 using IApplicationService.AccountService.Dtos.Output;
 using Domain.Entities;
 using IApplicationService.Base.AccessToken;
+using IApplicationService.AccountService.Dtos.Event;
 
 namespace ApplicationService
 {
@@ -42,12 +43,14 @@ namespace ApplicationService
             this.eventBus = eventBus;
             this.stateManager = stateManager;
         }
-        public async Task<ApiResult> InitRoleBasedAccessControler()
+        public async Task<ApiResult> InitRoleBasedAccessControler(InitUserOauthDto input)
         {
             if (!await stateManager.GetState<bool>(new RoleBaseInitCheckCache()))
             {
                 await stateManager.SetState(new RoleBaseInitCheckCache(true));
-                await eventBus.SendEvent(EventTopicDictionary.Account.InitTestUserSuccess, "");
+                await eventBus.SendEvent(EventTopicDictionary.Account.InitTestUserSuccess, new LoginSuccessDto() { Token = input.OauthData });
+                var data = System.Text.Json.JsonSerializer.Deserialize<InitUserOauthDto.Github>(input.OauthData);
+                return ApiResult.Ok(new DefLoginAccountResponse { LoginName = data.login, Password = "x1234567" }, $"权限初始化成功,已创建超管角色和默认登录账号");
             }
             return ApiResult.Ok(new DefLoginAccountResponse { LoginName = "eshopadmin", Password = "x1234567" }, $"权限初始化成功,已创建超管角色和默认登录账号");
         }

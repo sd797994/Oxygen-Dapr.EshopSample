@@ -23,6 +23,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Nest;
 using InfrastructureBase.Data.Nest;
+using System.Net.Http;
 
 namespace ApplicationService
 {
@@ -30,10 +31,12 @@ namespace ApplicationService
     {
         private readonly IStateManager stateManager;
         private readonly EfDbContext efDbContext;
-        public AccountQueryService(IStateManager stateManager, EfDbContext efDbContext)
+        private readonly IHttpClientFactory httpClientFactory;
+        public AccountQueryService(IStateManager stateManager, EfDbContext efDbContext, IHttpClientFactory httpClientFactory)
         {
             this.stateManager = stateManager;
             this.efDbContext = efDbContext;
+            this.httpClientFactory = httpClientFactory;
         }
         [AuthenticationFilter(false)]
         public async Task<ApiResult> GetAccountInfo()
@@ -52,19 +55,19 @@ namespace ApplicationService
         public async Task<ApiResult> GetAccountList(PageQueryInputBase input)
         {
             var query = (from account in efDbContext.Account
-                        join user in efDbContext.User on account.Id equals user.AccountId
-                        select new GetAccountListResponse
-                        {
-                            Id = account.Id,
-                            LoginName = account.LoginName,
-                            NickName = account.NickName,
-                            State = (int)account.State,
-                            Gender = (int)user.Gender,
-                            BirthDay = user.BirthDay,
-                            Address = user.Address,
-                            Tel = user.Tel,
-                            UserName = user.UserName
-                        }).OrderBy(x => x.LoginName);
+                         join user in efDbContext.User on account.Id equals user.AccountId
+                         select new GetAccountListResponse
+                         {
+                             Id = account.Id,
+                             LoginName = account.LoginName,
+                             NickName = account.NickName,
+                             State = (int)account.State,
+                             Gender = (int)user.Gender,
+                             BirthDay = user.BirthDay,
+                             Address = user.Address,
+                             Tel = user.Tel,
+                             UserName = user.UserName
+                         }).OrderBy(x => x.LoginName);
             var (Data, Total) = await QueryServiceHelper.PageQuery(query, input.Page, input.Limit);
             var accoundIds = Data.Select(x => x.Id).ToList();
             var roles = await (from role in efDbContext.Role
@@ -103,5 +106,6 @@ namespace ApplicationService
                                 }).FirstOrDefaultAsync();
             return ApiResult.Ok(result);
         }
+
     }
 }

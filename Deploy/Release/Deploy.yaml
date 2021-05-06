@@ -20,6 +20,7 @@ spec:
     metadata:
       labels: 
         app: accountservice
+        version: v1
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "accountservice"
@@ -63,6 +64,7 @@ spec:
     metadata:
       labels: 
         app: goodsservice
+        version: v1
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "goodsservice"
@@ -106,6 +108,7 @@ spec:
     metadata:
       labels: 
         app: tradeservice
+        version: v1
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "tradeservice"
@@ -149,6 +152,7 @@ spec:
     metadata:
       labels: 
         app: publicservice
+        version: v1
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "publicservice"
@@ -215,6 +219,7 @@ spec:
     metadata:
       labels: 
         app: jobservice
+        version: v1
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "jobservice"
@@ -258,6 +263,7 @@ spec:
     metadata:
       labels: 
         app: imageservice
+        version: v1
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "imageservice"
@@ -444,5 +450,72 @@ spec:
         backend:
           service:
             name: mobilefrontend
+            port:
+              number: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauthservice
+  namespace: dapreshop
+  labels:
+    app: oauthservice
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oauthservice
+  minReadySeconds: 5 
+  strategy: 
+    type: RollingUpdate 
+    rollingUpdate:
+      maxUnavailable: 1 
+      maxSurge: 1
+  template: 
+    metadata:
+      labels: 
+        app: oauthservice
+        version: v1
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "oauthservice"
+        dapr.io/app-port: "80"
+        dapr.io/config: "appconfig"
+    spec:
+      containers:
+        - name: web
+          image: oauthservice:release
+          imagePullPolicy: Never
+          readinessProbe:
+            httpGet:
+              path: v1.0/healthz
+              port: 3500
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds : 5
+            failureThreshold : 3
+          ports:
+            - containerPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: dapreshop
+  name: oauth
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: 'http://admin.dapreshop.com:30882'
+    nginx.ingress.kubernetes.io/cors-allow-headers: 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authentication,AuthIgnore'
+spec:
+  rules:
+  - host: oauth.dapreshop.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: oauthservice-dapr
             port:
               number: 80

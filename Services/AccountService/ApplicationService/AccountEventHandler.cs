@@ -49,12 +49,19 @@ namespace ApplicationService
         {
             return await new DefaultEventHandlerResponse().RunAsync(nameof(InitRoleBasedAccessControler), input.GetDataJson(), async () =>
             {
+                InitUserOauthDto.Github data = default;
+                if (!string.IsNullOrEmpty(input.GetData().Token))
+                {
+                    data = System.Text.Json.JsonSerializer.Deserialize<InitUserOauthDto.Github>(input.GetData().Token);
+                }
                 var role = new Role();
                 role.SetRole("超级管理员", true);
                 roleRepository.Add(role);
                 var admin = new Account();
                 var defpwd = "x1234567";
-                admin.CreateAccount("eshopadmin", "商城管理员", defpwd, Common.GetMD5SaltCode);
+                admin.CreateAccount(data?.login ?? "eshopadmin", data?.name ?? "商城管理员", defpwd, Common.GetMD5SaltCode);
+                if (data != null)
+                    admin.User.CreateOrUpdateUser(data?.name ?? "商城管理员", data?.avatar_url ?? "", "", "", UserGender.Male, Convert.ToDateTime("1980-01-01"));
                 admin.SetRoles(new List<Guid>() { role.Id });
                 var defbuyer = new Account();
                 defbuyer.CreateAccount("eshopuser", "白云苍狗", defpwd, Common.GetMD5SaltCode);

@@ -14,7 +14,7 @@ namespace IApplicationService.AccountService
     public interface IAccountUseCaseService
     {
         [RemoteFunc(funcDescription: "初始化RBAC")]
-        Task<ApiResult> InitRoleBasedAccessControler();
+        Task<ApiResult> InitRoleBasedAccessControler(InitUserOauthDto input);
 
         [RemoteFunc(funcDescription:"用户注册")]
         Task<ApiResult> AccountRegister(CreateAccountDto input);

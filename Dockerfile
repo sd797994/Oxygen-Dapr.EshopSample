@@ -32,6 +32,11 @@ WORKDIR /app
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 COPY --from=svcbuild /src/Services/JobService/bin/Release/net5.0 /app
 ENTRYPOINT ["dotnet", "JobService.dll"]
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 as oauthservice
+WORKDIR /app
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
+COPY --from=svcbuild /src/Services/OauthService/bin/Release/net5.0 /app
+ENTRYPOINT ["dotnet", "OauthService.dll"]
 
 
 

@@ -29,10 +29,11 @@ export function checkRolebasedInit() {
   })
 }
 
-export function InitRoleBasedAccessControler() {
+export function InitRoleBasedAccessControler(data) {
   return request({
     url: '/accountservice/accountusecase/InitRoleBasedAccessControler',
-    method: 'post'
+    method: 'post',
+    data
   })
 }
 

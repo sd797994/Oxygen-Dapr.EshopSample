@@ -1,0 +1,34 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: githubauth
+  namespace: dapreshop
+spec:
+  type: middleware.http.oauth2
+  version: v1
+  metadata:
+  - name: clientId
+    value: ""
+  - name: clientSecret
+    value: ""
+  - name: scopes
+    value: "user:email"
+  - name: authURL
+    value: "https://github.com/login/oauth/authorize"
+  - name: tokenURL
+    value: "https://github.com/login/oauth/access_token"
+  - name: redirectURL
+    value: ""
+  - name: authHeaderName
+    value: "myauth"
+---
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+  namespace: dapreshop
+spec:
+  httpPipeline:
+    handlers:
+    - name: githubauth
+      type: middleware.http.oauth2

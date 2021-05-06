@@ -1,14 +1,12 @@
-ï»¿using Autofac;
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Host.Modules;
-using Infrastructure.EfDataAccess;
 using Infrastructure.Http;
-using InfrastructureBase.Data.Nest;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OauthService.Modules;
 using Oxygen.IocModule;
 using Oxygen.Mesh.Dapr;
 using Oxygen.ProxyGenerator.Implements;
@@ -16,54 +14,51 @@ using Oxygen.Server.Kestrel.Implements;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Host
+namespace OauthService
 {
-    class Program
+    public class Program
     {
-        private static IConfiguration Configuration { get; set; }
+        private static IConfiguration _configuration { get; set; }
         static async Task Main(string[] args)
         {
             await CreateDefaultHost(args).Build().RunAsync();
         }
-        static IHostBuilder CreateDefaultHost(string[] _) => new HostBuilder()
-                .ConfigureWebHostDefaults(webhostbuilder => {
-                    //æ³¨å†Œæˆä¸ºoxygenæœåŠ¡èŠ‚ç‚¹
-                    webhostbuilder.StartOxygenServer<OxygenActorStartup>((config) => {
+
+        static IHostBuilder CreateDefaultHost(string[] args) => new HostBuilder()
+                .ConfigureWebHostDefaults(webhostbuilder =>
+                {
+                    //×¢²á³ÉÎªoxygen·şÎñ½Úµã
+                    webhostbuilder.StartOxygenServer<OxygenStartup>((config) =>
+                    {
                         config.Port = 80;
                         config.PubSubCompentName = "pubsub";
                         config.StateStoreCompentName = "statestore";
                         config.TracingHeaders = "Authentication,AuthIgnore";
-                        config.UseCors = true;
                     });
                 })
                 .ConfigureAppConfiguration((hostContext, config) =>
                 {
                     config.SetBasePath(Directory.GetCurrentDirectory());
                     config.AddJsonFile("appsettings.json");
-                    Configuration = config.Build();
+                    _configuration = config.Build();
                 })
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
-                    //æ³¨å…¥oxygenä¾èµ–
+                    //×¢ÈëoxygenÒÀÀµ
                     builder.RegisterOxygenModule();
-                    //æ³¨å…¥ä¸šåŠ¡ä¾èµ–
+                    //×¢ÈëÒµÎñÒÀÀµ
                     builder.RegisterModule(new ServiceModule());
                 })
                 .ConfigureServices((context, services) =>
                 {
                     services.AddHttpClient();
-                    //æ³¨å†Œè‡ªå®šä¹‰HostService
-                    services.AddHostedService<CustomerService>();
-                    //æ³¨å†Œå…¨å±€æ‹¦æˆªå™¨
+                    //×¢²áÈ«¾ÖÀ¹½ØÆ÷
                     LocalMethodAopProvider.RegisterPipelineHandler(AopHandlerProvider.ContextHandler, AopHandlerProvider.BeforeSendHandler, AopHandlerProvider.AfterMethodInvkeHandler, AopHandlerProvider.ExceptionHandler);
-                    //æ³¨å†Œé‰´æƒæ‹¦æˆªå™¨
-                    AccountAuthenticationHandler.RegisterAllFilter();
                     services.AddLogging(configure =>
                     {
-                        configure.AddConfiguration(Configuration.GetSection("Logging"));
+                        configure.AddConfiguration(_configuration.GetSection("Logging"));
                         configure.AddConsole();
                     });
-                    services.AddDbContext<EfDbContext>(options => options.UseNpgsql(Configuration.GetSection("SqlConnectionString").Value));
                     services.AddAutofac();
                 })
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory());

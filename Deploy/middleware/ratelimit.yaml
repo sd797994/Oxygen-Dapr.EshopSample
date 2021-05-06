@@ -1,0 +1,20 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: ratelimit
+spec:
+  type: middleware.http.ratelimit
+  version: v1
+  metadata:
+  - name: maxRequestsPerSecond
+    value: 1
+---
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+spec:
+  httpPipeline:
+    handlers:
+    - name: ratelimit
+      type: middleware.http.ratelimit

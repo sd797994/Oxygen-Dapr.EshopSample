@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using InfrastructureBase.AuthBase;
+using Microsoft.AspNetCore.Http;
 using Oxygen.Common.Implements;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace InfrastructureBase.Http
         public string RoutePath { get; set; }
         public ILifetimeScope RequestService { get; set; }
         public CurrentUser User { get; set; }
+        public HttpResponse Response { get; set; }
         public bool GetAuthIgnore()
         {
             if (Headers.TryGetValue("Authignore", out string val))
@@ -38,6 +40,7 @@ namespace InfrastructureBase.Http
             LocalVal.Value.Cookies = wapper.Cookies;
             LocalVal.Value.RoutePath = wapper.RoutePath;
             LocalVal.Value.RequestService = wapper.RequestService;
+            LocalVal.Value.Response = wapper.HttpResponse;
         }
         public static void SetUser(CurrentUser user)
         {
