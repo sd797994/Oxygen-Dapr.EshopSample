@@ -1,6 +1,7 @@
 # Dapr-Eshop
 
-Dapr-Eshop是一款由C#编写、运行在k8s上以dapr作为服务网格组件支撑的分布式电商系统Demo，旨在让.net开发者通过该demo快速学习并上手dapr
+Dapr-Eshop是一款由C#编写、运行在k8s上以dapr作为服务网格组件支撑的分布式电商系统Demo，旨在让.net开发者通过该demo快速学习并上手dapr,相关系列博文：
+https://www.cnblogs.com/gmmy/p/14606109.html
 
 ## 环境依赖
 
@@ -84,6 +85,7 @@ https://www.jdon.com/artichect/the-clean-architecture.html
 ------
 
 整个项目主要的逻辑是通过管理端创建权限、角色、用户来登录和管理后台系统，拥有相关权限的操作人员可以访问商品分类、商品、活动、订单、物流以及商城基本设置等页面进行商品or特价活动创建、订单管理、物流收发货以及商城基本设置管理。前端M站可以浏览商品、加入购物车并下单
+如果想体验之前博客园系列文章提到的限流、oauth等等中间件功能，可以查看Oxygen-Dapr.EshopSample\Deploy\middleware 文件夹并根据之前文章内容进行使用
 
 ### 其他依赖
 
