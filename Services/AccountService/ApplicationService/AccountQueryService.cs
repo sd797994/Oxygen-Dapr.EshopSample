@@ -46,7 +46,11 @@ namespace ApplicationService
         public async Task<ApiResult> CheckRoleBasedAccessControler()
         {
             if (await stateManager.GetState<bool>(new RoleBaseInitCheckCache()))
-                return ApiResult.Ok(new DefLoginAccountResponse { LoginName = "eshopadmin", Password = "x1234567" });
+            {
+
+                var oauth = await stateManager.GetState<InitUserOauthDto.Github>(new OauthStateStore());
+                return ApiResult.Ok(new DefLoginAccountResponse { LoginName = oauth?.login ?? "eshopadmin", Password = "x1234567" });
+            }
             else
                 return ApiResult.Ok(false);
         }
