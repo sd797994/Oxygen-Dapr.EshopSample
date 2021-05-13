@@ -1,0 +1,13 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: accountpostgres
+  namespace: dapreshop
+spec:
+  type: bindings.postgres
+  version: v1
+  metadata:
+  - name: url
+    value: user=postgres password=Mytestpwd#123 host=postgres.infrastructure port=5432 dbname=AccountDb sslmode=disable
+    
+    

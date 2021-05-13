@@ -21,7 +21,7 @@ metadata:
   namespace: dapreshop
 spec:
   hosts:
-  - apigateway
+  - "api.dapreshop.com"
   gateways:
   - dapreshop-gateway
   http:
@@ -30,13 +30,6 @@ spec:
         port:
           number: 80
         host: apigateway
-    corsPolicy:
-      allowOrigins:
-      - exact: '*'
-      allowMethods:
-      - POST
-      - GET
-
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -57,12 +50,6 @@ spec:
         port:
           number: 80
         host: mobilefrontend
-    corsPolicy:
-      allowOrigins:
-      - exact: '*'
-      allowMethods:
-      - POST
-      - GET
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -83,9 +70,23 @@ spec:
         port:
           number: 80
         host: adminfrontend
-    corsPolicy:
-      allowOrigins:
-      - exact: '*'
-      allowMethods:
-      - POST
-      - GET
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: oauthdapreshop
+  namespace: dapreshop
+spec:
+  hosts:
+  - "oauth.dapreshop.com"
+  gateways:
+  - dapreshop-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        port:
+          number: 80
+        host: oauthservice-dapr

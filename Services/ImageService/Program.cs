@@ -37,6 +37,7 @@ namespace ImageService
                         config.StateStoreCompentName = "statestore";
                         config.TracingHeaders = "Authentication,AuthIgnore";
                         config.UseStaticFiles = true;
+                        config.UseCors = true;
                     });
                 })
                 .ConfigureAppConfiguration((hostContext, config) =>

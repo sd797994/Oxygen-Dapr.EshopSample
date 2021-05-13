@@ -48,9 +48,9 @@ namespace ApplicationService
             if (!await stateManager.GetState<bool>(new RoleBaseInitCheckCache()))
             {
                 await stateManager.SetState(new RoleBaseInitCheckCache(true));
+                await eventBus.SendEvent(EventTopicDictionary.Account.InitTestUserSuccess, new LoginSuccessDto() { Token = input.OauthData ?? "" });
                 if (!string.IsNullOrEmpty(input.OauthData))
                 {
-                    await eventBus.SendEvent(EventTopicDictionary.Account.InitTestUserSuccess, new LoginSuccessDto() { Token = input.OauthData });
                     var data = System.Text.Json.JsonSerializer.Deserialize<InitUserOauthDto.Github>(input.OauthData);
                     await stateManager.SetState(new OauthStateStore(data));
                     return ApiResult.Ok(new DefLoginAccountResponse { LoginName = data.login, Password = "x1234567" }, $"权限初始化成功,已创建超管角色和默认登录账号");

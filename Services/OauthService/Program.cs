@@ -34,6 +34,7 @@ namespace OauthService
                         config.PubSubCompentName = "pubsub";
                         config.StateStoreCompentName = "statestore";
                         config.TracingHeaders = "Authentication,AuthIgnore";
+                        config.UseCors = true;
                     });
                 })
                 .ConfigureAppConfiguration((hostContext, config) =>

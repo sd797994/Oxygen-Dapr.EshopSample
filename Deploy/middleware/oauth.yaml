@@ -32,3 +32,38 @@ spec:
     handlers:
     - name: githubauth
       type: middleware.http.oauth2
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: baiduauth
+  namespace: dapreshop
+spec:
+  type: middleware.http.oauth2
+  version: v1
+  metadata:
+  - name: clientId
+    value: ""
+  - name: clientSecret
+    value: ""
+  - name: scopes
+    value: "basic"
+  - name: authURL
+    value: "http://openapi.baidu.com/oauth/2.0/authorize"
+  - name: tokenURL
+    value: "https://openapi.baidu.com/oauth/2.0/token"
+  - name: redirectURL
+    value: "http://oauth.dapreshop.com:30882"
+  - name: authHeaderName
+    value: "myauth"
+---
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: baiduauth
+  namespace: dapreshop
+spec:
+  httpPipeline:
+    handlers:
+    - name: baiduauth
+      type: middleware.http.oauth2
