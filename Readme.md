@@ -40,7 +40,8 @@ git clone https://github.com/sd797994/Oxygen-Dapr.EshopSample.git
 cd Deploy
 ./RunBasic.bat #下载基础设施,含项目使用的数据库、dapr用于状态和事件管理的中间件及网关和链路追踪组件
 cd Release
-./BuildImages.bat #构建服务镜像,由于是第一次运行，需要拉取基础镜像以及npm install包，可能会较慢
+./BuildFrontendImages.bat #构建前端页面镜像,由于是第一次运行，需要拉取基础镜像以及npm install包，可能会较慢
+./BuildServiceImage.bat #构建服务端镜像,由于是第一次运行，需要拉取基础镜像以及npm install包，可能会较慢
 ./Deploy.bat #运行
 ```
 

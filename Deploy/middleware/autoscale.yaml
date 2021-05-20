@@ -1,0 +1,18 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: prometheus-scaledobject
+  namespace: dapreshop
+spec:
+  scaleTargetRef:
+    name: accountservice
+  pollingInterval: 15 #指定keda的采集频次，单位秒
+  minReplicaCount: 0  #指定默认规格
+  maxReplicaCount: 10 #最大扩容规格
+  triggers:
+  - type: prometheus
+    metadata:
+      serverAddress: http://dapr-prom-prometheus-server.dapr-monitoring.svc.cluster.local  #prometheus服务的svc用于keda采集指标
+      metricName: dapr_http_server_request_count  #具体的指标名
+      query: sum(rate(dapr_http_server_request_count{app_id="apigateway", path=~".*accountservice.*"}[2m])) #这是prometheus特有的PromQL，这段query的意思是我们需要采集以2分钟为一个维度对网关的请求平均访问速率，这里不展开，大家可以搜PromQL中文文档了解更多
+      threshold: '3' #阈值用于判断扩容/缩容

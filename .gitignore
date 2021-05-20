@@ -10,7 +10,6 @@
 *\pub
 bin
 Debug
-Release
 obj
 *.user
 /nugetpack
