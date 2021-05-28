@@ -7,7 +7,7 @@ spec:
   scaleTargetRef:
     name: accountservice
   pollingInterval: 15 #指定keda的采集频次，单位秒
-  minReplicaCount: 0  #指定默认规格
+  minReplicaCount: 1  #指定默认规格
   maxReplicaCount: 10 #最大扩容规格
   triggers:
   - type: prometheus

@@ -8,3 +8,4 @@ docker build . -t jobservice:release --target jobservice
 docker build . -t publicservice:release --target publicservice
 docker build . -t tradeservice:release --target tradeservice
 docker build . -t oauthservice:release --target oauthservice
+docker build . -t apidocument:release --target apidocument
