@@ -53,6 +53,8 @@ cd Release
 127.0.0.1 api.dapreshop.com #网关
 127.0.0.1 image.dapreshop.com #图片服务器
 127.0.0.1 zipkin.dapreshop.com #链路追踪
+127.0.0.1 swagger.dapreshop.com #swagger文档用于访问http://swagger.dapreshop.com:30882/swagger/index.html
+
 ```
 
 查询kubectl get po -n dapreshop 观察所有po都running后即可通过浏览器访问 admin.dapreshop.com:30882、m.dapreshop.com:30882
