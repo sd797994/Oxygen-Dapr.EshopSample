@@ -66,7 +66,7 @@ namespace ApiSourceGenerator
                             }}");
                         }
                     }
-                    source.Append(@$"}}");
+                    source.Append("}");
                 }
             }
             source.Append("}");
@@ -77,7 +77,6 @@ namespace ApiSourceGenerator
             if (type.IsGenericType)
                 return $"{type.Name.Replace("`1", "")}<{string.Join(",", type.GetGenericArguments().Select(x => GetGericType(x)))}>";
             return type.FullName;
-
         }
         public void Initialize(GeneratorInitializationContext context)
         {
