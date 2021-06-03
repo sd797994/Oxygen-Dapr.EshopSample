@@ -1,0 +1,34 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: sentinel
+  namespace: dapreshop
+spec:
+  type: middleware.http.sentinel
+  version: v1
+  metadata:
+  - name: appName
+    value: "accountservice"
+  - name: logDir
+    value: "/tmp"
+  - name: flowRules
+    value: >-
+      [
+        {
+          "resource": "POST:/v1.0/invoke/accountservice/method/accountquery/checkrolebasedaccesscontroler",
+          "threshold": 10,
+          "tokenCalculateStrategy": 0,
+          "controlBehavior": 0
+        }
+      ]
+---
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: sentinelconfig
+  namespace: dapreshop
+spec:
+  httpPipeline:
+    handlers:
+      - name: sentinel
+        type: middleware.http.sentinel
