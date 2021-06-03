@@ -1,4 +1,4 @@
-docker rmi oauthservice:release tradeservice:release publicservice:release jobservice:release imageservice:release goodsservice:release accountservice:release
+docker rmi oauthservice:release tradeservice:release publicservice:release jobservice:release imageservice:release goodsservice:release accountservice:release apidocument:release
 docker system prune -f
 cd ../../
 docker build . -t accountservice:release --target accountservice 

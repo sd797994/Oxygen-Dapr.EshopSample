@@ -2,6 +2,7 @@
 using IApplicationService.Base;
 using InfrastructureBase;
 using InfrastructureBase.AuthBase;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;
