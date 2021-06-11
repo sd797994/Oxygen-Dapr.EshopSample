@@ -13,14 +13,10 @@ spec:
     value: "/tmp"
   - name: flowRules
     value: >-
-      [
-        {
-          "resource": "POST:/v1.0/invoke/accountservice/method/accountquery/checkrolebasedaccesscontroler",
-          "threshold": 10,
-          "tokenCalculateStrategy": 0,
-          "controlBehavior": 0
-        }
-      ]
+      []
+  - name: circuitbreakerRules
+    value: >-
+      []
 ---
 apiVersion: dapr.io/v1alpha1
 kind: Configuration

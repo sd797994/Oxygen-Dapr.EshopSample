@@ -95,5 +95,40 @@ namespace InfrastructureBase
                 }
             }
         }
+        public static IEnumerable<dynamic> GetRemoteServicesInfo()
+        {
+            return GetLazyRemoteServicesInfo.Value;
+        }
+        static Lazy<IEnumerable<dynamic>> GetLazyRemoteServicesInfo = new Lazy<IEnumerable<dynamic>>(() => {
+            var result = new List<dynamic>();
+            foreach (var interfaceType in typeof(IApplicationService.Base.AppQuery.PageQueryInputBase).Assembly.GetTypes().Where(x => x.IsInterface && !x.GetInterfaces().Any(x => x.Name == "IActorService")))
+            {
+                var remotesrvAttr = interfaceType.GetCustomAttribute<RemoteServiceAttribute>();
+                if (remotesrvAttr != null && remotesrvAttr is RemoteServiceAttribute svcattr)
+                {
+                    result.Add(new 
+                    {
+                        ServiceName = remotesrvAttr.HostName.ToLower(),
+                        PathName = interfaceType.GetMethods().Where(method =>
+                        {
+                            var remotefuncAttr = method.GetCustomAttribute<RemoteFuncAttribute>();
+                            return remotefuncAttr != null && remotefuncAttr is RemoteFuncAttribute funattr && funattr.FuncType == FuncType.Invoke;
+                        }).Select(x => $"{remotesrvAttr.ServerName}/{x.Name}".ToLower()).ToList()
+                    });
+                }
+            }
+            return result.GroupBy(x => x.ServiceName).Select(x => new
+            {
+                ServiceName = x.Key,
+                PathName = x.SelectMany(y => (IEnumerable<string>)y.PathName)
+            });
+        });
+        public static IEnumerable<dynamic> GetEnumValue<T>() where T : Enum
+        {
+            foreach (var item in Enum.GetValues(typeof(T)))
+            {
+                yield return new { key = Enum.GetName(typeof(T), item), value = (int)item };
+            }
+        }
     }
 }

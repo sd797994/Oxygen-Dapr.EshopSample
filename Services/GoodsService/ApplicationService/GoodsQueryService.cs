@@ -48,7 +48,7 @@ namespace ApplicationService
                 return ApiResult.Ok();
             else
             {
-                var result = (await searchRepository.GetRepo("goods").Query(x => x.Name.Contains(input.GoodsName)).Sort(x => x.Name, false).Page(input.Page, input.Limit).SearchData()).Select(goods => new { Id = goods.Id, GoodsName = goods.Name, Price = goods.Price });
+                var result = (await searchRepository.GetRepo("goods").Query(x => x.Name.Contains(input.GoodsName)).Sort(x => x.Name, false).Page(input.Limit, input.Page).SearchData()).Select(goods => new { Id = goods.Id, GoodsName = goods.Name, Price = goods.Price });
                 return await ApiResult.Ok(result).Async();
             }
         }

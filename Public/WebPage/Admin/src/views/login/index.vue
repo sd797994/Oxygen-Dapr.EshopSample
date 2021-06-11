@@ -42,7 +42,7 @@
       </el-form-item>
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
       <a href="http://oauth.dapreshop.com:30882/v1.0/invoke/oauthservice/method/github/GetUserinfo">
-      <img style="width:25px;" src="@/assets/github.png" alt="github">
+        <img style="width:25px;" src="@/assets/github.png" alt="github">
       </a>
       <div v-show="initusername != ''" class="tips">
         <span style="margin-right:20px;">username: {{ initusername }}</span>

@@ -173,6 +173,14 @@ spec:
             failureThreshold : 3
           ports:
             - containerPort: 80
+          volumeMounts:
+            - mountPath: /.kube
+              name: v1
+      volumes:
+        - name: v1
+          hostPath:
+            path: /run/desktop/mnt/host/c/users/administrator/.kube
+              
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -461,7 +469,7 @@ metadata:
   labels:
     app: oauthservice
 spec: 
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: oauthservice

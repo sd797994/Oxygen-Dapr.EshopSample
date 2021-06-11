@@ -145,7 +145,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "apigateway"
         dapr.io/app-port: "80"
-        dapr.io/config: "zipkin"
+        dapr.io/config: "sentinelconfig"
     spec:
       containers:
         - name: web

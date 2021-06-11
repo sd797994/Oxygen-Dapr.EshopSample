@@ -13,3 +13,22 @@ export function CreateOrUpdateMallSetting(data) {
     data
   })
 }
+export function GetSentinelConfig() {
+  return request({
+    url: '/publicservice/sentinelconfig/Get',
+    method: 'post'
+  })
+}
+export function GetCommonData() {
+  return request({
+    url: '/publicservice/sentinelconfig/GetCommonData',
+    method: 'post'
+  })
+}
+export function SaveSentinelConfig(data) {
+  return request({
+    url: '/publicservice/sentinelconfig/Save',
+    method: 'post',
+    data
+  })
+}

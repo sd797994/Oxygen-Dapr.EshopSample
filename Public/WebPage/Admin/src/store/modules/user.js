@@ -57,8 +57,8 @@ const actions = {
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            var cookie = Cookies.get("githubuser");
-            InitRoleBasedAccessControler({OauthData:cookie}).then((response) => {
+            var cookie = Cookies.get('githubuser')
+            InitRoleBasedAccessControler({ OauthData: cookie }).then((response) => {
               Message({
                 message: response.message,
                 type: 'success',

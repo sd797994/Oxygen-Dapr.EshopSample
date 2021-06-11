@@ -148,8 +148,19 @@ export const constantRoutes = [
         component: () => import('@/views/public/mallsetting'),
         meta: { title: '商城设置', icon: 'el-icon-s-tools' },
         hidden: false
-      },
-      {
+      }, {
+        path: 'swaggerDocument',
+        name: 'swaggerDocument',
+        component: () => import('@/views/public/swaggerdocument'),
+        meta: { title: 'swagger文档', icon: 'el-icon-document' },
+        hidden: false
+      }, {
+        path: 'sentinelSetting',
+        name: 'sentinelSetting',
+        component: () => import('@/views/public/sentinelsetting'),
+        meta: { title: '服务保护配置', icon: 'el-icon-edit-outline' },
+        hidden: false
+      }, {
         path: 'eventhandleerrorinfo',
         name: 'Eventhandleerrorinfo',
         component: () => import('@/views/public/eventhandleerrorinfo'),
