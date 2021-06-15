@@ -24,5 +24,9 @@ namespace IApplicationService.Base.SentinelConfig
         /// 限流类型为队列最大等待时间
         /// </summary>
         public int? MaxQueueingTimeMs { get; set; }
+        /// <summary>
+        /// 统计周期
+        /// </summary>
+        public int StatIntervalInMs { get; set; } = 1000;
     }
 }

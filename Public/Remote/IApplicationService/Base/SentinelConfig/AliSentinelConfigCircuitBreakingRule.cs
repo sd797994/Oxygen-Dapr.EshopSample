@@ -28,5 +28,10 @@ namespace IApplicationService.Base.SentinelConfig
         /// 比例阈值
         /// </summary>
         public decimal Threshold { get; set; }
+        /// <summary>
+        /// 统计周期
+        /// </summary>
+        public int StatIntervalMs { get; set; } = 1000;
+        
     }
 }

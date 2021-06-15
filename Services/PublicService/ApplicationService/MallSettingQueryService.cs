@@ -27,7 +27,7 @@ namespace ApplicationService
 
         public async Task<ApiResult> GetMallSetting()
         {
-            var mallsetting = await dbContext.MallSetting.Select(mallsetting => 
+            var mallsetting = await dbContext.MallSetting.Select(mallsetting =>
                 new MallSettingOutInfo(mallsetting.ShopName, mallsetting.ShopDescription, mallsetting.ShopIconUrl, mallsetting.Notice, mallsetting.DeliverName, mallsetting.DeliverAddress)).FirstOrDefaultAsync();
             if (mallsetting == null)
                 return ApiResult.Ok(new MallSettingOutInfo());
