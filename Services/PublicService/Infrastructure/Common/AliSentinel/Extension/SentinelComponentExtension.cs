@@ -80,7 +80,6 @@ namespace Infrastructure.Common.AliSentinel.Extension
                                 oldrule.SetServiceAndPathName(nameof(AliSentinelConfig.Resource), item);
                                 oldrule.Threshold = setValue(item, nameof(AliSentinelConfigCircuitBreakingRule.Threshold), 1000, x => setIntValue(x));
                                 oldrule.MaxAllowedRtMs = setValue(item, nameof(AliSentinelConfigCircuitBreakingRule.MaxAllowedRtMs), 1000, x => setIntValue(x));
-                                oldrule.MinRequestAmount = setValue(item, nameof(AliSentinelConfigCircuitBreakingRule.MinRequestAmount), 1000, x => setIntValue(x));
                                 oldrule.RetryTimeoutMs = setValue(item, nameof(AliSentinelConfigCircuitBreakingRule.RetryTimeoutMs), 1000, x => setIntValue(x));
                                 oldrule.Strategy = setValue(item, nameof(AliSentinelConfigCircuitBreakingRule.Strategy), Strategy.ErrorCount, x => setEnumValue<Strategy>(x));
                                 sentinelComponent.BreakingRules.Add(oldrule);

@@ -146,6 +146,7 @@ spec:
         dapr.io/app-id: "apigateway"
         dapr.io/app-port: "80"
         dapr.io/config: "sentinelconfig"
+        dapr.io/log-level: "debug"
     spec:
       containers:
         - name: web

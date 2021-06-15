@@ -8,7 +8,7 @@ spec:
   version: v1
   metadata:
   - name: appName
-    value: "accountservice"
+    value: "rules"
   - name: logDir
     value: "/tmp"
   - name: flowRules
