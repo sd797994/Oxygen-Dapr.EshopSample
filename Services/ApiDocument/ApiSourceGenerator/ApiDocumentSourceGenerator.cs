@@ -80,7 +80,7 @@ namespace ApiSourceGenerator
         }
         public void Initialize(GeneratorInitializationContext context)
         {
-            Debugger.Launch();
+            //Debugger.Launch();
         }
     }
 }

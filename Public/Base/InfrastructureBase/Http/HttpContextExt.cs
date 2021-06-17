@@ -13,21 +13,19 @@ namespace InfrastructureBase.Http
 {
     public class HttpContextExt
     {
-        public Dictionary<string, string> Headers { get; set; }
-        public Dictionary<string, string> Cookies { get; set; }
         public string RoutePath { get; set; }
         public ILifetimeScope RequestService { get; set; }
         public CurrentUser User { get; set; }
-        public HttpResponse Response { get; set; }
+        public HttpContext HttpContext { get; set; }
         public bool GetAuthIgnore()
         {
-            if (Headers.TryGetValue("Authignore", out string val))
-                return val == "true";
+            if (HttpContext.Request.Headers.TryGetValue("Authignore", out var val))
+                return val.Equals("true");
             return false;
         }
         public string GetLoginToken()
         {
-            if (Headers.TryGetValue("Authentication", out string val))
+            if (HttpContext.Request.Headers.TryGetValue("Authentication", out var val))
                 return val;
             return null;
         }
@@ -36,11 +34,9 @@ namespace InfrastructureBase.Http
         public static void SetCurrent(OxygenHttpContextWapper wapper)
         {
             LocalVal.Value = new HttpContextExt();
-            LocalVal.Value.Headers = wapper.Headers;
-            LocalVal.Value.Cookies = wapper.Cookies;
             LocalVal.Value.RoutePath = wapper.RoutePath;
             LocalVal.Value.RequestService = wapper.RequestService;
-            LocalVal.Value.Response = wapper.HttpResponse;
+            LocalVal.Value.HttpContext = wapper.HttpContext;
         }
         public static void SetUser(CurrentUser user)
         {

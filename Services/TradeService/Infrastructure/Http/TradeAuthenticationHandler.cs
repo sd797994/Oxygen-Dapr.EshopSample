@@ -22,7 +22,7 @@ namespace Infrastructure.Http
                 var authMethod = AuthenticationMethods.FirstOrDefault(x => x.Path.Equals(routePath));
                 if (authMethod != null)
                 {
-                    var token = HttpContextExt.Current.Headers.FirstOrDefault(x => x.Key == "Authentication").Value;
+                    var token = HttpContextExt.Current.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authentication").Value;
                     var accountInfo = await GetAccountInfo(HttpContextExt.Current.RequestService.Resolve<IStateManager>());
                     HttpContextExt.SetUser(accountInfo);
                     if (!HttpContextExt.Current.User.IgnorePermission && authMethod.CheckPermission && !HttpContextExt.Current.GetAuthIgnore() && HttpContextExt.Current.User.Permissions != null && !HttpContextExt.Current.User.Permissions.Contains(routePath))
@@ -33,7 +33,7 @@ namespace Infrastructure.Http
 
         private async Task<CurrentUser> GetAccountInfo(IStateManager stateManager)
         {
-            var token = HttpContextExt.Current.Headers.FirstOrDefault(x => x.Key == "Authentication").Value;
+            var token = HttpContextExt.Current.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authentication").Value;
             var usertoken = await stateManager.GetState<AccessTokenItem>(new AccountLoginAccessToken(token));
             if (usertoken == null)
                 throw new InfrastructureException("授权登录Token已过期,请重新登录!");
