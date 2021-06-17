@@ -26,6 +26,7 @@ namespace Infrastructure.Http
             //方法前拦截器，入参校验
             if (param != null)
                 CustomModelValidator.Valid(param);
+            oxygenHttpContext.HttpContext.Request.Headers.Remove("AuthIgnore");
             oxygenHttpContext.HttpContext.Request.Headers.Add("AuthIgnore", "true");
             await Task.CompletedTask;
         }
