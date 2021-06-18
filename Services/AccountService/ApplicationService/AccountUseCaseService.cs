@@ -25,6 +25,8 @@ using IApplicationService.AccountService.Dtos.Output;
 using Domain.Entities;
 using IApplicationService.Base.AccessToken;
 using IApplicationService.AccountService.Dtos.Event;
+using Infrastructure.Filter;
+using InfrastructureBase.AopFilter;
 
 namespace ApplicationService
 {
@@ -43,6 +45,7 @@ namespace ApplicationService
             this.eventBus = eventBus;
             this.stateManager = stateManager;
         }
+        [TestMethodFilter]
         public async Task<ApiResult> InitRoleBasedAccessControler(InitUserOauthDto input)
         {
             if (!await stateManager.GetState<bool>(new RoleBaseInitCheckCache()))

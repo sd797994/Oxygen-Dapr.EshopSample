@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using Nest;
 using InfrastructureBase.Data.Nest;
 using System.Net.Http;
+using Infrastructure.Filter;
 
 namespace ApplicationService
 {
@@ -43,6 +44,7 @@ namespace ApplicationService
         {
             return await ApiResult.Ok(HttpContextExt.Current.User).Async();
         }
+        [TestMethodFilter]
         public async Task<ApiResult> CheckRoleBasedAccessControler()
         {
             if (await stateManager.GetState<bool>(new RoleBaseInitCheckCache()))

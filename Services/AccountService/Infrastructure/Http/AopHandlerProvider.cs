@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Http;
 using InfrastructureBase.Http;
+using InfrastructureBase.AopFilter;
 
 namespace Infrastructure.Http
 {
@@ -28,10 +29,14 @@ namespace Infrastructure.Http
                 CustomModelValidator.Valid(param);
             oxygenHttpContext.HttpContext.Request.Headers.Remove("AuthIgnore");
             oxygenHttpContext.HttpContext.Request.Headers.Add("AuthIgnore", "true");
+            //自定义拦截器
+            await AopFilterManager.ExcutingMethodFilter(param);
             await Task.CompletedTask;
         }
         public static async Task AfterMethodInvkeHandler(object result)
         {
+            //自定义拦截器
+            await AopFilterManager.ExcutedMethodFilter(result);
             await Task.CompletedTask;
         }
 

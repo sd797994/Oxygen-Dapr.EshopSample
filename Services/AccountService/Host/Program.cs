@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using Host.Modules;
 using Infrastructure.EfDataAccess;
 using Infrastructure.Http;
+using InfrastructureBase.AopFilter;
 using InfrastructureBase.Data.Nest;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -58,6 +59,8 @@ namespace Host
                     LocalMethodAopProvider.RegisterPipelineHandler(AopHandlerProvider.ContextHandler, AopHandlerProvider.BeforeSendHandler, AopHandlerProvider.AfterMethodInvkeHandler, AopHandlerProvider.ExceptionHandler);
                     //注册鉴权拦截器
                     AccountAuthenticationHandler.RegisterAllFilter();
+                    //注册自定义Attribute AOP拦截器(需要注册全局拦截器才有效)
+                    AopFilterManager.RegisterAllFilter();
                     services.AddLogging(configure =>
                     {
                         configure.AddConfiguration(Configuration.GetSection("Logging"));

@@ -15,7 +15,7 @@
   </ItemGroup>
   <Target Name="GetDependencyTargetPaths">
     <ItemGroup>
-      <TargetPathWithTargetPlatformMoniker Include="..\..\..\Public\Remote\IApplicationService\bin\Release\net5.0\IApplicationService.dll" IncludeRuntimeDependency="false" />
+      <TargetPathWithTargetPlatformMoniker Include="..\..\..\Public\Remote\IApplicationService\bin\Debug\net5.0\IApplicationService.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="$(PKGOxygen-Dapr)\lib\net5.0\Oxygen.Client.ServerSymbol.dll" IncludeRuntimeDependency="false" />
     </ItemGroup>
   </Target>

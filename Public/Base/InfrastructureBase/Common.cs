@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using InfrastructureBase.AopFilter;
 using InfrastructureBase.AuthBase;
 using Microsoft.Extensions.DependencyModel;
 using Oxygen.Client.ServerSymbol;
@@ -41,34 +42,33 @@ namespace InfrastructureBase
         {
             return Assemblies.Value;
         }
+        public static List<(string path, Attribute attrInstance)> GetAllMethodByAopFilter()
+        {
+            Func<Type, bool> TypeCondition = type => !type.IsInterface && type.GetInterfaces().Any();
+            Func<MethodInfo, bool> MethodCondition = method => method.GetCustomAttributes().Any(x => x.GetType().GetInterfaces().Any(y => y.Equals(typeof(IAopMethodFilter))));
+            Func<Type, MethodInfo, (string path, Attribute attrInstance)> CreateAuthenticationInfo = (type, method) => ($"/{type.GetInterfaces()[0].GetCustomAttribute<RemoteServiceAttribute>()?.ServerName ?? type.Name}/{method.Name}".ToLower(), method.GetCustomAttributes().FirstOrDefault(x => x.GetType().GetInterfaces().Any(y => y.Equals(typeof(IAopMethodFilter)))));
+            return CreateTByTypeMethod(TypeCondition, MethodCondition, CreateAuthenticationInfo);
+        }
         public static List<AuthenticationInfo> GetAllMethodByAuthenticationFilter()
         {
-            var result = new List<AuthenticationInfo>();
-            foreach (var assembly in GetProjectAssembliesArray())
+            Func<Type, bool> TypeCondition = type => !type.IsInterface && type.GetInterfaces().Any();
+            Func<MethodInfo, bool> MethodCondition = method => method.GetCustomAttribute<AuthenticationFilter>() != null;
+            Func<Type, MethodInfo, AuthenticationInfo> CreateAuthenticationInfo = (type, method) =>
             {
-                foreach (var type in assembly.GetTypes().Where(x => !x.IsInterface))
-                {
-                    if (type.GetInterfaces().Any())
-                    {
-                        var interfaceType = type.GetInterfaces()?[0];
-                        if (interfaceType != null)
-                        {
-                            var remotesrvAttr = interfaceType.GetCustomAttribute<RemoteServiceAttribute>();
-                            foreach (var method in type.GetMethods())
-                            {
-                                var authenFilter = method.GetCustomAttribute<AuthenticationFilter>();
-                                if (authenFilter != null)
-                                {
-                                    var remotesrvfuncAttr = interfaceType.GetRuntimeMethod(method.Name, method.GetParameters().Select(x => x.ParameterType).ToArray()).GetCustomAttribute<RemoteFuncAttribute>();
-                                    if (remotesrvfuncAttr.FuncType == FuncType.Invoke)
-                                        result.Add(new AuthenticationInfo(remotesrvAttr?.ServerDescription, remotesrvfuncAttr?.FuncDescription, authenFilter.CheckPermission, $"/{remotesrvAttr?.ServerName ?? interfaceType.Name}/{method.Name}".ToLower()));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return result;
+                var interfaceType = type.GetInterfaces()?[0];
+                var remotesrvAttr = interfaceType.GetCustomAttribute<RemoteServiceAttribute>();
+                var authenFilter = method.GetCustomAttribute<AuthenticationFilter>();
+                var remotesrvfuncAttr = interfaceType.GetRuntimeMethod(method.Name, method.GetParameters().Select(x => x.ParameterType).ToArray()).GetCustomAttribute<RemoteFuncAttribute>();
+                if (remotesrvfuncAttr.FuncType == FuncType.Invoke)
+                    return new AuthenticationInfo(remotesrvAttr?.ServerDescription, remotesrvfuncAttr?.FuncDescription, authenFilter.CheckPermission, $"/{remotesrvAttr?.ServerName ?? interfaceType.Name}/{method.Name}".ToLower());
+                return default;
+            };
+            return CreateTByTypeMethod(TypeCondition, MethodCondition, CreateAuthenticationInfo);
+        }
+        internal static List<T> CreateTByTypeMethod<T>(Func<Type, bool> typeCondition, Func<MethodInfo, bool> methodCondition, Func<Type, MethodInfo, T> Tcreater)
+        {
+            return GetProjectAssembliesArray().SelectMany(assembly => assembly.GetTypes().Where(type => typeCondition(type)).SelectMany(type => type.GetMethods().Where(method => methodCondition(method)).Select(method => Tcreater(type, method)).Distinct()
+            )).ToList();
         }
         static string[] SystemAssemblyQualifiedName = new string[] { "Microsoft", "System" };
         public static bool IsSystemType(Type type, bool checkBaseType = true, bool checkInterfaces = true)

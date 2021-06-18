@@ -1,8 +1,10 @@
 ﻿using IApplicationService;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Oxygen.Client.ServerSymbol;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
@@ -14,10 +16,14 @@ using System.Threading.Tasks;
 namespace ApiSourceGenerator
 {
     [Generator]
-    public class ApiDocumentSourceGenerator : ISourceGenerator
+    internal class ApiDocumentSourceGenerator : ISourceGenerator
     {
         public void Execute(GeneratorExecutionContext context)
         {
+            if (context.SyntaxReceiver is CustomSyntaxReceiver receiver)
+            {
+
+            }
             var source = new StringBuilder();
             source.Append(@"
             using IApplicationService;
@@ -80,7 +86,21 @@ namespace ApiSourceGenerator
         }
         public void Initialize(GeneratorInitializationContext context)
         {
-            //Debugger.Launch();
+            Debugger.Launch();
+            context.RegisterForSyntaxNotifications(() => new CustomSyntaxReceiver());
+        }
+    }
+
+    internal class CustomSyntaxReceiver : ISyntaxReceiver
+    {
+        public List<ClassDeclarationSyntax> Models { get; } = new();
+
+        public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
+        {
+            if (syntaxNode is ClassDeclarationSyntax classDeclarationSyntax)
+            {
+                Models.Add(classDeclarationSyntax);
+            }
         }
     }
 }

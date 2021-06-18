@@ -22,7 +22,6 @@ namespace Infrastructure.Http
                 var authMethod = AuthenticationMethods.FirstOrDefault(x => x.Path.Equals(routePath));
                 if (authMethod != null)
                 {
-                    var token = HttpContextExt.Current.HttpContext.Request.Headers.FirstOrDefault(x => x.Key == "Authentication").Value;
                     var accountInfo = await GetAccountInfo(HttpContextExt.Current.RequestService.Resolve<IStateManager>());
                     HttpContextExt.SetUser(accountInfo);
                     if (!HttpContextExt.Current.User.IgnorePermission && authMethod.CheckPermission && !HttpContextExt.Current.GetAuthIgnore() && HttpContextExt.Current.User.Permissions != null && !HttpContextExt.Current.User.Permissions.Contains(routePath))
