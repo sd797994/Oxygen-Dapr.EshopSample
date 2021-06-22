@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,6 +34,7 @@ namespace ApiDocument
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiDocument", Version = "v1" });
                 c.OperationFilter<AddAuthTokenHeaderParameter>();
+                c.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), "ApiDocument.xml"));
             });
         }
 
@@ -40,7 +42,10 @@ namespace ApiDocument
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiDocument v1"));
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiDocument v1");
+            });
             app.UseRouting();
             app.UseAuthorization();
 

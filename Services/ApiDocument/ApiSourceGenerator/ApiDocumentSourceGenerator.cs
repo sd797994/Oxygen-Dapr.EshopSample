@@ -59,6 +59,10 @@ namespace ApiSourceGenerator
                         if (remotefuncAttr != null && remotefuncAttr is RemoteFuncAttribute funattr && funattr.FuncType == FuncType.Invoke)
                         {
                             source.Append($@"
+                            /// <summary>
+                            /// {(remotefuncAttr.FuncDescription)}
+                            /// </summary>
+                            {(method.GetParameters().Any() ? $"/// <param name=\"{method.GetParameters()[0].Name}\"></param>":"")}
                             [HttpPost]
                             public async Task<dynamic> {method.Name}({(method.GetParameters().Any()? $"{GetGericType(method.GetParameters()[0].ParameterType)} {method.GetParameters()[0].Name}":"")})
                             {{
@@ -86,7 +90,7 @@ namespace ApiSourceGenerator
         }
         public void Initialize(GeneratorInitializationContext context)
         {
-            Debugger.Launch();
+            //Debugger.Launch();
             context.RegisterForSyntaxNotifications(() => new CustomSyntaxReceiver());
         }
     }

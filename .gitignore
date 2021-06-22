@@ -13,3 +13,4 @@ Debug
 obj
 *.user
 /nugetpack
+/Services/ApiDocument/ApiDocument/ApiDocument.xml
