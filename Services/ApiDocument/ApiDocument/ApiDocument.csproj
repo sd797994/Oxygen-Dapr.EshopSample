@@ -6,9 +6,13 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>E:\dotnet_project\Oxygen-Dapr.EshopSample\Services\ApiDocument\ApiDocument\ApiDocument.xml</DocumentationFile>
-    <OutputPath>bin\Debug\net5.0\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ApiDocument.xml" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
@@ -17,12 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Public\Remote\IApplicationService\IApplicationService.csproj" />
     <ProjectReference Include="..\ApiSourceGenerator\ApiSourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="ApiDocument.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

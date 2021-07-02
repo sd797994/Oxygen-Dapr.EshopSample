@@ -100,7 +100,7 @@ namespace Infrastructure.Common.AliSentinel.Extension
                 else
                     throw new NullReferenceException($"在{SentinelComponentBaseConfig.NamespaceParameter}下未找到{SentinelComponentBaseConfig.ComponentName} Component");
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 throw new NullReferenceException($"在{SentinelComponentBaseConfig.NamespaceParameter}下未找到{SentinelComponentBaseConfig.ComponentName} Component 或加载Component失败");
             }

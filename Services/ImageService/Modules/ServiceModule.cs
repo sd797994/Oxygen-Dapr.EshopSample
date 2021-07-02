@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyModel;
 using System.Linq;
 using System.Runtime.Loader;
 using InfrastructureBase;
-using System.Linq;
 
 namespace ImageService.Modules
 {
