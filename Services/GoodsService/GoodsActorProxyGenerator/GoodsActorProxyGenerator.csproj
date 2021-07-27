@@ -8,7 +8,7 @@
     <!--必须引入CodeAnalysis-->
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
     <!--引入Oxygen和Autofac用于编译时在Target指向nuget包位置查询dll-->
-    <PackageReference Include="Oxygen-Dapr" Version="0.2.1" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Oxygen-Dapr" Version="0.2.2" GeneratePathProperty="true" PrivateAssets="all" />
     <PackageReference Include="Autofac" Version="6.2.0.0" GeneratePathProperty="true" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
