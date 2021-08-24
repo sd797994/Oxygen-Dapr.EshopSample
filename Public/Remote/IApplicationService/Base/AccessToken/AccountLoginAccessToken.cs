@@ -20,5 +20,6 @@ namespace IApplicationService.Base.AccessToken
         }
         public override string Key { get; set; }
         public override object Data { get; set; }
+        public override int? ttlInSeconds { get; set; }
     }
 }
