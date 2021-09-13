@@ -37,7 +37,7 @@ namespace InfrastructureBase.Object
         {
             public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
-                return CommonNumberConvter(reader, DateTime.Parse);
+                return CommonTimeConvter(reader);
             }
 
             public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
@@ -178,6 +178,21 @@ namespace InfrastructureBase.Object
                 var str = reader.GetString();
                 if (!string.IsNullOrEmpty(str))
                     return func(str);
+            }
+            catch (Exception)
+            {
+
+            }
+            return default;
+        }
+
+        static DateTime CommonTimeConvter(Utf8JsonReader reader)
+        {
+
+            try
+            {
+                var time = (long)reader.GetDouble();
+                return DateTime.MinValue.Add(new TimeSpan(time));
             }
             catch (Exception)
             {
