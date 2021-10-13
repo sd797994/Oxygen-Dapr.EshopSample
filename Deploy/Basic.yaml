@@ -182,14 +182,6 @@ spec:
         - name: web
           image: apigateway:latest
           imagePullPolicy: IfNotPresent
-          readinessProbe:
-            httpGet:
-              path: v1.0/healthz
-              port: 3500
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds : 5
-            failureThreshold : 3
           ports:
             - containerPort: 80
               name: web

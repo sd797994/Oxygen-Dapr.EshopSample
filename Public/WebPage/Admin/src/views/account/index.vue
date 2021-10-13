@@ -117,7 +117,7 @@
 import { fetchList, lockaccount, accountCreate, accountDelete, accountUpdate } from '@/api/account'
 import { GetAllRoles } from '@/api/role'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-var dateFormat = require('dateformat')
+const dateFormat = require('dateformat')
 
 export default {
   name: 'ComplexTable',
@@ -190,7 +190,7 @@ export default {
       if (date === null || date === undefined) {
         return ''
       } else {
-        return dateFormat(new Date(date), 'yyyy年mm月dd日')
+        return dateFormat(new Date(), 'yyyy年mm月dd日')
       }
     },
     getstate(state) {

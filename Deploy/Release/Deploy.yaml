@@ -31,14 +31,6 @@ spec:
         - name: web
           image: accountservice:release
           imagePullPolicy: Never
-          readinessProbe:
-            httpGet:
-              path: v1.0/healthz
-              port: 3500
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds : 5
-            failureThreshold : 3
           ports:
             - containerPort: 80
 ---
@@ -75,14 +67,6 @@ spec:
         - name: web
           image: goodsservice:release
           imagePullPolicy: Never
-          readinessProbe:
-            httpGet:
-              path: v1.0/healthz
-              port: 3500
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds : 5
-            failureThreshold : 3
           ports:
             - containerPort: 80
 ---
@@ -119,14 +103,6 @@ spec:
         - name: web
           image: tradeservice:release
           imagePullPolicy: Never
-          readinessProbe:
-            httpGet:
-              path: v1.0/healthz
-              port: 3500
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds : 5
-            failureThreshold : 3
           ports:
             - containerPort: 80
 ---
@@ -163,14 +139,6 @@ spec:
         - name: web
           image: publicservice:release
           imagePullPolicy: Never
-          readinessProbe:
-            httpGet:
-              path: v1.0/healthz
-              port: 3500
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds : 5
-            failureThreshold : 3
           ports:
             - containerPort: 80
           volumeMounts:
@@ -238,14 +206,6 @@ spec:
         - name: web
           image: jobservice:release
           imagePullPolicy: Never
-          readinessProbe:
-            httpGet:
-              path: v1.0/healthz
-              port: 3500
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds : 5
-            failureThreshold : 3
           ports:
             - containerPort: 80
 ---
@@ -282,14 +242,6 @@ spec:
         - name: web
           image: imageservice:release
           imagePullPolicy: Never
-          readinessProbe:
-            httpGet:
-              path: v1.0/healthz
-              port: 3500
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds : 5
-            failureThreshold : 3
           ports:
             - containerPort: 80
 ---
@@ -494,14 +446,6 @@ spec:
         - name: web
           image: oauthservice:release
           imagePullPolicy: Never
-          readinessProbe:
-            httpGet:
-              path: v1.0/healthz
-              port: 3500
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds : 5
-            failureThreshold : 3
           ports:
             - containerPort: 80
 ---

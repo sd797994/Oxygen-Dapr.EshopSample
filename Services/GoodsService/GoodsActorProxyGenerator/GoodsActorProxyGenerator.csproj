@@ -8,8 +8,8 @@
     <!--必须引入CodeAnalysis-->
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.11.0" />
     <!--引入Oxygen和Autofac用于编译时在Target指向nuget包位置查询dll-->
-    <PackageReference Include="Oxygen-Dapr" Version="0.2.4" GeneratePathProperty="true" PrivateAssets="all" />
-    <PackageReference Include="Autofac" Version="6.2.0.0" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Oxygen-Dapr" Version="0.2.5" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Autofac" Version="6.3.0" GeneratePathProperty="true" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApplicationService\ApplicationService.csproj" />
@@ -18,19 +18,19 @@
     <ItemGroup>
       <!--在编译代码时使用到的类型路径中涉及的dll都必须以下面的方式引入到当前文档中，否则编译不通过-->
       <!--调试模式-->
-      <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Debug\net5.0\ApplicationService.dll" IncludeRuntimeDependency="false" />
+      <!--<TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Debug\net5.0\ApplicationService.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Debug\net5.0\Domain.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Debug\net5.0\Infrastructure.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Debug\net5.0\IApplicationService.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Debug\net5.0\DomainBase.dll" IncludeRuntimeDependency="false" />
-      <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Debug\net5.0\InfrastructureBase.dll" IncludeRuntimeDependency="false" />
+      <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Debug\net5.0\InfrastructureBase.dll" IncludeRuntimeDependency="false" />-->
       <!--编译模式-->
-      <!--<TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Release\net5.0\publish\ApplicationService.dll" IncludeRuntimeDependency="false" />
+      <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Release\net5.0\publish\ApplicationService.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Release\net5.0\publish\Domain.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Release\net5.0\publish\Infrastructure.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Release\net5.0\publish\IApplicationService.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Release\net5.0\publish\DomainBase.dll" IncludeRuntimeDependency="false" />
-      <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Release\net5.0\publish\InfrastructureBase.dll" IncludeRuntimeDependency="false" />-->
+      <TargetPathWithTargetPlatformMoniker Include="..\ApplicationService\bin\Release\net5.0\publish\InfrastructureBase.dll" IncludeRuntimeDependency="false" />
       
       <TargetPathWithTargetPlatformMoniker Include="$(PKGOxygen-Dapr)\lib\net5.0\Oxygen.Mesh.Dapr.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="$(PKGOxygen-Dapr)\lib\net5.0\Oxygen.Client.ServerSymbol.dll" IncludeRuntimeDependency="false" />

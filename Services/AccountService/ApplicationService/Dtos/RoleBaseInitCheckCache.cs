@@ -20,6 +20,5 @@ namespace ApplicationService.Dtos
         }
         public override string Key { get; set; }
         public override object Data { get; set; }
-        public override int? ttlInSeconds { get; set; }
     }
 }
