@@ -33,7 +33,6 @@ namespace InfrastructureBase.Object
         /// <param name="source"></param>
         /// <param name="target"></param>
         public static void Map(TSource source, TTarget target) => MapAction(source, target);
-
         private static Func<TSource, TTarget> GetMapFunc()
         {
             var sourceType = typeof(TSource);
@@ -86,9 +85,20 @@ namespace InfrastructureBase.Object
 
                 }
                 else if (targetItem.PropertyType != sourceItem.PropertyType)
-                    continue;
-
-                memberBindings.Add(Bind(targetItem, sourceProperty));
+                {
+                    if (targetItem.PropertyType.IsGenericType && targetItem.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) && !sourceItem.PropertyType.IsGenericType)
+                    {
+                        memberBindings.Add(Bind(targetItem, sourceProperty));
+                    }
+                    else if (sourceItem.PropertyType.IsGenericType && sourceItem.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) && !targetItem.PropertyType.IsGenericType)
+                    {
+                        memberBindings.Add(Bind(targetItem, Convert(sourceProperty, targetItem.PropertyType, ConvertMethodDir.GetConvertMethod(sourceItem.PropertyType))));
+                    }
+                    else
+                        continue;
+                }
+                else
+                    memberBindings.Add(Bind(targetItem, sourceProperty));
             }
 
             //创建一个if条件表达式
@@ -233,5 +243,44 @@ namespace InfrastructureBase.Object
             var lambda = Lambda<Action<TSource, TTarget>>(conditionTarget, sourceParameter, targetParameter);
             return lambda.Compile();
         }
+    }
+    public static class ConvertMethodDir
+    {
+        static Dictionary<Type, MethodInfo> keyValues = new Dictionary<Type, MethodInfo>();
+        static ConvertMethodDir()
+        {
+            keyValues.Add(typeof(Guid?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(Guid) }));
+            keyValues.Add(typeof(decimal?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(decimal?) }));
+            keyValues.Add(typeof(float?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(float?) }));
+            keyValues.Add(typeof(double?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(double?) }));
+            keyValues.Add(typeof(int?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(int?) }));
+            keyValues.Add(typeof(sbyte?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(sbyte?) }));
+            keyValues.Add(typeof(short?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(short?) }));
+            keyValues.Add(typeof(long?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(long?) }));
+            keyValues.Add(typeof(byte?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(byte?) }));
+            keyValues.Add(typeof(uint?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(uint?) }));
+            keyValues.Add(typeof(ulong?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(ulong?) }));
+            keyValues.Add(typeof(bool?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(bool?) }));
+            keyValues.Add(typeof(char?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(char?) }));
+            keyValues.Add(typeof(DateTime?), typeof(ConvertMethodDir).GetMethod(nameof(ConvertMethodDir.InitConv), new Type[] { typeof(DateTime?) }));
+        }
+        public static MethodInfo GetConvertMethod(Type type)
+        {
+            return keyValues[type];
+        }
+        public static Guid InitConv(Guid? val) => val ?? default;
+        public static decimal InitConv(decimal? val) => val ?? default;
+        public static float InitConv(float? val) => val ?? default;
+        public static double InitConv(double? val) => val ?? default;
+        public static int InitConv(int? val) => val ?? default;
+        public static sbyte InitConv(sbyte? val) => val ?? default;
+        public static short InitConv(short? val) => val ?? default;
+        public static long InitConv(long? val) => val ?? default;
+        public static byte InitConv(byte? val) => val ?? default;
+        public static uint InitConv(uint? val) => val ?? default;
+        public static ulong InitConv(ulong? val) => val ?? default;
+        public static bool InitConv(bool? val) => val ?? default;
+        public static char InitConv(char? val) => val ?? default;
+        public static DateTime InitConv(DateTime? val) => val ?? default;
     }
 }
