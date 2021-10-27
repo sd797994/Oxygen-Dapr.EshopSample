@@ -4,7 +4,6 @@ using Host.Modules;
 using Infrastructure.EfDataAccess;
 using Infrastructure.Http;
 using InfrastructureBase.AopFilter;
-using InfrastructureBase.Data.Nest;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

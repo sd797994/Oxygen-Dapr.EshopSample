@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
 namespace Host
 {
     public class CustomerService : IHostedService
@@ -30,7 +29,7 @@ namespace Host
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             dbContext.Database.EnsureCreated();//自动迁移数据库
-            await stateManager.SetState(new PermissionState() { Key = "account", Data = AuthenticationManager.AuthenticationMethods });
+            _ = Task.Delay(20 * 1000).ContinueWith(async t => await stateManager.SetState(new PermissionState() { Key = "account", Data = AuthenticationManager.AuthenticationMethods }));
             await Task.CompletedTask;
         }
         public async Task StopAsync(CancellationToken cancellationToken)
