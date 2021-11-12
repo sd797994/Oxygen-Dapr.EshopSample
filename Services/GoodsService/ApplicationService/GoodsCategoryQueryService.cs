@@ -6,6 +6,7 @@ using Infrastructure.PersistenceObject;
 using InfrastructureBase.AuthBase;
 using InfrastructureBase.Data;
 using InfrastructureBase.Object;
+using Microsoft.EntityFrameworkCore;
 using Oxygen.Client.ServerProxyFactory.Interface;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace ApplicationService
         public async Task<ApiResult> GetAllCategoryList()
         {
             var query = from category in dbContext.GoodsCategory orderby category.Sort select new { category.Id, category.CategoryName };
-            return await ApiResult.Ok(query).Async();
+            return await ApiResult.Ok(query.ToListAsync()).Async();
         }
 
         [AuthenticationFilter]

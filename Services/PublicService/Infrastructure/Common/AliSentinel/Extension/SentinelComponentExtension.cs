@@ -57,7 +57,7 @@ namespace Infrastructure.Common.AliSentinel.Extension
                 var remoteobj = await kubernetes.GetNamespacedCustomObjectWithHttpMessagesAsync(SentinelComponentBaseConfig.Group, SentinelComponentBaseConfig.Version, SentinelComponentBaseConfig.NamespaceParameter, SentinelComponentBaseConfig.Plural, SentinelComponentBaseConfig.ComponentName);
                 if (remoteobj.Response.IsSuccessStatusCode)
                 {
-                    sentinelComponent.spec = JsonConvert.DeserializeObject<SentinelComponent>(await remoteobj.Response.Content.ReadAsStringAsync()).spec;
+                    sentinelComponent.spec = JsonConvert.DeserializeObject<SentinelComponent>(remoteobj.Body.ToString()).spec;
                     foreach (var metadata in sentinelComponent.spec.metadata)
                     {
                         if (metadata["name"] == SentinelComponentBaseConfig.flowrulename)

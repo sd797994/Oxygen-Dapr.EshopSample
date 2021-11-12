@@ -5,7 +5,6 @@
         新增用户
       </el-button>
     </div>
-
     <el-table
       v-loading="listLoading"
       :data="list"

@@ -21,6 +21,7 @@ namespace Infrastructure.EfDataAccess
         {
             //启用Guid主键类型扩展
             modelBuilder.HasPostgresExtension("uuid-ossp");
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             base.OnModelCreating(modelBuilder);
         }
     }

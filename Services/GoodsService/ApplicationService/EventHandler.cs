@@ -114,9 +114,11 @@ namespace ApplicationService
         {
             return await new DefaultEventHandlerResponse().RunAsync(nameof(EventHandleEventUpdateGoodsToEs), input.GetDataJson(), async () =>
             {
-                var result = await (from a in efDbContext.Goods.Where(x => x.LastUpdateTime >= DateTime.Now.AddMinutes(-10) && x.ShelfState)//取10分钟以为更新的数据
+                var lastUpdateTime = DateTime.Now.AddMinutes(-10);
+                var now = DateTime.Now;
+                var result = await (from a in efDbContext.Goods.Where(x => x.LastUpdateTime >= lastUpdateTime && x.ShelfState)//取10分钟以为更新的数据
                                     join b in efDbContext.GoodsCategory on a.CategoryId equals b.Id
-                                    join c in efDbContext.LimitedTimeActivitie.DefaultIfEmpty().Where(x => x.ShelfState && x.StartTime < DateTime.Now && x.EndTime > DateTime.Now) on a.Id equals c.GoodsId into tmp1
+                                    join c in efDbContext.LimitedTimeActivitie.DefaultIfEmpty().Where(x => x.ShelfState && x.StartTime < now && x.EndTime > now) on a.Id equals c.GoodsId into tmp1
                                     from c1 in tmp1.DefaultIfEmpty()
                                     select new EsGoodsDto()
                                     {

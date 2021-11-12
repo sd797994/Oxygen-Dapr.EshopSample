@@ -20,7 +20,7 @@
       </el-table-column>
       <el-table-column label="堆栈信息" align="center">
         <template slot-scope="{row}">
-          <a style="color:rgb(64, 158, 255)" @click="openContent(row.errStackTrace)">查看堆栈信息</a>
+          <a style="color:rgb(64, 158, 255)" @click="openstarckContent(row.errStackTrace)">查看堆栈信息</a>
         </template>
       </el-table-column>
       <el-table-column label="是否系统异常" align="center">
@@ -40,6 +40,14 @@
       </el-table-column>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <el-dialog title="查看堆栈信息" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+      <p style="white-space: pre-line;">{{stackContent}}</p>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -61,7 +69,8 @@ export default {
       listQuery: {
         page: 1,
         limit: 20
-      }
+      },
+      stackContent: ''
     }
   },
   created() {
@@ -90,6 +99,10 @@ export default {
         this.handleFilter()
         this.dialogFormVisible = false
       }, (msg) => { })
+    },
+    openstarckContent(contnet){
+      this.stackContent = contnet
+      this.dialogFormVisible = true
     },
     openContent (content) {
       this.$alert(content, '', {
