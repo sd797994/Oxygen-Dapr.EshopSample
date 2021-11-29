@@ -13,7 +13,7 @@
     </PackageReference>
     <PackageReference Include="NEST" Version="7.15.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0" />
-    <PackageReference Include="Oxygen-Dapr" Version="0.2.7" />
+    <PackageReference Include="Oxygen-Dapr" Version="0.2.9" />
   </ItemGroup>
 
   <ItemGroup>

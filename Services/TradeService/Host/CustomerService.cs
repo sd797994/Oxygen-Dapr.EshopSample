@@ -27,6 +27,7 @@ namespace Host
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             dbContext.Database.EnsureCreated();//自动迁移数据库
+            //阻塞20秒等待daprd启动后推送权限数据到state
             _ = Task.Delay(20 * 1000).ContinueWith(async t => await stateManager.SetState(new PermissionState() { Key = "trade", Data = AuthenticationManager.AuthenticationMethods }));
             await Task.CompletedTask;
         }

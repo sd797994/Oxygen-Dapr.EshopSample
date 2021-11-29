@@ -1,13 +1,5 @@
 ﻿using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
-using Microsoft.Extensions.DependencyModel;
-using System.Linq;
-using System.Runtime.Loader;
 using InfrastructureBase;
-using Microsoft.Extensions.Hosting;
 
 namespace OauthService.Modules
 {

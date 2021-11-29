@@ -1,16 +1,9 @@
 ﻿using DomainBase;
 using IApplicationService;
 using InfrastructureBase;
+using InfrastructureBase.Http;
 using InfrastructureBase.Object;
 using Oxygen.Common.Implements;
-using Oxygen.ProxyGenerator.Implements;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Infrastructure.Http;
-using InfrastructureBase.Http;
 
 namespace Infrastructure.Http
 {
