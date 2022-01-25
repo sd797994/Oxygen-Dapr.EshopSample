@@ -11,7 +11,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
-    <PackageReference Include="Oxygen-Dapr" Version="0.2.9" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Oxygen-Dapr" Version="0.3.1" GeneratePathProperty="true" PrivateAssets="all" />
   </ItemGroup>
   <Target Name="GetDependencyTargetPaths">
     <ItemGroup>

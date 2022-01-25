@@ -15,6 +15,8 @@ using Oxygen.IocModule;
 using Oxygen.Mesh.Dapr;
 using Oxygen.ProxyGenerator.Implements;
 using Oxygen.Server.Kestrel.Implements;
+using Oxygen.MulitlevelCache;
+using Infrastructure.Cached;
 
 IConfiguration Configuration = default;
 var builder = OxygenApplication.CreateBuilder(config =>
@@ -39,6 +41,8 @@ builder.Host.ConfigureAppConfiguration((hostContext, config) =>
     builder.RegisterModule(new ServiceModule());
 });
 builder.Services.AddHttpClient();
+builder.Services.AddMemoryCache();
+builder.Services.InjectionCached<L1Cache, L2Cache>();
 //注册自定义HostService
 builder.Services.AddHostedService<CustomerService>();
 //注册全局拦截器
@@ -56,5 +60,6 @@ builder.Services.AddDbContext<EfDbContext>(options => options.UseNpgsql(Configur
 builder.Services.AddAutofac();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 var app = builder.Build();
+app.UseCached();
 OxygenActorStartup.Configure(app, app.Services);
 await app.RunAsync();

@@ -8,5 +8,5 @@
     <ProjectReference Include="..\..\..\Public\Remote\IApplicationService\IApplicationService.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
-
+  
 </Project>

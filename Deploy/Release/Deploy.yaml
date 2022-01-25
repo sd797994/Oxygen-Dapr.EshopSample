@@ -30,6 +30,9 @@ spec:
       containers:
         - name: web
           image: accountservice:release
+          env:
+          - name: Logging__Console__FormatterName
+            value: "" 
           imagePullPolicy: Never
           ports:
             - containerPort: 80
@@ -66,6 +69,9 @@ spec:
       containers:
         - name: web
           image: goodsservice:release
+          env:
+          - name: Logging__Console__FormatterName
+            value: "" 
           imagePullPolicy: Never
           ports:
             - containerPort: 80
@@ -102,6 +108,9 @@ spec:
       containers:
         - name: web
           image: tradeservice:release
+          env:
+          - name: Logging__Console__FormatterName
+            value: "" 
           imagePullPolicy: Never
           ports:
             - containerPort: 80
@@ -138,6 +147,9 @@ spec:
       containers:
         - name: web
           image: publicservice:release
+          env:
+          - name: Logging__Console__FormatterName
+            value: "" 
           imagePullPolicy: Never
           ports:
             - containerPort: 80
@@ -205,6 +217,9 @@ spec:
       containers:
         - name: web
           image: jobservice:release
+          env:
+          - name: Logging__Console__FormatterName
+            value: "" 
           imagePullPolicy: Never
           ports:
             - containerPort: 80
@@ -241,6 +256,9 @@ spec:
       containers:
         - name: web
           image: imageservice:release
+          env:
+          - name: Logging__Console__FormatterName
+            value: "" 
           imagePullPolicy: Never
           ports:
             - containerPort: 80
@@ -445,6 +463,9 @@ spec:
       containers:
         - name: web
           image: oauthservice:release
+          env:
+          - name: Logging__Console__FormatterName
+            value: "" 
           imagePullPolicy: Never
           ports:
             - containerPort: 80
@@ -498,6 +519,9 @@ spec:
       containers:
         - name: web
           image: apidocument:release
+          env:
+          - name: Logging__Console__FormatterName
+            value: "" 
           imagePullPolicy: Never
           ports:
             - containerPort: 80
