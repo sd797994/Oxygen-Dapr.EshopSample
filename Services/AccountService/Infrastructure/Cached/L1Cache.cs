@@ -16,7 +16,7 @@ namespace Infrastructure.Cached
         }
         public T Get<T>(string key)
         {
-            Console.WriteLine($"L1缓存被调用,KEY={key},value{(memoryCache.Get<T>(key) == null ? "不存在" : "存在")}");
+            //Console.WriteLine($"L1缓存被调用,KEY={key},value{(memoryCache.Get<T>(key) == null ? "不存在" : "存在")}");
             return memoryCache.Get<T>(key);
         }
 

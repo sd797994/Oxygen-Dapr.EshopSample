@@ -19,7 +19,7 @@ namespace Infrastructure.Cached
         public async Task<T> GetAsync<T>(string key)
         {
             var cache = await stateManager.GetState(new L2CacheStore(key),typeof(T));
-            Console.WriteLine($"L2缓存被调用,KEY={key},value{(cache == null ? "不存在" : "存在")}");
+            //Console.WriteLine($"L2缓存被调用,KEY={key},value{(cache == null ? "不存在" : "存在")}");
             if (cache != null)
                 return (T)cache;
             return default(T);

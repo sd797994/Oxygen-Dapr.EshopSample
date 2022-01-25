@@ -16,6 +16,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.2" />
-    <PackageReference Include="Oxygen-MultilevelCache" Version="0.0.1" />
+    <PackageReference Include="Oxygen-MultilevelCache" Version="0.0.2" />
   </ItemGroup>
 </Project>
