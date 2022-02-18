@@ -37,5 +37,18 @@ namespace Domain.Entities
                 throw new DomainException("库存不能小于0或大于100000");
             Stock = stock;
         }
+        public void DeductionStock(int stock)
+        {
+            if (stock < 0)
+                throw new DomainException("库存不能为0!");
+            if (Stock < stock)
+                throw new DomainException("库存不足!");
+            else
+                Stock -= stock;
+        }
+        public void RollbackDeductionStock(int stock)
+        {
+            Stock += stock;
+        }
     }
 }

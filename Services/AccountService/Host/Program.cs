@@ -60,6 +60,5 @@ builder.Services.AddDbContext<EfDbContext>(options => options.UseNpgsql(Configur
 builder.Services.AddAutofac();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 var app = builder.Build();
-app.UseCached();
 OxygenActorStartup.Configure(app, app.Services);
 await app.RunAsync();

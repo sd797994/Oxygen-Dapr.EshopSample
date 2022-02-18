@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.Text;
 using Oxygen.Mesh.Dapr.ActorProxyGenerator;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GoodsActorProxyGenerator
 {
@@ -22,7 +23,7 @@ namespace GoodsActorProxyGenerator
 
         public void Initialize(GeneratorInitializationContext context)
         {
-            Debugger.Launch();
+            //Debugger.Launch();
         }
     }
 }

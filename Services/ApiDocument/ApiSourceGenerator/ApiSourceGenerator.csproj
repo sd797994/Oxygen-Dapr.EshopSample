@@ -12,11 +12,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
     <PackageReference Include="Oxygen-Dapr" Version="0.3.1" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Oxygen-Saga" Version="0.0.6" GeneratePathProperty="true" PrivateAssets="all" />
   </ItemGroup>
   <Target Name="GetDependencyTargetPaths">
     <ItemGroup>
       <TargetPathWithTargetPlatformMoniker Include="..\..\..\Public\Remote\IApplicationService\bin\Release\net6.0\IApplicationService.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="$(PKGOxygen-Dapr)\lib\net6.0\Oxygen.Client.ServerSymbol.dll" IncludeRuntimeDependency="false" />
+      <TargetPathWithTargetPlatformMoniker Include="$(PKGOxygen-Saga)\lib\net6.0\Saga.dll" IncludeRuntimeDependency="false" />
     </ItemGroup>
   </Target>
 </Project>

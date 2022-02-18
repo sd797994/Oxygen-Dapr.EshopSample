@@ -84,7 +84,7 @@ namespace ApplicationService
                 void createLimit(Goods goods)
                 {
                     var entity = new LimitedTimeActivitie();
-                    entity.CreateOrUpdate(goods.GoodsName, goods.Id, goods.Price - new Random(Guid.NewGuid().GetHashCode()).Next(1, 4), DateTime.Now, DateTime.Now.AddDays(30));
+                    entity.CreateOrUpdate(goods.GoodsName, goods.Id, goods.Price - new Random(Guid.NewGuid().GetHashCode()).Next(1, 4), DateTime.Now, DateTime.Now.AddDays(Random.Shared.Next(1, 20)));
                     entity.UpOrDownShelf(true);
                     limitrepository.Add(entity);
                 }

@@ -28,6 +28,8 @@ using IApplicationService.AppEvent;
 using Domain.Events;
 using IApplicationService.AccountService;
 using IApplicationService.AccountService.Dtos.Output;
+using Saga;
+using IApplicationService.Sagas.CreateOrder;
 
 namespace ApplicationService
 {
@@ -40,7 +42,8 @@ namespace ApplicationService
         private readonly IGoodsQueryService goodsQueryService;
         private readonly IGoodsActorService goodsActorService;
         private readonly IAccountQueryService accountQueryService;
-        public OrderUseCaseService(IOrderRepository repository, IAccountQueryService accountQueryService, IEventBus eventBus, IStateManager stateManager, IUnitofWork unitofWork, IGoodsQueryService goodsQueryService, IGoodsActorService goodsActorService)
+        private readonly ISagaManager sagaManager;
+        public OrderUseCaseService(IOrderRepository repository, IAccountQueryService accountQueryService, IEventBus eventBus, IStateManager stateManager, IUnitofWork unitofWork, IGoodsQueryService goodsQueryService, IGoodsActorService goodsActorService, ISagaManager sagaManager)
         {
             this.repository = repository;
             this.unitofWork = unitofWork;
@@ -49,6 +52,7 @@ namespace ApplicationService
             this.goodsQueryService = goodsQueryService;
             this.goodsActorService = goodsActorService;
             this.accountQueryService = accountQueryService;
+            this.sagaManager = sagaManager;
         }
 
         public async Task<ApiResult> CreateOrder(OrderCreateDto input)
@@ -66,6 +70,11 @@ namespace ApplicationService
             },
             //失败回滚
             createOrderService.UnCreateOrder);
+        }
+        public async Task<ApiResult> CreateOrderBySaga(OrderCreateDto input)
+        {
+            await sagaManager.StartOrNext(Topics.GoodsHandler.PreDeductInventory, input);
+            return ApiResult.Ok("订单创建中");
         }
         public async Task<ApiResult> OrderPay(OrderPayDto input)
         {

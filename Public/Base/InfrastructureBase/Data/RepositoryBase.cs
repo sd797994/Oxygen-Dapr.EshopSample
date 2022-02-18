@@ -49,7 +49,7 @@ namespace Infrastructure.EfDataAccess
         }
         public virtual async IAsyncEnumerable<DomainModel> GetManyAsync(Expression<Func<DomainModel, bool>> condition)
         {
-            var poResult = await context.Set<PersistenceObject>().Where(condition.ReplaceParameter<DomainModel, PersistenceObject>()).ToListAsync();
+            var poResult = await context.Set<PersistenceObject>().AsNoTracking().Where(condition.ReplaceParameter<DomainModel, PersistenceObject>()).ToListAsync();
             if (poResult.Any())
             {
                 foreach (var po in poResult)
@@ -61,7 +61,7 @@ namespace Infrastructure.EfDataAccess
         public virtual async IAsyncEnumerable<DomainModel> GetManyAsync(Guid[] key)
         {
             var keys = key.ToList();
-            var poResult = await context.Set<PersistenceObject>().Where(x => keys.Contains((x as Entity).Id)).ToListAsync();
+            var poResult = await context.Set<PersistenceObject>().AsNoTracking().Where(x => keys.Contains((x as Entity).Id)).ToListAsync();
             if (poResult.Any())
             {
                 foreach (var po in poResult)
@@ -69,6 +69,10 @@ namespace Infrastructure.EfDataAccess
                     yield return po.CopyTo<PersistenceObject, DomainModel>();
                 }
             }
+        }
+        public virtual async Task<List<DomainModel>> GetManyToListAsync(Guid[] key)
+        {
+            return await context.Set<PersistenceObject>().AsNoTracking().Where(x => key.ToList().Contains((x as Entity).Id)).Select(x => x.CopyTo<PersistenceObject, DomainModel>()).ToListAsync();
         }
 
         public virtual void Update(DomainModel t)

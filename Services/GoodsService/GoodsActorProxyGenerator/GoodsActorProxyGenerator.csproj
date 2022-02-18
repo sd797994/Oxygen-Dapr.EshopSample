@@ -10,6 +10,8 @@
     <!--引入Oxygen和Autofac用于编译时在Target指向nuget包位置查询dll-->
     <PackageReference Include="Oxygen-Dapr" Version="0.3.1" GeneratePathProperty="true" PrivateAssets="all" />
     <PackageReference Include="Autofac" Version="6.3.0" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Oxygen-Saga" Version="0.0.6" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" GeneratePathProperty="true" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApplicationService\ApplicationService.csproj" />
@@ -36,6 +38,8 @@
       <TargetPathWithTargetPlatformMoniker Include="$(PKGOxygen-Dapr)\lib\net6.0\Oxygen.Client.ServerSymbol.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="$(PKGOxygen-Dapr)\lib\net6.0\Oxygen.Common.dll" IncludeRuntimeDependency="false" />
       <TargetPathWithTargetPlatformMoniker Include="$(PKGAutofac)\lib\net5.0\Autofac.dll" IncludeRuntimeDependency="false" />
+      <TargetPathWithTargetPlatformMoniker Include="$(PKGOxygen-Saga)\lib\net6.0\Saga.dll" IncludeRuntimeDependency="false" />
+      <TargetPathWithTargetPlatformMoniker Include="$(PKGMicrosoft_EntityFrameworkCore)\lib\net6.0\Microsoft.EntityFrameworkCore.dll" IncludeRuntimeDependency="false" />
     </ItemGroup>
   </Target>
 

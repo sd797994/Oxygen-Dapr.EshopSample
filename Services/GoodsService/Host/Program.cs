@@ -2,19 +2,26 @@
 using Autofac.Extensions.DependencyInjection;
 using Host;
 using Host.Modules;
+using IApplicationService.AppEvent;
+using IApplicationService.PublicService.Dtos.Event;
 using Infrastructure.EfDataAccess;
 using Infrastructure.Http;
 using InfrastructureBase.AopFilter;
+using InfrastructureBase.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Oxygen.Client.ServerProxyFactory.Interface;
 using Oxygen.IocModule;
 using Oxygen.Mesh.Dapr;
 using Oxygen.ProxyGenerator.Implements;
 using Oxygen.Server.Kestrel.Implements;
+using Saga;
+using Saga.PubSub.Dapr;
+using Saga.Store.Dapr;
 
 IConfiguration Configuration = default;
 var builder = OxygenApplication.CreateBuilder(config =>
@@ -55,6 +62,15 @@ builder.Services.AddLogging(configure =>
 builder.Services.AddDbContext<EfDbContext>(options => options.UseNpgsql(Configuration.GetSection("SqlConnectionString").Value));
 builder.Services.AddAutofac();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Services.AddSaga(new SagaConfiguration("Oxygen-Dapr.EshopSample", "GoodsService", null, null, new IApplicationService.Sagas.CreateOrder.Configuration()));
+builder.Services.AddSagaStore();
 var app = builder.Build();
+app.RegisterSagaHandler(async (error) =>
+{
+    //当出现补偿异常的saga流时，会触发这个异常处理器，需要人工进行处理(持久化消息/告警通知等等)
+    //此处作为演示，我将会直接导入到事件异常服务
+    await HttpContextExt.Current.RequestService.Resolve<IEventBus>().SendEvent(EventTopicDictionary.Common.EventHandleErrCatch,
+                   new EventHandlerErrDto($"Saga流[{error.SourceTopic}]事件补偿异常", error.SourceDataJson, error.SourceException.Message, error.SourceException.StackTrace, false));
+});
 OxygenActorStartup.Configure(app, app.Services);
 await app.RunAsync();

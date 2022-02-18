@@ -14,6 +14,8 @@ namespace IApplicationService.TradeService
     {
         [RemoteFunc(funcDescription: "创建订单")]
         Task<ApiResult> CreateOrder(OrderCreateDto input);
+        [RemoteFunc(funcDescription: "创建长事务订单")]
+        Task<ApiResult> CreateOrderBySaga(OrderCreateDto input);
 
         [RemoteFunc(funcDescription: "支付订单")]
         Task<ApiResult> OrderPay(OrderPayDto input);

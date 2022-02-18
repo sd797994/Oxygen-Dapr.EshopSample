@@ -191,7 +191,7 @@
           data.Items.push({GoodsId: x.id, Count: x.count});
         });
         var _this = this;
-        this.$http.post('http://api.dapreshop.com:30882/tradeservice/orderusecase/CreateOrder', data).then((response) => {
+        this.$http.post('http://api.dapreshop.com:30882/tradeservice/orderusecase/CreateOrderBySaga', data).then((response) => {
             if (response.data.code === 0) {
               _this.empty();
               window.alert('下单成功');

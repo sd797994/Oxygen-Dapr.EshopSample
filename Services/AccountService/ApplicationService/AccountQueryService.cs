@@ -26,6 +26,7 @@ using InfrastructureBase.Data.Nest;
 using System.Net.Http;
 using Infrastructure.Filter;
 using Oxygen.MulitlevelCache;
+using System.Threading;
 
 namespace ApplicationService
 {
@@ -95,7 +96,6 @@ namespace ApplicationService
         [SystemCached]
         public async Task<ApiResult> GetMockAccount()
         {
-            //Console.WriteLine("GetMockAccount被调用");
             var result = await (from account in efDbContext.Account.Where(x => x.LoginName == "eshopuser")
                                 join user in efDbContext.User on account.Id equals user.AccountId
                                 select new CurrentUser
