@@ -14,8 +14,8 @@
     <PackageReference Include="NEST" Version="7.17.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.3" />
     <PackageReference Include="Oxygen-Dapr" Version="0.3.1" />
-    <PackageReference Include="Oxygen-Saga.PubSub.Dapr" Version="0.0.6" />
-    <PackageReference Include="Oxygen-Saga.Store.Dapr" Version="0.0.6" />
+    <PackageReference Include="Oxygen-Saga.PubSub.Dapr" Version="0.0.7" />
+    <PackageReference Include="Oxygen-Saga.Store.Dapr" Version="0.0.7" />
   </ItemGroup>
 
   <ItemGroup>

@@ -65,11 +65,11 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Services.AddSaga(new SagaConfiguration("Oxygen-Dapr.EshopSample", "OrderService", null, null, new IApplicationService.Sagas.CreateOrder.Configuration()));
 builder.Services.AddSagaStore();
 var app = builder.Build();
-app.RegisterSagaHandler(async (error) =>
+app.RegisterSagaHandler(async (service,error) =>
 {
     //当出现补偿异常的saga流时，会触发这个异常处理器，需要人工进行处理(持久化消息/告警通知等等)
     //此处作为演示，我将会直接导入到事件异常服务
-    await HttpContextExt.Current.RequestService.Resolve<IEventBus>().SendEvent(EventTopicDictionary.Common.EventHandleErrCatch,
+    await service.GetService<IEventBus>().SendEvent(EventTopicDictionary.Common.EventHandleErrCatch,
                    new EventHandlerErrDto($"Saga流[{error.SourceTopic}]事件补偿异常", error.SourceDataJson, error.SourceException.Message, error.SourceException.StackTrace, false));
 });
 OxygenActorStartup.Configure(app, app.Services);
