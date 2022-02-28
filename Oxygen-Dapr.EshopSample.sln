@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30717.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Public", "Public", "{D54E378F-90F7-4A57-B8AF-E5FE10B9A3E9}"
 EndProject
@@ -69,7 +69,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiSourceGenerator", "Servi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiDocument", "Services\ApiDocument\ApiDocument\ApiDocument.csproj", "{DC561131-B34A-4F38-9945-8AE33A20E574}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodsActorProxyGenerator", "Services\GoodsService\GoodsActorProxyGenerator\GoodsActorProxyGenerator.csproj", "{D58C4F57-3620-4865-B230-2FF6B7CB17BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoodsActorProxyGenerator", "Services\GoodsService\GoodsActorProxyGenerator\GoodsActorProxyGenerator.csproj", "{D58C4F57-3620-4865-B230-2FF6B7CB17BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
