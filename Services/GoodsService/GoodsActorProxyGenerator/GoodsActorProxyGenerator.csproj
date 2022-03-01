@@ -8,10 +8,10 @@
     <!--必须引入CodeAnalysis-->
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.1" />
     <!--引入Oxygen和Autofac用于编译时在Target指向nuget包位置查询dll-->
-    <PackageReference Include="Oxygen-Dapr" Version="0.3.1" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Oxygen-Dapr" Version="0.3.2" GeneratePathProperty="true" PrivateAssets="all" />
     <PackageReference Include="Autofac" Version="6.3.0" GeneratePathProperty="true" PrivateAssets="all" />
-    <PackageReference Include="Oxygen-Saga" Version="0.0.7" GeneratePathProperty="true" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Oxygen-Saga" Version="0.0.8" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" GeneratePathProperty="true" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApplicationService\ApplicationService.csproj" />
