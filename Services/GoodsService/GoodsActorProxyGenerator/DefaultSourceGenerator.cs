@@ -2,8 +2,10 @@
 using IApplicationService;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.Extensions.DependencyModel;
 using Oxygen.Mesh.Dapr.ActorProxyGenerator;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +25,7 @@ namespace GoodsActorProxyGenerator
 
         public void Initialize(GeneratorInitializationContext context)
         {
-            //Debugger.Launch();
+            Debugger.Launch();
         }
     }
 }
