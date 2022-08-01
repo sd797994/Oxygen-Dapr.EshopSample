@@ -64,29 +64,29 @@ namespace Infrastructure.Common
             var component = await GetDefaultSentinelComponent();
             operatorComponent(component);
             component.SetMetaData();
-            Patch(component);
-            ReloadDeploy();
+            await Patch(component);
+            await ReloadDeploy();
         }
         /// <summary>
         /// Patch SentinelComponent到k8s环境
         /// </summary>
         /// <param name="component"></param>
-        static void Patch(SentinelComponent component)
+        static async Task Patch(SentinelComponent component)
         {
             var patch = new JsonPatchDocument<SentinelComponent>();
-            patch.Replace(x => x.spec.metadata, component.spec.metadata);
-            kubernetes.PatchNamespacedCustomObject(new V1Patch(patch, V1Patch.PatchType.JsonPatch), SentinelComponentBaseConfig.Group, SentinelComponentBaseConfig.Version, SentinelComponentBaseConfig.NamespaceParameter, SentinelComponentBaseConfig.Plural, SentinelComponentBaseConfig.ComponentName);
+            patch.Replace(x => x.spec.metadata, component.spec.metadata); 
+            await kubernetes.PatchNamespacedCustomObjectAsync(new V1Patch(patch, V1Patch.PatchType.JsonPatch), SentinelComponentBaseConfig.Group, SentinelComponentBaseConfig.Version, SentinelComponentBaseConfig.NamespaceParameter, SentinelComponentBaseConfig.Plural, SentinelComponentBaseConfig.ComponentName);
         }
         /// <summary>
         /// 重启相关deploy更新SentinelComponent
         /// </summary>
-        static void ReloadDeploy()
+        static async Task ReloadDeploy()
         {
             var deploy = kubernetes.ReadNamespacedDeployment(SentinelComponentBaseConfig.DeploymentName, SentinelComponentBaseConfig.NamespaceParameter);
             deploy.Spec.Template.Metadata.Annotations[SentinelComponentBaseConfig.restart] = DateTime.UtcNow.ToString("s");
             var patch = new JsonPatchDocument<V1Deployment>();
             patch.Replace(e => e.Spec.Template.Metadata.Annotations, deploy.Spec.Template.Metadata.Annotations);
-            kubernetes.PatchNamespacedDeployment(new V1Patch(patch, V1Patch.PatchType.JsonPatch), SentinelComponentBaseConfig.DeploymentName, SentinelComponentBaseConfig.NamespaceParameter);
+            await kubernetes.PatchNamespacedDeploymentAsync(new V1Patch(patch, V1Patch.PatchType.JsonPatch), SentinelComponentBaseConfig.DeploymentName, SentinelComponentBaseConfig.NamespaceParameter);
         }
         #endregion
     }
