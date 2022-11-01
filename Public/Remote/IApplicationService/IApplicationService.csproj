@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Oxygen-Dapr" Version="0.3.4" />
+    <PackageReference Include="Oxygen-Dapr" Version="0.3.5" />
     <PackageReference Include="Oxygen-Saga" Version="0.0.8" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>

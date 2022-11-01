@@ -7,9 +7,9 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.30" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.31" />
     <PackageReference Include="Hangfire.Autofac" Version="2.3.1" />
-    <PackageReference Include="HangFire.Redis.StackExchange" Version="1.8.5" />
+    <PackageReference Include="HangFire.Redis.StackExchange" Version="1.8.6" />
   </ItemGroup>
 
   <ItemGroup>
