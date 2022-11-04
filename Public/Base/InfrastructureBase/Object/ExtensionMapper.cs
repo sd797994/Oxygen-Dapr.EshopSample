@@ -97,6 +97,12 @@ namespace InfrastructureBase.Object
                     else
                         continue;
                 }
+                //如果是类型
+                else if (targetItem.PropertyType.IsClass && sourceItem.PropertyType.IsClass)
+                {
+                    var expression = GetClassExpression(sourceProperty, sourceItem.PropertyType, targetItem.PropertyType);
+                    memberBindings.Add(Bind(targetItem, expression));
+                }
                 else
                     memberBindings.Add(Bind(targetItem, sourceProperty));
             }
