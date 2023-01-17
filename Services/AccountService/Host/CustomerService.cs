@@ -3,6 +3,7 @@ using IApplicationService.AccountService.Dtos.Input;
 using IApplicationService.AppEvent;
 using Infrastructure.EfDataAccess;
 using InfrastructureBase.AuthBase;
+using InfrastructureBase.Object;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,6 +35,7 @@ namespace Host
             //阻塞20秒等待daprd启动后推送权限数据到state
             _ = Task.Delay(20 * 1000).ContinueWith(async t => await stateManager.SetState(new PermissionState() { Key = "account", Data = AuthenticationManager.AuthenticationMethods }));
             await Task.CompletedTask;
+
         }
         public async Task StopAsync(CancellationToken cancellationToken)
         {
