@@ -10,8 +10,8 @@
     <ProjectReference Include="..\..\..\Public\Remote\IApplicationService\IApplicationService.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" />
-    <PackageReference Include="Oxygen-Dapr" Version="0.3.6" GeneratePathProperty="true" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0" />
+    <PackageReference Include="Oxygen-Dapr" Version="0.3.9" GeneratePathProperty="true" PrivateAssets="all" />
     <PackageReference Include="Oxygen-Saga" Version="0.0.9" GeneratePathProperty="true" PrivateAssets="all" />
   </ItemGroup>
   <Target Name="GetDependencyTargetPaths">

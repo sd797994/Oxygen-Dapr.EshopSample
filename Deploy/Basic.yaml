@@ -176,7 +176,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "apigateway"
         dapr.io/app-port: "80"
-        dapr.io/config: "sentinelconfig"
+        # dapr.io/config: "sentinelconfig" 1.11版本dapr无法使用sentinel原因未知，暂时屏蔽掉
     spec:
       containers:
         - name: web

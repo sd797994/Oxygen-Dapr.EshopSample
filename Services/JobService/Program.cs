@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Hangfire;
+using Hangfire.Redis.StackExchange;
 using JobService;
 using JobService.Modules;
 using Oxygen.IocModule;
