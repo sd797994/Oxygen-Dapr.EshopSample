@@ -9,12 +9,16 @@ using Infrastructure.Http;
 using InfrastructureBase.AopFilter;
 using InfrastructureBase.Http;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IO;
 using Oxygen.Client.ServerProxyFactory.Interface;
+using Oxygen.Common.Interface;
+using Oxygen.Common;
 using Oxygen.IocModule;
 using Oxygen.Mesh.Dapr;
 using Oxygen.ProxyGenerator.Implements;
@@ -22,6 +26,7 @@ using Oxygen.Server.Kestrel.Implements;
 using Saga;
 using Saga.PubSub.Dapr;
 using Saga.Store.Dapr;
+using System.Text.Json;
 
 IConfiguration Configuration = default;
 var builder = OxygenApplication.CreateBuilder(config =>

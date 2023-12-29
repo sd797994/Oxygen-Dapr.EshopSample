@@ -19,8 +19,5 @@ app.UseSwaggerUI(c =>
 app.UseRouting();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
-await app.RunAsync();
+app.MapControllers();
+await app.RunAsync("http://*:80");
