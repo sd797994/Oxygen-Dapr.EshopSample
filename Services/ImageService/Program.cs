@@ -19,12 +19,10 @@ var builder = OxygenApplication.CreateBuilder(config =>
     config.UseCors = true;
 });
 OxygenActorStartup.ConfigureServices(builder.Services);
-builder.Host.ConfigureAppConfiguration((hostContext, config) =>
-{
-    config.SetBasePath(Directory.GetCurrentDirectory());
-    config.AddJsonFile("appsettings.json");
-    Configuration = config.Build();
-}).ConfigureContainer<ContainerBuilder>(builder =>
+builder.Configuration.SetBasePath(Directory.GetCurrentDirectory());
+builder.Configuration.AddJsonFile("appsettings.json");
+Configuration = builder.Configuration;
+builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 {
     //注入oxygen依赖
     builder.RegisterOxygenModule();

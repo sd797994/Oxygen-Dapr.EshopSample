@@ -10,13 +10,6 @@ using System.Threading.Tasks;
 
 namespace InfrastructureBase.AopFilter
 {
-    public class test
-    {
-        public async Task Get<T>(T input)
-        {
-            await Task.CompletedTask;
-        }
-    }
     public class AopFilterManager
     {
         static Dictionary<string, Func<object, Task>> BeforeFilters = new Dictionary<string, Func<object, Task>>();

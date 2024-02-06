@@ -1,7 +1,7 @@
 FROM node:12.13.1-slim AS build
 WORKDIR /src
 COPY . .
-RUN npm install --registry=https://registry.npm.taobao.org
+RUN npm install --registry=https://registry.npm.taobao.org --strict-ssl=false
 RUN npm run build
 FROM nginx:latest
 WORKDIR /app
